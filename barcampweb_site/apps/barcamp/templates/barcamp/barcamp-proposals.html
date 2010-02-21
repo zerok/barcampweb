@@ -1,0 +1,16 @@
+{% extends "barcamp/barcamp-base.html" %}
+{% block submenu-barcamp-proposals %}active{% endblock %}
+{% block head-title %}Themenvorschläge « {{ block.super }}{% endblock %}
+{% block title %}Themevorschläge für {{ barcamp.name }}{% endblock %}
+{% block subcontent %}
+    <ul>
+    {% for proposal in ideas %}
+        <li class="talkidea">
+            <span class="title">{{ proposal.name }}</span>
+            {% if proposal.description %}
+            <div class="description">{{ proposal.description }}</div>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

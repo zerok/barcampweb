@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ barcamp.name }}
+{% endblock %}
+{% block content %}
+    <div id="meta">
+        <dl>
+            <dt>Wann?</dt>
+            <dd>{{ barcamp.start|date }} - {{ barcamp.end|date }}</dd>
+        </dl>
+    </div>
+    <div id="description">{{ barcamp.description }}</div>
+    
+    <ul id="submenu">
+        <li class="{% block submenu-barcamp-info %}{% endblock %}"><a href="{% url barcamp-view barcamp.slug %}">Info</a></li>
+        <li class="{% block submenu-barcamp-proposals %}{% endblock %}"><a href="{% url barcamp-proposals barcamp.slug %}">Themenvorschläge</a></li>
+        <li class="{% block submenu-barcamp-schedule %}{% endblock %}"><a href="{% url barcamp-schedule barcamp.slug %}">Sessions &amp; Ablauf</a></li>
+    </ul>
+    <div id="subcontent">
+        {% block subcontent %}
+        {% endblock %}
+    </div>
+{% endblock %}
+{% block sidebar %}
+    <h2>Sponsors</h2>
+    <ul>
+        {% for sponsor in sponsors %}
+        <li><a href="{{ sponsor.sponsor.url }}"><img src="{{ MEDIA_URL }}{{ sponsor.sponsor.logo }}" alt="{{ sponsor.sponsor.name }}" /></a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

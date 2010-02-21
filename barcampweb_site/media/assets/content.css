@@ -1,0 +1,24 @@
+p,
+ul,
+ol,
+blockquote,
+pre {
+    margin: 0 0 1em 0;
+}
+
+dl {
+    width:100%; 
+    overflow:hidden;
+    border-bottom: 1px solid #DDD;
+}
+
+dt {
+    width: 40%;
+    font-weight: bold;
+    float:left;
+}
+
+dd {
+    width: 60%;
+    float:right;
+}

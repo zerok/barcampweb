@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="{{ MEDIA_URL }}assets/reset-min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ MEDIA_URL }}assets/screen.css" type="text/css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}assets/content.css" type="text/css" media="all" />
+	<title>base</title>
+	
+</head>
+
+<body>
+    <div id="page">
+        <div id="header">
+        </div>
+        <div id="main">
+            <h1>{% block title %}{% endblock %}</h1>
+            <div id="body">{% block body %}
+                <div id="content">
+                    {% block content %}{% endblock %}
+                </div>
+                <div id="sidebar">
+                    {% block sidebar %}{% endblock %}
+                </div>
+            {% endblock %}</div>
+        </div>
+        <div id="footer"></div>
+    </div>
+</body>
+</html>

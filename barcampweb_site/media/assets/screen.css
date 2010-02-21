@@ -1,0 +1,6 @@
+body {font-family: Arial, Verdana, sans-serif;}
+h1, #header {background:#325057; color: #FFF; padding: 2%;}
+#page {width:960px; margin:auto;}
+#main {width:100%; overflow:hidden;}
+#content {background:#EEEEEE; float:left; padding:1%; width: 68%;}
+#sidebar {float:right; width: 28%; padding: 1%;}
