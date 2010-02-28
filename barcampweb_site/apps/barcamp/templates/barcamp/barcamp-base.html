@@ -3,6 +3,12 @@
     {{ barcamp.name }}
 {% endblock %}
 {% block content %}
+    {% if barcamp.marked_for_removal_at %}
+    <p class="warning">
+        <h3>Achtung</h3>
+        <p>Dieses Barcamp wurde als gelöscht markiert.</p>
+    </p>
+    {% endif %}
     <div id="meta">
         <dl>
             <dt>Wann?</dt>

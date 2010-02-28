@@ -1,7 +1,12 @@
+import datetime
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 from .models import Barcamp, Sponsoring
+from .decorators import is_organizer
 
 def index(request):
     barcamps = Barcamp.objects.order_by('start')
@@ -54,10 +59,31 @@ def create_barcamp(request):
 def edit_barcamp(request, pk):
     pass
 
-def delete_barcamp(request, pk):
+@is_organizer(barcamp_slug_kwarg='slug')
+def delete_barcamp(request, slug):
     """
     This marks a given barcamp for removal. Once set, the barcamp will stay
     online for the next 24h. During this time an organizer or admin can cancel
     the removal.
     """
-    pass
+    barcamp = get_object_or_404(Barcamp, slug=slug)
+    if request.method == 'POST':
+        barcamp.marked_for_removal_at = datetime.datetime.now()
+        barcamp.removal_requested_by = request.user
+        barcamp.save()
+        return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+    return render_to_response('barcamp/confirm-delete-barcamp.html', {
+        'barcamp': barcamp,
+    }, context_instance=RequestContext(request))
+
+@is_organizer(barcamp_slug_kwarg='slug')
+def undelete_barcamp(request, slug):
+    barcamp = get_object_or_404(Barcamp, slug=slug)
+    if request.method == 'POST':
+        barcamp.marked_for_removal_at = None
+        barcamp.removal_canceled_by = request.user
+        barcamp.save()
+        return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+    return render_to_response('barcamp/confirm-undelete-barcamp.html', {
+        'barcamp': barcamp,
+    }, context_instance=RequestContext(request))
