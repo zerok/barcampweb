@@ -22,3 +22,8 @@ dd {
     width: 60%;
     float:right;
 }
+
+label {
+    display: block;
+    font-weight: bold;
+}

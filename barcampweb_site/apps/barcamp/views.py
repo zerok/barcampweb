@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 
 from .models import Barcamp, Sponsoring
 from .decorators import is_organizer
+from .forms import BarcampForm
 
 def index(request):
     barcamps = Barcamp.objects.order_by('start')
@@ -23,6 +24,9 @@ class BarcampView(object):
         self.sponsors = Sponsoring.objects.select_related().filter(barcamp=self.barcamp).order_by('-level')
         self.data['barcamp'] = self.barcamp
         self.data['sponsors'] = self.sponsors
+        self.data['organizers'] = self.barcamp.organizers.all()
+        self.data['is_organizer'] = self.request.user in self.data['organizers']
+        
         
     def view(self, *args, **kwargs):
         return render_to_response('barcamp/barcamp.html', self.data, 
@@ -50,14 +54,31 @@ view_proposals = BarcampProposalsView()
 view_schedule = BarcampScheduleView()
 
 def create_barcamp(request):
-    """
-    Every registered user should be able to create a barcamp. The creator
-    also becomes part of the organization team.
-    """
-    pass
+    if request.method == 'POST':
+        form = BarcampForm(request.POST)
+        if form.is_valid():
+            barcamp = form.save()
+            return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+    else:
+        form = BarcampForm()
+    return render_to_response('barcamp/barcamp-create.html', {
+        'form': form,
+    }, context_instance=RequestContext(request))
 
-def edit_barcamp(request, pk):
-    pass
+@is_organizer(barcamp_slug_kwarg='slug')
+def edit_barcamp(request, slug):
+    barcamp = get_object_or_404(Barcamp, slug=slug)
+    if request.method == 'POST':
+        form = BarcampForm(request.POST, instance=barcamp)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+    else:
+        form = BarcampForm(instance=barcamp)
+    return render_to_response('barcamp/barcamp-edit.html', {
+        'form': form,
+        'barcamp': barcamp,
+    }, context_instance=RequestContext(request))
 
 @is_organizer(barcamp_slug_kwarg='slug')
 def delete_barcamp(request, slug):

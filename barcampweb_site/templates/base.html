@@ -24,6 +24,11 @@
                     {% block sidebar %}{% endblock %}
                 </div>
             {% endblock %}</div>
+            <ul id="pageactions">
+                {% block pageactions %}
+                <li><a href="{% url barcamp-create %}">Neues Barcamp anlegen</a></li>
+                {% endblock %}
+            </ul>
         </div>
         <div id="footer"></div>
     </div>

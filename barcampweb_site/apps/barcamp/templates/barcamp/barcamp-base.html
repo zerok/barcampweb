@@ -2,6 +2,17 @@
 {% block title %}
     {{ barcamp.name }}
 {% endblock %}
+{% block pageactions %}
+    {% if is_organizer %}
+    <li class="edit"><a href="{% url barcamp-edit barcamp.slug %}">Ändern</a></li>
+    {% if barcamp.marked_for_removal_at %}
+    <li class="undelete"><a href="{% url barcamp-undelete barcamp.slug %}">Löschvorgang abbrechen</a></li>
+    {% else %}
+    <li class="delete"><a href="{% url barcamp-delete barcamp.slug %}">Löschen</a></li>
+    {% endif %}
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
 {% block content %}
     {% if barcamp.marked_for_removal_at %}
     <p class="warning">
@@ -15,6 +26,7 @@
             <dd>{{ barcamp.start|date }} - {{ barcamp.end|date }}</dd>
         </dl>
     </div>
+    <div id="teaser">{{ barcamp.teaser }}</div>
     <div id="description">{{ barcamp.description }}</div>
     
     <ul id="submenu">
