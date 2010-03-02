@@ -43,7 +43,15 @@
     <h2>Sponsors</h2>
     <ul>
         {% for sponsor in sponsors %}
-        <li><a href="{{ sponsor.sponsor.url }}"><img src="{{ MEDIA_URL }}{{ sponsor.sponsor.logo }}" alt="{{ sponsor.sponsor.name }}" /></a></li>
+        <li>
+            <a href="{{ sponsor.sponsor.url }}"><img src="{{ MEDIA_URL }}{{ sponsor.sponsor.logo }}" alt="{{ sponsor.sponsor.name }}" /></a>
+            {% if is_organizer %}
+            <a href="{% url barcamp-remove-sponsor barcamp.slug,sponsor.pk %}">löschen</a>
+            {% endif %}
+        </li>
         {% endfor %}
     </ul>
+    {% if is_organizer %}
+    <a href="{% url barcamp-add-sponsor barcamp.slug %}">Sponsor hinzufügen</a>
+    {% endif %}
 {% endblock %}

@@ -1,0 +1,7 @@
+{% block content %}
+{% block message %}{% endblock %}
+<form method="post">
+    <button type="submit">Ja</button>
+    <a href="{% url barcamp-view barcamp.slug %}">Abbrechen</a>
+</form>
+{% endblock %}

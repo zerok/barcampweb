@@ -5,9 +5,10 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from .models import Barcamp, Sponsoring
+from .models import Barcamp, Sponsoring, Sponsor
 from .decorators import is_organizer
 from .forms import BarcampForm
+from ..barcamp import forms
 
 def index(request):
     barcamps = Barcamp.objects.order_by('start')
@@ -58,6 +59,7 @@ def create_barcamp(request):
         form = BarcampForm(request.POST)
         if form.is_valid():
             barcamp = form.save()
+            barcamp.organizers.add(request.user)
             return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
     else:
         form = BarcampForm()
@@ -108,3 +110,51 @@ def undelete_barcamp(request, slug):
     return render_to_response('barcamp/confirm-undelete-barcamp.html', {
         'barcamp': barcamp,
     }, context_instance=RequestContext(request))
+
+@is_organizer(barcamp_slug_kwarg='slug')
+def add_sponsor(request, slug):
+    barcamp = get_object_or_404(Barcamp, slug=slug)
+    if request.method == 'POST':
+        form = forms.AddSponsorForm(request.POST, request.FILES)
+        sponsorship = Sponsoring()
+        sponsorship.barcamp = barcamp
+        if form.is_valid():
+            level = form.cleaned_data['level']
+            sponsorship.level = level
+            if len(form.cleaned_data['existing_company']):
+                # Fetch the company with that id and build the new relation
+                sponsorship.sponsor = Sponsor.objects.get(pk=form.cleaned_data['existing_company'])
+            else:
+                # Create a new sponsor first and then link it with the barcamp
+                sponsor = Sponsor()
+                sponsor.name = form.cleaned_data['name']
+                sponsor.url = form.cleaned_data['url']
+                # Move the logo to the usual storage if necessary
+                sponsor.logo = form.cleaned_data['logo']
+                sponsor.save()
+                sponsorship.sponsor = sponsor
+            sponsorship.save()
+            return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+        pass
+    else:
+        form = forms.AddSponsorForm()
+    return render_to_response('barcamp/sponsor-add.html', {
+        'form': form,
+        'barcamp': barcamp,
+    }, context_instance=RequestContext(request))
+    
+@is_organizer(barcamp_slug_kwarg='slug')
+def remove_sponsor(request, slug, sponsoring_pk):
+    sponsoring = get_object_or_404(Sponsoring, pk=sponsoring_pk)
+    barcamp = sponsoring.barcamp
+    if request.method == 'POST':
+        sponsor = sponsoring.sponsor
+        sponsoring.delete()
+        if sponsor.sponsorings.count() == 0:
+            sponsor.delete()
+        return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+    else:
+        return render_to_response('barcamp/confirm-remove-sponsor.html', {
+            'barcamp': barcamp,
+            'sponsoring': sponsoring,
+        }, context_instance=RequestContext(request))

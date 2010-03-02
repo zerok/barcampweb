@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -39,13 +41,17 @@ class Sponsoring(models.Model):
     organizers to sort their sponsors based on the amount of thereof.
     """
     barcamp = models.ForeignKey('Barcamp')
-    sponsor = models.ForeignKey('Sponsor')
+    sponsor = models.ForeignKey('Sponsor', related_name='sponsorings')
     level = models.IntegerField()
 
 class Sponsor(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField(verify_exists=False)
     logo = models.ImageField(upload_to='sponsor_logos')
+    
+    def delete(self):
+        os.remove(self.logo.path)
+        super(Sponsor, self).delete()
     
     def __unicode__(self):
         return self.name

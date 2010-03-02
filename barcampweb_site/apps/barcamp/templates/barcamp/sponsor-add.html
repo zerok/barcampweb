@@ -1,0 +1,7 @@
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {{ form.as_p }}
+        <button type="submit">Hinzufügen</button>
+        <a href="{% url barcamp-view barcamp.slug %}">Abbrechen</a>
+    </form>
+{% endblock %}

@@ -1,9 +1,6 @@
-{% block content %}
+{% extends "barcamp/confirm-barcamprelated" %}
+{% block message %}
 <p>Sind Sie sicher, dass Sie dieses Barcamp als gelöscht markieren wollen?</p>
 <p><strong>Anmerkung:</strong> Sie oder ein anderer Organisator haben nach diesem 
     Vorgang noch 24h Zeit, um diesen Vorgang rückgängig zu machen.</p>
-<form method="post">
-    <button type="submit">Ja</button>
-    <a href="{% url barcamp-view barcamp.slug %}">Abbrechen</a>
-</form>
 {% endblock %}
