@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from .models import Barcamp, Sponsoring, Sponsor
+from .models import Barcamp, Sponsor
 from .decorators import is_organizer
 from .forms import BarcampForm
 from ..barcamp import forms
@@ -22,9 +22,8 @@ class BarcampView(object):
         
     def load_barcamp(self, slug):
         self.barcamp = get_object_or_404(Barcamp.objects.select_related(), slug=slug)
-        self.sponsors = Sponsoring.objects.select_related().filter(barcamp=self.barcamp).order_by('-level')
         self.data['barcamp'] = self.barcamp
-        self.data['sponsors'] = self.sponsors
+        self.data['sponsors'] = self.barcamp.sponsors.order_by('-level')
         self.data['organizers'] = self.barcamp.organizers.all()
         self.data['is_organizer'] = self.request.user in self.data['organizers']
         
@@ -115,29 +114,15 @@ def undelete_barcamp(request, slug):
 def add_sponsor(request, slug):
     barcamp = get_object_or_404(Barcamp, slug=slug)
     if request.method == 'POST':
-        form = forms.AddSponsorForm(request.POST, request.FILES)
-        sponsorship = Sponsoring()
-        sponsorship.barcamp = barcamp
+        form = forms.SponsorForm(request.POST, request.FILES)
         if form.is_valid():
-            level = form.cleaned_data['level']
-            sponsorship.level = level
-            if len(form.cleaned_data['existing_company']):
-                # Fetch the company with that id and build the new relation
-                sponsorship.sponsor = Sponsor.objects.get(pk=form.cleaned_data['existing_company'])
-            else:
-                # Create a new sponsor first and then link it with the barcamp
-                sponsor = Sponsor()
-                sponsor.name = form.cleaned_data['name']
-                sponsor.url = form.cleaned_data['url']
-                # Move the logo to the usual storage if necessary
-                sponsor.logo = form.cleaned_data['logo']
-                sponsor.save()
-                sponsorship.sponsor = sponsor
-            sponsorship.save()
+            sponsor = form.save(commit=False)
+            sponsor.barcamp = barcamp
+            sponsor.save()
             return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
         pass
     else:
-        form = forms.AddSponsorForm()
+        form = forms.SponsorForm()
     return render_to_response('barcamp/sponsor-add.html', {
         'form': form,
         'barcamp': barcamp,
@@ -145,16 +130,31 @@ def add_sponsor(request, slug):
     
 @is_organizer(barcamp_slug_kwarg='slug')
 def remove_sponsor(request, slug, sponsoring_pk):
-    sponsoring = get_object_or_404(Sponsoring, pk=sponsoring_pk)
+    sponsoring = get_object_or_404(Sponsor, pk=sponsoring_pk)
     barcamp = sponsoring.barcamp
     if request.method == 'POST':
-        sponsor = sponsoring.sponsor
         sponsoring.delete()
-        if sponsor.sponsorings.count() == 0:
-            sponsor.delete()
         return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
     else:
         return render_to_response('barcamp/confirm-remove-sponsor.html', {
             'barcamp': barcamp,
             'sponsoring': sponsoring,
         }, context_instance=RequestContext(request))
+        
+@is_organizer(barcamp_slug_kwarg='slug')
+def edit_sponsor(request, slug, sponsoring_pk):
+    sponsoring = get_object_or_404(Sponsor, pk=sponsoring_pk)
+    barcamp = sponsoring.barcamp
+    if request.method == 'POST':
+        form = forms.SponsorForm(request.POST, request.FILES, instance=sponsoring)
+        if form.is_valid():
+            sponsor = form.save(commit=False)
+            sponsor.save()
+            return HttpResponseRedirect(reverse('barcamp-view', args=[barcamp.slug]))
+        pass
+    else:
+        form = forms.SponsorForm(instance=sponsoring)
+    return render_to_response('barcamp/sponsor-edit.html', {
+        'form': form,
+        'barcamp': barcamp,
+    }, context_instance=RequestContext(request))    

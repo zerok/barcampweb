@@ -23,7 +23,6 @@ class Barcamp(models.Model):
     marked_for_removal_at=models.DateTimeField(blank=True, null=True)
     removal_requested_by=models.ForeignKey(User, blank=True, null=True, related_name='requested_barcamp_removals')
     removal_canceled_by=models.ForeignKey(User, blank=True, null=True, related_name='canceled_barcamp_removals')
-    sponsors = models.ManyToManyField('Sponsor', related_name='sponsors', through='Sponsoring', null=True, blank=True)
     places = models.ManyToManyField('Place', related_name='places', null=True, blank=True)
     available = models.BooleanField(default=False)
 
@@ -35,23 +34,23 @@ class Reservation(models.Model):
     barcamp = models.ForeignKey(Barcamp, related_name='reservations')
     status = models.CharField(max_length=10, choices=RESERVATION_STATUS_CHOICES)
 
-class Sponsoring(models.Model):
-    """
-    Sponsoring offers an extra field called "level" which should allow 
-    organizers to sort their sponsors based on the amount of thereof.
-    """
-    barcamp = models.ForeignKey('Barcamp')
-    sponsor = models.ForeignKey('Sponsor', related_name='sponsorings')
-    level = models.IntegerField()
-
 class Sponsor(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField(verify_exists=False)
     logo = models.ImageField(upload_to='sponsor_logos')
+    level = models.IntegerField()
+    barcamp = models.ForeignKey('Barcamp', related_name='sponsors')
     
     def delete(self):
         os.remove(self.logo.path)
         super(Sponsor, self).delete()
+        
+    def save(self, *args, **kwargs):
+        if self.pk is not None and self.logo:
+            old_instance = self.__class__.objects.get(pk=self.pk)
+            if old_instance.logo != self.logo:
+                os.unlink(old_instance.logo.path)
+        super(Sponsor, self).save(*args, **kwargs)
     
     def __unicode__(self):
         return self.name

@@ -20,3 +20,34 @@ h1 {
 }
 a { color: #D98539;}
 #sidebar a {color:#FFF;}
+#submenu {
+    width: 100%;
+    overflow: hidden;
+    margin: 5px 0;
+}
+#submenu li {
+    float: left;
+    margin: 0 4px 0 0;
+    background: #CECECE;
+    border: 2px solid #CACACA;
+    -webkit-border-radius: 0 7px 0 7px;
+}
+#submenu li.active {
+    background: #EEE;
+}
+#submenu li a {
+    display: block;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.action {
+    padding-left: 20px;
+    background-position: 0% 50%;
+    background-repeat: no-repeat;
+}
+
+.action-new {background-image: url(icons/document-new.png);}
+.action-delete {background-image: url(icons/user-trash.png);}
+.action-undo {background-image: url(icons/edit-undo.png);}
+.action-edit {background-image: url(icons/edit-find-replace.png);}
