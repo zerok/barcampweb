@@ -61,6 +61,8 @@ class BarcampVoteProposalView(BarcampView):
     def view(self, *args, **kwargs):
         proposal_pk = kwargs.get('proposal_pk')
         proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
+        if proposal.user == self.request.user:
+            return HttpResponseForbidden()
         proposal.votes.add(self.request.user)
         return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
 
@@ -118,6 +120,8 @@ class BarcampUnvoteProposalView(BarcampView):
     def view(self, *args, **kwargs):
         proposal_pk = kwargs.get('proposal_pk')
         proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
+        if self.request.user == proposal.user:
+            return HttpResponseForbidden()
         proposal.votes.remove(self.request.user)
         return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
 
