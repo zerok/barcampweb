@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -78,6 +79,20 @@ class TalkIdea(models.Model):
     description = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, related_name='talkideas')
     barcamp = models.ForeignKey(Barcamp)
+    created_at = models.DateTimeField(default=datetime.datetime.now)
+    modified_at = models.DateTimeField(blank=True, null=True, auto_now=True)
+    votes = models.ManyToManyField(User, related_name='voted_ideas', blank=True, null=True)
+    
+    already_voted  = False # Used during rendering
+    
+    _vote_count = None
+    def vote_count(self):
+        if self._vote_count is None:
+            self._vote_count = self.votes.count()
+        return self._vote_count
+    
+    def __unicode__(self):
+        return self.name
     
 class Resource(models.Model):
     """

@@ -3,7 +3,8 @@ import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 
 from .models import Barcamp, Sponsor
 from .decorators import is_organizer
@@ -39,7 +40,13 @@ class BarcampView(object):
 
 class BarcampProposalsView(BarcampView):
     def view(self, *args, **kwargs):
-        self.data['ideas'] = self.barcamp.talkidea_set.all()
+        self.data['ideas'] = self.barcamp.talkidea_set.select_related().order_by('created_at')
+        votes = []
+        if not self.request.user.is_anonymous():
+            votes = self.request.user.voted_ideas.all()
+        for idea in self.data['ideas']:
+            if idea in votes:
+                idea.already_voted = True
         return render_to_response('barcamp/barcamp-proposals.html', self.data, 
             context_instance=RequestContext(self.request)) 
 
@@ -49,9 +56,79 @@ class BarcampScheduleView(BarcampView):
         return render_to_response('barcamp/barcamp-schedule.html', self.data, 
             context_instance=RequestContext(self.request))
 
+class BarcampVoteProposalView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        proposal_pk = kwargs.get('proposal_pk')
+        proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
+        proposal.votes.add(self.request.user)
+        return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
+
+class BarcampCreateProposalView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        if self.request.method == 'POST':
+            form = forms.ProposalForm(self.request.POST)
+            if form.is_valid():
+                proposal = form.save(commit=False)
+                proposal.barcamp = self.barcamp
+                proposal.user = self.request.user
+                proposal.save()
+                return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
+        else:
+            form = forms.ProposalForm()
+        self.data['form'] = form
+        return render_to_response('barcamp/proposal-create.html', self.data, 
+            context_instance=RequestContext(self.request))
+            
+class BarcampEditProposalView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        proposal_pk = kwargs.get('proposal_pk')
+        proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
+        if proposal.user != self.request.user or proposal.user not in self.barcamp.organizers.all():
+            return HttpResponseForbidden()
+        if self.request.method == 'POST':
+            form = forms.ProposalForm(self.request.POST, instance=proposal)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
+        else:
+            form = forms.ProposalForm(instance=proposal)
+        self.data['form'] = form
+        return render_to_response('barcamp/proposal-edit.html', self.data, 
+            context_instance=RequestContext(self.request))
+            
+class BarcampDeleteProposalView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        proposal_pk = kwargs.get('proposal_pk')
+        proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
+        if not (self.request.user == proposal.user or self.request.user in self.barcamp.organizers.all()):
+            return HttpResponseForbidden()
+        if self.request.method == 'POST':
+            proposal.delete()
+            return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
+        self.data['proposal'] = proposal
+        return render_to_response('barcamp/confirm-delete-proposal.html', self.data, 
+            context_instance=RequestContext(self.request))
+
+class BarcampUnvoteProposalView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        proposal_pk = kwargs.get('proposal_pk')
+        proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
+        proposal.votes.remove(self.request.user)
+        return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
+
 view_barcamp = BarcampView()
 view_proposals = BarcampProposalsView()
 view_schedule = BarcampScheduleView()
+vote_proposal = BarcampVoteProposalView()
+unvote_proposal = BarcampUnvoteProposalView()
+create_proposal = BarcampCreateProposalView()
+delete_proposal = BarcampDeleteProposalView()
+edit_proposal = BarcampEditProposalView()
 
 def create_barcamp(request):
     if request.method == 'POST':

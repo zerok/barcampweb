@@ -51,3 +51,13 @@ a { color: #D98539;}
 .action-delete {background-image: url(icons/user-trash.png);}
 .action-undo {background-image: url(icons/edit-undo.png);}
 .action-edit {background-image: url(icons/edit-find-replace.png);}
+
+.talkidea .title {
+    font-size: 125%;
+    font-family: Georgia;
+}
+.talkidea cite {
+    text-align: right;
+    font-style: italic;
+    display: block;
+}
