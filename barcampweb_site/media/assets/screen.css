@@ -61,3 +61,17 @@ a { color: #D98539;}
     font-style: italic;
     display: block;
 }
+textarea {
+    width: 100%;
+    padding: 0.5em;
+    font-family: monospace;
+    color: #444;
+}
+
+.overlay {
+    display: none;
+    background: #FFF;
+    padding: 1em;
+    border: 2px solid #DDD;
+    width: 700px;
+}

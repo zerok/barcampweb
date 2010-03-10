@@ -26,8 +26,8 @@
             <dd>{{ barcamp.start|date }} - {{ barcamp.end|date }}</dd>
         </dl>
     </div>
-    <div id="teaser">{{ barcamp.teaser }}</div>
-    <div id="description">{{ barcamp.description }}</div>
+    <div id="teaser">{{ barcamp.teaser|markdown }}</div>
+    <div id="description">{{ barcamp.description|markdown }}</div>
     
     <ul id="submenu">
         <li class="{% block submenu-barcamp-info %}{% endblock %}"><a href="{% url barcamp-view barcamp.slug %}">Info</a></li>

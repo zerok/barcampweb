@@ -2,13 +2,20 @@
 {% block submenu-barcamp-proposals %}active{% endblock %}
 {% block head-title %}Themenvorschläge « {{ block.super }}{% endblock %}
 {% block title %}Themevorschläge für {{ barcamp.name }}{% endblock %}
+{% block head %}
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            $('.talkidea .action, .newtalkidea.action-new').defaultFormOverlay();
+        })
+    </script>
+{% endblock %}
 {% block subcontent %}
     <ul>
     {% for proposal in ideas %}
         <li class="talkidea">
             <h2 class="title">{{ proposal.name }}</h2>
             {% if proposal.description %}
-            <div class="description">{{ proposal.description }}</div>
+            <div class="description">{{ proposal.description|markdown }}</div>
             {% endif %}
             {% for x in proposal.vote_count|range %}
                 +
@@ -29,5 +36,5 @@
         </li>
     {% endfor %}
     </ul>
-    <a href="{% url barcamp-create-proposal barcamp.slug %}" class="action action-new">Neuen Vorschlag anlegen</a>
+    <a href="{% url barcamp-create-proposal barcamp.slug %}" class="newtalkidea action action-new">Neuen Vorschlag anlegen</a>
 {% endblock %}
