@@ -2,6 +2,6 @@
 {% block message %}{% endblock %}
 <form method="post">
     <button type="submit">Ja</button>
-    <a class="cancel" href="{% block cancel-link %}{% url barcamp-view barcamp.slug %}{% endblock %}">Abbrechen</a>
+    <a class="cancel" href="{% block cancel-link %}{% url barcamp:view barcamp.slug %}{% endblock %}">Abbrechen</a>
 </form>
 {% endblock %}

@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
-    (r'^', include('barcampweb_site.apps.barcamp.urls')),
+    url(r'^', include('barcampweb_site.apps.barcamp.urls', namespace='barcamp', app_name='barcamp')),
 )
 
 if settings.DEBUG:

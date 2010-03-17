@@ -22,7 +22,7 @@
                     {% if event %}
                         {{ event.name }}
                     {% else %}
-                        <a href="{% url barcamp-create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a>
+                        <a href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a>
                     {% endif %}
                 </td>
                 {% endfor %}

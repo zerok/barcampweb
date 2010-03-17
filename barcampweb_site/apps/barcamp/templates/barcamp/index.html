@@ -1,7 +1,7 @@
 {% block content %}
 <ul>
-    {% for barcamp in barcamps %}
-    <li><a href="{% url barcamp-view barcamp.slug %}">{{ barcamp.name }}</a></li>
+    {% for barcamp_ in barcamps %}
+    <li><a href="{% url barcamp:view barcamp_.slug %}">{{ barcamp_.name }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

@@ -24,17 +24,17 @@
             {% ifequal proposal.user request.user  %}
             {% else %}
             {% if proposal.already_voted %}
-                <a href="{% url barcamp-unvote-proposal barcamp.slug proposal.pk %}">-</a>
+                <a href="{% url barcamp:unvote-proposal barcamp.slug proposal.pk %}">-</a>
             {% else %}
-                <a href="{% url barcamp-vote-proposal barcamp.slug proposal.pk %}">+</a>
+                <a href="{% url barcamp:vote-proposal barcamp.slug proposal.pk %}">+</a>
             {% endif %}
             {% endifequal %}
             {% ifequal request.user proposal.user %}
-            <a href="{% url barcamp-edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">ändern</a>
-            <a href="{% url barcamp-delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">löschen</a>
+            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">ändern</a>
+            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">löschen</a>
             {% endifequal %}
         </li>
     {% endfor %}
     </ul>
-    <a href="{% url barcamp-create-proposal barcamp.slug %}" class="newtalkidea action action-new">Neuen Vorschlag anlegen</a>
+    <a href="{% url barcamp:create-proposal barcamp.slug %}" class="newtalkidea action action-new">Neuen Vorschlag anlegen</a>
 {% endblock %}
