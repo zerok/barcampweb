@@ -2,4 +2,34 @@
 {% block title %}Zeitplan für {{ barcamp.name }}{% endblock %}
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block subcontent %}
+    {% for day, slots in slots_per_day.items %}
+    <h2>{{ day }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Zeit</th>
+                {% for room in rooms %}
+                <th>{{ room.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for slot, rooms in slots %}
+            <tr>
+                <td>{{ slot.start }}</td>
+                {% for room, event in rooms.items %}
+                <td>
+                    {% if event %}
+                        {{ event.name }}
+                    {% else %}
+                        <a href="{% url barcamp-create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endfor %}
 {% endblock %}

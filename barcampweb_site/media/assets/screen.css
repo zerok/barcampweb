@@ -51,7 +51,9 @@ a { color: #D98539;}
 .action-delete {background-image: url(icons/user-trash.png);}
 .action-undo {background-image: url(icons/edit-undo.png);}
 .action-edit {background-image: url(icons/edit-find-replace.png);}
-
+.talkidea {
+    margin-bottom: 1em;
+}
 .talkidea .title {
     font-size: 125%;
     font-family: Georgia;
@@ -74,4 +76,6 @@ textarea {
     padding: 1em;
     border: 2px solid #DDD;
     width: 700px;
+    max-height: 500px;
+    overflow: auto;
 }

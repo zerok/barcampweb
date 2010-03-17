@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Barcamp, Talk, TalkIdea, SideEvent, Sponsor
+from .models import Barcamp, Talk, TalkIdea, SideEvent, Sponsor, TimeSlot, Place
 
 
 class SponsorInline(admin.TabularInline):
@@ -20,3 +20,5 @@ admin.site.register(Talk)
 admin.site.register(TalkIdea, TalkIdeaAdmin)
 admin.site.register(SideEvent)
 admin.site.register(Sponsor)
+admin.site.register(TimeSlot)
+admin.site.register(Place)

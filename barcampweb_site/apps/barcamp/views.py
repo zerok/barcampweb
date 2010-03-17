@@ -1,15 +1,18 @@
 import datetime
+import collections
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.utils.datastructures import SortedDict
 
-from .models import Barcamp, Sponsor
+from .models import Barcamp, Sponsor, Talk
 from .decorators import is_organizer
 from .forms import BarcampForm
-from ..barcamp import forms
+from . import forms
+from . import utils
 
 def index(request):
     barcamps = Barcamp.objects.order_by('start')
@@ -19,7 +22,7 @@ def index(request):
 
 class BarcampView(object):
     def __init__(self):
-        self.data = {}
+        self.data = {'app_name': Talk._meta.app_label}
         
     def load_barcamp(self, slug):
         self.barcamp = get_object_or_404(Barcamp.objects.select_related(), slug=slug)
@@ -52,7 +55,17 @@ class BarcampProposalsView(BarcampView):
 
 class BarcampScheduleView(BarcampView):
     def view(self, *args, **kwargs):
-        self.data['events'] = self.barcamp.events.all()
+        rooms = self.barcamp.places.filter(is_sessionroom=True)
+        grid = utils.create_slot_grid(self.barcamp)
+        slots_per_day = SortedDict() #collections.defaultdict(list)
+        print grid
+        for slot, content in grid.iteritems():
+            if slot.start.date() not in slots_per_day:
+                slots_per_day[slot.start.date()] = list()
+            slots_per_day[slot.start.date()].append((slot, content))
+        self.data['rooms'] = rooms
+        self.data['slots_per_day'] = dict(slots_per_day)
+        self.data['days'] = utils.get_days(self.barcamp.start, self.barcamp.end)
         return render_to_response('barcamp/barcamp-schedule.html', self.data, 
             context_instance=RequestContext(self.request))
 
@@ -125,6 +138,43 @@ class BarcampUnvoteProposalView(BarcampView):
         proposal.votes.remove(self.request.user)
         return HttpResponseRedirect(reverse('barcamp-proposals', args=[self.barcamp.slug]))
 
+class BarcampCreateTalkView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        slot = get_object_or_404(self.barcamp.slots, pk=kwargs['slot_pk'])
+        room = get_object_or_404(self.barcamp.places, pk=kwargs['room_pk'])
+        
+        # Make sure, that the room is still free
+        if 0 < Talk.objects.filter(place=room, timeslot=slot).count():
+            return render_to_response('barcamp/slot-taken.html', self.data,
+                context_instance=RequestContext(self.request))
+                
+        if self.request.method == 'POST':
+            form = forms.TalkForSlotForm(self.request.POST)
+            form.barcamp = self.barcamp
+            form.slot = slot
+            if form.is_valid():
+                talk = form.save(commit=False)
+                talk.barcamp = self.barcamp
+                talk.timeslot = slot
+                talk.place = room
+                talk.start = slot.start
+                talk.end = slot.end
+                talk.save()
+                talk.speakers.add(self.request.user)
+                talk.save()
+        else:
+            form = forms.TalkForSlotForm(self.request.POST)
+        
+        self.data.update({
+            'form': form,
+            'slot': slot,
+            'room': room
+        })
+        return render_to_response('barcamp/create-talk-for-slot.html', self.data,
+            context_instance=RequestContext(self.request))
+        
+
 view_barcamp = BarcampView()
 view_proposals = BarcampProposalsView()
 view_schedule = BarcampScheduleView()
@@ -133,6 +183,7 @@ unvote_proposal = BarcampUnvoteProposalView()
 create_proposal = BarcampCreateProposalView()
 delete_proposal = BarcampDeleteProposalView()
 edit_proposal = BarcampEditProposalView()
+create_talk = BarcampCreateTalkView()
 
 def create_barcamp(request):
     if request.method == 'POST':
@@ -238,4 +289,4 @@ def edit_sponsor(request, slug, sponsoring_pk):
     return render_to_response('barcamp/sponsor-edit.html', {
         'form': form,
         'barcamp': barcamp,
-    }, context_instance=RequestContext(request))    
+    }, context_instance=RequestContext(request))

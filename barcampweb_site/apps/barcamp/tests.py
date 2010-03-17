@@ -1,23 +1,14 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
+import datetime
 
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+from . import utils
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
-
->>> 1 + 1 == 2
-True
-"""}
-
+class UtilsTests(TestCase):
+    def test_get_days(self):
+        start = datetime.datetime(2009, 11, 1)
+        end = datetime.datetime(2009, 11, 2)
+        result = list(utils.get_days(start, end))
+        self.assertEqual(2, len(result))
+        
+        

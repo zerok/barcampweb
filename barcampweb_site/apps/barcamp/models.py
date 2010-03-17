@@ -60,19 +60,41 @@ class Place(models.Model):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=500, blank=True, null=True)
     address = models.CharField(max_length=500, blank=True, null=True)
+    is_sessionroom = models.BooleanField(default=True)
+    
+    def __unicode__(self):
+        if self.location:
+            return u"%s (%s)" % (self.name, self.location)
+        return self.name
 
 class Event(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     place = models.ForeignKey('Place')
     barcamp = models.ForeignKey('Barcamp', related_name='events')
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    
+    def __unicode__(self):
+        return u"%s (%s)" % (self.name, self.barcamp)
 
 class Talk(Event):
-    resources = models.ManyToManyField('Resource', related_name='talks', null=True)
+    resources = models.ManyToManyField('Resource', related_name='talks', null=True, blank=True)
     speakers = models.ManyToManyField(User, related_name='talks')
+    timeslot = models.ForeignKey('TimeSlot', related_name='talks')
+    
+    # TODO: Add unique_together constraint
 
 class SideEvent(Event):
     pass
+    
+class TimeSlot(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    barcamp = models.ForeignKey('Barcamp', related_name='slots')
+    
+    def __unicode__(self):
+        return u"%s - %s" % (self.start, self.end)
     
 class TalkIdea(models.Model):
     name = models.CharField(max_length=255)
