@@ -23,3 +23,18 @@ def create_slot_grid(barcamp):
         result[talk.timeslot][talk.place] = talk
     
     return result
+    
+def mark_talk_permissions(grid, user, barcamp):
+    organizers = barcamp.organizers.all()
+    user_talks = hasattr(user, 'talks') and user.talks.all() or []
+    for slot, rooms in grid.items():
+        for room, talk in rooms.items():
+            if talk is None:
+                continue
+            if user.is_superuser or user.is_staff:
+                talk.can_edit = True
+            elif talk in user_talks:
+                talk.can_edit = True
+            else:
+                talk.can_edit = False
+            

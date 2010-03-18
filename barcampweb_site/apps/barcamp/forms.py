@@ -35,8 +35,11 @@ class TalkForSlotForm(ModelForm):
         assert(self.room)
         
         # Make sure, that this slot isn't already taken
-        if 0 < Talk.objects.filter(barcamp=self.barcamp, timeslot=self.timeslot, place=self.place).count():
-            raise forms.ValidationException(_("This slot is already taken"))
+        other_talks = Talk.objects.filter(barcamp=self.barcamp, timeslot=self.timeslot, place=self.room)
+        if len(other_talks) > 0 and not (self.instance is None or other_talks[0].pk == self.instance.pk):
+            raise forms.ValidationError(_("This slot is already taken"))
+        
+        return self.cleaned_data
         
     class Meta:
         model = Talk

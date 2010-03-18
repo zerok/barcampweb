@@ -4,7 +4,7 @@ import collections
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.contrib.auth.decorators import login_required
 from django.utils.datastructures import SortedDict
 
@@ -65,8 +65,8 @@ class BarcampScheduleView(BarcampView):
     def view(self, *args, **kwargs):
         rooms = self.barcamp.places.filter(is_sessionroom=True)
         grid = utils.create_slot_grid(self.barcamp)
+        utils.mark_talk_permissions(grid, self.request.user, self.barcamp)
         slots_per_day = SortedDict() #collections.defaultdict(list)
-        print grid
         for slot, content in grid.iteritems():
             if slot.start.date() not in slots_per_day:
                 slots_per_day[slot.start.date()] = list()
@@ -156,7 +156,8 @@ class BarcampCreateTalkView(BarcampView):
         if self.request.method == 'POST':
             form = forms.TalkForSlotForm(self.request.POST)
             form.barcamp = self.barcamp
-            form.slot = slot
+            form.timeslot = slot
+            form.room = room
             if form.is_valid():
                 talk = form.save(commit=False)
                 talk.barcamp = self.barcamp
@@ -169,7 +170,7 @@ class BarcampCreateTalkView(BarcampView):
                 talk.save()
                 return HttpResponseRedirect(reverse('barcamp:schedule', current_app=APP_NAME, args=[self.barcamp.slug]))
         else:
-            form = forms.TalkForSlotForm(self.request.POST)
+            form = forms.TalkForSlotForm()
         
         self.data.update({
             'form': form,
@@ -178,7 +179,44 @@ class BarcampCreateTalkView(BarcampView):
         })
         return self.render('barcamp/create-talk-for-slot.html')
         
-
+class BarcampEditTalkView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
+        if not (self.request.user.is_staff or self.request.user.is_superuser 
+                or self.request.user in talk.speakers.all()
+                or self.request.user in self.organizers):
+            raise Http404
+        if self.request.method == 'POST':
+            form = forms.TalkForSlotForm(self.request.POST, instance=talk)
+            form.barcamp = self.barcamp
+            form.timeslot = talk.timeslot
+            form.room = talk.place
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
+        else:
+            form = forms.TalkForSlotForm(instance=talk)
+        self.data.update({
+            'talk': talk,
+            'form': form,
+        })
+        return self.render('barcamp/edit-talk-for-slot.html')
+        
+class BarcampDeleteTalkView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
+        if not (self.request.user.is_staff or self.request.user.is_superuser 
+                or self.request.user in talk.speakers.all()
+                or self.request.user in self.organizers):
+            raise Http404
+        if self.request.method == 'POST':
+            talk.delete()
+            return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
+        self.data['talk'] = talk
+        return self.render('barcamp/confirm-delete-talk.html')
+        
 view_barcamp = BarcampView()
 view_proposals = BarcampProposalsView()
 view_schedule = BarcampScheduleView()
@@ -188,6 +226,8 @@ create_proposal = BarcampCreateProposalView()
 delete_proposal = BarcampDeleteProposalView()
 edit_proposal = BarcampEditProposalView()
 create_talk = BarcampCreateTalkView()
+edit_talk = BarcampEditTalkView()
+delete_talk = BarcampDeleteTalkView()
 
 def create_barcamp(request):
     if request.method == 'POST':

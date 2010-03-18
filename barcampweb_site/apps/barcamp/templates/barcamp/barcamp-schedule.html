@@ -1,6 +1,11 @@
 {% extends "barcamp/barcamp-base.html" %}
 {% block title %}Zeitplan für {{ barcamp.name }}{% endblock %}
 {% block submenu-barcamp-schedule %}active{% endblock %}
+{% block end %}
+<script type="text/javascript" charset="utf-8">
+    $('.slot .action').defaultFormOverlay();
+</script>
+{% endblock %}
 {% block subcontent %}
     {% for day, slots in slots_per_day.items %}
     <h2>{{ day }}</h2>
@@ -18,11 +23,17 @@
             <tr>
                 <td>{{ slot.start }}</td>
                 {% for room, event in rooms.items %}
-                <td>
+                <td class="slot">
                     {% if event %}
                         {{ event.name }}
+                        {% if event.can_edit %}
+                        <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug event.pk %}">Ändern</a>
+                        <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug event.pk %}">Löschen</a>
+                        <a href="">Verschieben</a>
+                        <a href="">Aushängen</a>
+                        {% endif %}
                     {% else %}
-                        <a href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a>
+                        <a class="action action-new" href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a>
                     {% endif %}
                 </td>
                 {% endfor %}

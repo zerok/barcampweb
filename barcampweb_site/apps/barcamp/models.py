@@ -83,6 +83,7 @@ class Talk(Event):
     speakers = models.ManyToManyField(User, related_name='talks')
     timeslot = models.ForeignKey('TimeSlot', related_name='talks')
     
+    can_edit = False # View helper
     # TODO: Add unique_together constraint
 
 class SideEvent(Event):

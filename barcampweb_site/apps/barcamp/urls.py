@@ -2,7 +2,8 @@ from django.conf.urls.defaults import *
 from .views import index, view_barcamp, view_proposals, view_schedule, \
     delete_barcamp, undelete_barcamp, edit_barcamp, create_barcamp, \
     add_sponsor, remove_sponsor, edit_sponsor, vote_proposal, unvote_proposal, \
-    create_proposal, delete_proposal, edit_proposal, create_talk
+    create_proposal, delete_proposal, edit_proposal, create_talk, edit_talk, \
+    delete_talk
 
 urlpatterns = patterns('barcampweb_site.apps.barcamp',
     url('^$', index, name='index'),
@@ -21,5 +22,7 @@ urlpatterns = patterns('barcampweb_site.apps.barcamp',
     url('^(?P<slug>[^_][^/]+)/proposals/(?P<proposal_pk>\d+)/delete/$', delete_proposal, name='delete-proposal'),
     url('^(?P<slug>[^_][^/]+)/proposals/(?P<proposal_pk>\d+)/edit/$', edit_proposal, name='edit-proposal'),
     url('^(?P<slug>[^_][^/]+)/schedule/create-talk/(?P<slot_pk>\d+)-(?P<room_pk>\d+)/$', create_talk, name='create-talk'),
+    url('^(?P<slug>[^_][^/]+)/schedule/edit-talk/(?P<talk_pk>\d+)/$', edit_talk, name='edit-talk'),
+    url('^(?P<slug>[^_][^/]+)/schedule/delete-talk/(?P<talk_pk>\d+)/$', delete_talk, name='delete-talk'),
     url('^_create/$', create_barcamp, name='create'),
 )
