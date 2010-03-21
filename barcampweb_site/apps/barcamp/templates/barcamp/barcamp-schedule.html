@@ -3,7 +3,7 @@
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block end %}
 <script type="text/javascript" charset="utf-8">
-    $('.slot .action').defaultFormOverlay();
+    $('.slot .action, #detached-talks .action').defaultFormOverlay();
 </script>
 {% endblock %}
 {% block subcontent %}
@@ -21,19 +21,21 @@
         <tbody>
             {% for slot, rooms in slots %}
             <tr>
-                <td>{{ slot.start }}</td>
+                <td>{{ slot.start|time:"H:i" }}</td>
                 {% for room, event in rooms.items %}
                 <td class="slot">
                     {% if event %}
                         {{ event.name }}
                         {% if event.can_edit %}
+                        <p class="actions">
                         <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug event.pk %}">Ändern</a>
                         <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug event.pk %}">Löschen</a>
-                        <a href="">Verschieben</a>
-                        <a href="">Aushängen</a>
+                        <a class="action action-move" href="{% url barcamp:move-talk barcamp.slug event.pk %}">Verschieben</a>
+                        <a class="action action-detach" href="{% url barcamp:detach-talk barcamp.slug event.pk %}">Aushängen</a>
+                        </p>
                         {% endif %}
                     {% else %}
-                        <a class="action action-new" href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a>
+                        <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a></p>
                     {% endif %}
                 </td>
                 {% endfor %}
@@ -41,6 +43,22 @@
             {% endfor %}
         </tbody>
     </table>
+    
+    <div id="detached-talks">
+    <h2>Offene Talks</h2>
+    <ul class="content">
+        {% for talk in detached_talks %}
+        <li>
+            <a href="">{{ talk.name }}</a>
+            {% if talk.can_edit %}
+            <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug talk.pk %}">Ändern</a>
+            <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug talk.pk %}">Löschen</a>
+            <a class="action action-move" href="{% url barcamp:move-talk barcamp.slug talk.pk %}">Verschieben</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    </div>
 
     {% endfor %}
 {% endblock %}

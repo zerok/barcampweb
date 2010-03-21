@@ -6,7 +6,7 @@ jQuery.fn.defaultFormOverlay = function(){
         // Load the form overlay
         $('#xhrOverlay').load($(this).attr('href'), function(data, status, xhr){
             $('form', this).attr('action', $this.attr('href'));
-            $('#xhrOverlay').overlay({
+            var overlay = $('#xhrOverlay').overlay({
                api: true,
                expose: {
                    opacity: 0.8,
@@ -14,7 +14,12 @@ jQuery.fn.defaultFormOverlay = function(){
                    color: '#000'
                }
                
-            }).load();
+            });
+            $('#xhrOverlay .cancel').bind('click', function(ev){
+                ev.preventDefault();
+                overlay.close();
+            });
+            overlay.load();
         });
     });
 };

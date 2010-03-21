@@ -43,5 +43,23 @@ class TalkForSlotForm(ModelForm):
         
     class Meta:
         model = Talk
-        exclude = ('barcamp', 'timeslot', 'start', 'end', 'place', 'resources', 'speakers')
-        
+        exclude = ('barcamp', 'timeslot', 'start', 'end', 'place', 'resources')
+
+class MoveTalkForm(forms.Form):
+    slot = forms.ChoiceField(label=_('Timeslot'))
+    
+    def __init__(self, *args, **kwargs):
+        self.open_slots = kwargs['open_slots']
+        self.instance = kwargs['instance']
+        del kwargs['open_slots']
+        del kwargs['instance']
+        super(MoveTalkForm, self).__init__(*args, **kwargs)
+        self.fields['slot'].choices = [(k, unicode(v)) for k, v in self.open_slots.items()]
+    
+    def clean_slot(self):
+        value = self.cleaned_data['slot']
+        # Check if the slot is still available
+        slot = self.open_slots[value]
+        if 0 != Talk.objects.filter(barcamp=self.instance.barcamp, place=slot.place, timeslot=slot.slot).count():
+            raise forms.ValidationError(_("This slot is already taken"))
+        return value

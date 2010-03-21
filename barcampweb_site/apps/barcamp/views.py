@@ -64,16 +64,19 @@ class BarcampProposalsView(BarcampView):
 class BarcampScheduleView(BarcampView):
     def view(self, *args, **kwargs):
         rooms = self.barcamp.places.filter(is_sessionroom=True)
-        grid = utils.create_slot_grid(self.barcamp)
-        utils.mark_talk_permissions(grid, self.request.user, self.barcamp)
+        self.grid, self.open_slots = utils.create_slot_grid(self.barcamp)
+        utils.mark_talkgrid_permissions(self.grid, self.request.user, self.barcamp)
         slots_per_day = SortedDict() #collections.defaultdict(list)
-        for slot, content in grid.iteritems():
+        for slot, content in self.grid.iteritems():
             if slot.start.date() not in slots_per_day:
                 slots_per_day[slot.start.date()] = list()
             slots_per_day[slot.start.date()].append((slot, content))
+        detached_talks = Talk.objects.filter(timeslot=None, barcamp=self.barcamp).all()
+        utils.mark_talklist_permissions(detached_talks, self.request.user, self.barcamp)
         self.data['rooms'] = rooms
         self.data['slots_per_day'] = dict(slots_per_day)
         self.data['days'] = utils.get_days(self.barcamp.start, self.barcamp.end)
+        self.data['detached_talks'] = detached_talks
         return self.render('barcamp/barcamp-schedule.html')
 
 class BarcampVoteProposalView(BarcampView):
@@ -216,6 +219,48 @@ class BarcampDeleteTalkView(BarcampView):
             return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
         self.data['talk'] = talk
         return self.render('barcamp/confirm-delete-talk.html')
+
+class BarcampDetachTalkView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
+        if not (self.request.user.is_staff or self.request.user.is_superuser 
+                or self.request.user in talk.speakers.all()
+                or self.request.user in self.organizers):
+            raise Http404
+        if self.request.method == 'POST':
+            talk.timeslot=None
+            talk.save()
+            return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
+        self.data['talk'] = talk
+        return self.render('barcamp/confirm-detach-talk.html')
+        
+class BarcampMoveTalkView(BarcampView):
+    @login_required
+    def view(self, *args, **kwargs):
+        talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
+        if not (self.request.user.is_staff or self.request.user.is_superuser 
+                or self.request.user in talk.speakers.all()
+                or self.request.user in self.organizers):
+            raise Http404
+        self.grid, self.open_slots = utils.create_slot_grid(self.barcamp)
+        if self.request.method == 'POST':
+            form = forms.MoveTalkForm(self.request.POST, instance=talk, open_slots=self.open_slots)
+            if form.is_valid():
+                slot = self.open_slots[form.cleaned_data['slot']]
+                talk.place = slot.place
+                talk.timeslot = slot.slot
+                talk.save()
+                return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
+                pass
+        else:
+            form = forms.MoveTalkForm(instance=talk, open_slots=self.open_slots)
+        self.data.update({
+            'form': form,
+            'talk': talk,
+        })
+        return self.render('barcamp/move-talk.html')
+        
         
 view_barcamp = BarcampView()
 view_proposals = BarcampProposalsView()
@@ -228,6 +273,8 @@ edit_proposal = BarcampEditProposalView()
 create_talk = BarcampCreateTalkView()
 edit_talk = BarcampEditTalkView()
 delete_talk = BarcampDeleteTalkView()
+detach_talk = BarcampDetachTalkView()
+move_talk = BarcampMoveTalkView()
 
 def create_barcamp(request):
     if request.method == 'POST':

@@ -81,7 +81,7 @@ class Event(models.Model):
 class Talk(Event):
     resources = models.ManyToManyField('Resource', related_name='talks', null=True, blank=True)
     speakers = models.ManyToManyField(User, related_name='talks')
-    timeslot = models.ForeignKey('TimeSlot', related_name='talks')
+    timeslot = models.ForeignKey('TimeSlot', related_name='talks', blank=True, null=True)
     
     can_edit = False # View helper
     # TODO: Add unique_together constraint
