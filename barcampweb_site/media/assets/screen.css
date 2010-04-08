@@ -1,24 +1,21 @@
-body {font-family: Arial, Verdana, sans-serif;}
-html, body {background:#325057; height: 100%;}
+body {font-family: "HelveticaNeue-Light", "Helvetica Neue", Arial, Verdana, sans-serif;}
+html, body { background: #B3E4E9;height: 100%;}
 #body {width:100%; overflow:hidden;}
 #page {
-    width:960px; 
-    margin:auto; 
-    background: #FFF url(page.png) top left repeat-y; 
-    border: 1px solid #50808C;
-    border-left: 20px solid #50808C; 
-    margin-top: 2em;
+    width:920px; 
+    background: #FFF; 
+    margin: 2em 0 0 26px;
 }
 #main {width:98%; overflow:hidden; padding: 1%;}
-#content {float:left; padding:1%; width: 64%; margin: 1em 0 0 0;}
-#sidebar {float:right; width: 31%; padding: 1%;}
+#content {padding:1%}
+#sidebar {padding: 1%;}
 h1 {
-    color:#325057; 
-    border-bottom: 2px solid #50808C;
+    border-bottom: 2px solid #E5E5E5;
     font-size: 220%; 
     font-family: Georgia;
 }
-a { color: #D98539;}
+h2, h3, h4, h5, h6, #meta {margin: 1em 0 0 0;}
+a { color: #1B96D0;}
 #sidebar a {color:#FFF;}
 #submenu {
     width: 100%;
@@ -28,8 +25,8 @@ a { color: #D98539;}
 #submenu li {
     float: left;
     margin: 0 4px 0 0;
-    background: #CECECE;
-    border: 2px solid #CACACA;
+    background: #e5e5e5;
+    border: 1px solid #CACACA;
     -webkit-border-radius: 0 7px 0 7px;
 }
 #submenu li.active {
