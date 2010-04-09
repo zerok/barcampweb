@@ -18,11 +18,12 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 
 TIME_ZONE = 'Europe/Vienna'
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de'
 
 SITE_ID = 1
 
 USE_I18N = True
+USE_L10N = True
 
 MEDIA_ROOT = join(dirname(__file__), "media")
 MEDIA_URL = '/media/'
@@ -66,3 +67,4 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.request"
 )
+

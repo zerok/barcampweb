@@ -23,7 +23,7 @@
     <div id="meta">
         <dl>
             <dt>Wann?</dt>
-            <dd>{{ barcamp.start|date }} - {{ barcamp.end|date }}</dd>
+            <dd>{{ barcamp.start|date:"DATE_FORMAT" }} - {{ barcamp.end|date:"DATE_FORMAT" }}</dd>
         </dl>
     </div>
     <div id="teaser">{{ barcamp.teaser|markdown }}</div>
