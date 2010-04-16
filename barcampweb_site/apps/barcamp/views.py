@@ -27,8 +27,18 @@ def index(request):
     })
 
 class BarcampView(object):
+    
+    template_name = 'barcamp/barcamp.html'
+    
     def __init__(self):
         self.data = {}
+    
+    @classmethod
+    def create_view(cls, *args, **kwargs):
+        def _func(*request_args, **request_kwargs):
+            obj = cls(*args, **kwargs)
+            return obj(*request_args, **request_kwargs)
+        return _func
         
     def load_barcamp(self, slug):
         self.barcamp = get_object_or_404(Barcamp.objects.select_related(), slug=slug)
@@ -43,7 +53,7 @@ class BarcampView(object):
         return render(self.request, tmpl, data)
         
     def view(self, *args, **kwargs):
-        return self.render('barcamp/barcamp.html')
+        return self.render(self.template_name)
             
     def __call__(self, request, *args, **kwargs):
         self.request = request
@@ -51,6 +61,9 @@ class BarcampView(object):
         return self.view(*args, **kwargs)
 
 class BarcampProposalsView(BarcampView):
+    
+    template_name = 'barcamp/barcamp-proposals.html'
+    
     def view(self, *args, **kwargs):
         self.data['ideas'] = self.barcamp.talkidea_set.select_related().order_by('created_at')
         votes = []
@@ -59,9 +72,12 @@ class BarcampProposalsView(BarcampView):
         for idea in self.data['ideas']:
             if idea in votes:
                 idea.already_voted = True
-        return self.render('barcamp/barcamp-proposals.html') 
+        return self.render(self.template_name) 
 
 class BarcampScheduleView(BarcampView):
+    
+    template_name = 'barcamp/barcamp-schedule.html'
+    
     def view(self, *args, **kwargs):
         rooms = self.barcamp.places.filter(is_sessionroom=True)
         self.grid, self.open_slots = utils.create_slot_grid(self.barcamp)
@@ -77,7 +93,7 @@ class BarcampScheduleView(BarcampView):
         self.data['slots_per_day'] = dict(slots_per_day)
         self.data['days'] = utils.get_days(self.barcamp.start, self.barcamp.end)
         self.data['detached_talks'] = detached_talks
-        return self.render('barcamp/barcamp-schedule.html')
+        return self.render(self.template_name)
 
 class BarcampVoteProposalView(BarcampView):
     def view(self, *args, **kwargs):
@@ -89,6 +105,9 @@ class BarcampVoteProposalView(BarcampView):
         return HttpResponseRedirect(reverse('barcamp:proposals', current_app=APP_NAME, args=[self.barcamp.slug]))
 
 class BarcampCreateProposalView(BarcampView):
+    
+    template_name = 'barcamp/proposal-create.html'
+    
     def view(self, *args, **kwargs):
         if self.request.method == 'POST':
             form = forms.ProposalForm(self.request.POST)
@@ -101,9 +120,12 @@ class BarcampCreateProposalView(BarcampView):
         else:
             form = forms.ProposalForm()
         self.data['form'] = form
-        return self.render('barcamp/proposal-create.html')
+        return self.render(self.template_name)
             
 class BarcampEditProposalView(BarcampView):
+    
+    template_name = 'barcamp/proposal-edit.html'
+    
     def view(self, *args, **kwargs):
         proposal_pk = kwargs.get('proposal_pk')
         proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
@@ -117,9 +139,12 @@ class BarcampEditProposalView(BarcampView):
         else:
             form = forms.ProposalForm(instance=proposal)
         self.data['form'] = form
-        return self.render('barcamp/proposal-edit.html')
+        return self.render(self.template_name)
             
 class BarcampDeleteProposalView(BarcampView):
+    
+    template_name = 'barcamp/confirm-delete-proposal.html'
+    
     def view(self, *args, **kwargs):
         proposal_pk = kwargs.get('proposal_pk')
         proposal = get_object_or_404(self.barcamp.talkidea_set, pk=proposal_pk)
@@ -129,7 +154,7 @@ class BarcampDeleteProposalView(BarcampView):
             proposal.delete()
             return HttpResponseRedirect(reverse('barcamp:proposals', current_app=APP_NAME, args=[self.barcamp.slug]))
         self.data['proposal'] = proposal
-        return self.render('barcamp/confirm-delete-proposal.html')
+        return self.render(self.template_name)
 
 class BarcampUnvoteProposalView(BarcampView):
     def view(self, *args, **kwargs):
@@ -141,6 +166,9 @@ class BarcampUnvoteProposalView(BarcampView):
         return HttpResponseRedirect(reverse('barcamp:proposals', current_app=APP_NAME, args=[self.barcamp.slug]))
 
 class BarcampCreateTalkView(BarcampView):
+    
+    template_name = 'barcamp/create-talk-for-slot.html'
+    
     def view(self, *args, **kwargs):
         slot = get_object_or_404(self.barcamp.slots, pk=kwargs['slot_pk'])
         room = get_object_or_404(self.barcamp.places, pk=kwargs['room_pk'])
@@ -174,9 +202,12 @@ class BarcampCreateTalkView(BarcampView):
             'slot': slot,
             'room': room
         })
-        return self.render('barcamp/create-talk-for-slot.html')
+        return self.render(self.template_name)
         
 class BarcampEditTalkView(BarcampView):
+    
+    template_name = 'barcamp/edit-talk-for-slot.html'
+    
     def view(self, *args, **kwargs):
         talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
         if not (self.request.user.is_staff or self.request.user.is_superuser 
@@ -197,9 +228,12 @@ class BarcampEditTalkView(BarcampView):
             'talk': talk,
             'form': form,
         })
-        return self.render('barcamp/edit-talk-for-slot.html')
+        return self.render(self.template_name)
         
 class BarcampDeleteTalkView(BarcampView):
+    
+    template_name = 'barcamp/confirm-delete-talk.html'
+    
     def view(self, *args, **kwargs):
         talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
         if not (self.request.user.is_staff or self.request.user.is_superuser 
@@ -210,9 +244,12 @@ class BarcampDeleteTalkView(BarcampView):
             talk.delete()
             return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
         self.data['talk'] = talk
-        return self.render('barcamp/confirm-delete-talk.html')
+        return self.render(self.template_name)
 
 class BarcampDetachTalkView(BarcampView):
+    
+    template_name = 'barcamp/confirm-detach-talk.html'
+    
     def view(self, *args, **kwargs):
         talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
         if not (self.request.user.is_staff or self.request.user.is_superuser 
@@ -224,9 +261,12 @@ class BarcampDetachTalkView(BarcampView):
             talk.save()
             return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
         self.data['talk'] = talk
-        return self.render('barcamp/confirm-detach-talk.html')
+        return self.render(self.template_name)
         
 class BarcampMoveTalkView(BarcampView):
+    
+    template_name = 'barcamp/move-talk.html'
+    
     def view(self, *args, **kwargs):
         talk = get_object_or_404(Talk.objects.select_related(), pk=kwargs['talk_pk'], barcamp=self.barcamp)
         if not (self.request.user.is_staff or self.request.user.is_superuser 
@@ -249,22 +289,22 @@ class BarcampMoveTalkView(BarcampView):
             'form': form,
             'talk': talk,
         })
-        return self.render('barcamp/move-talk.html')
+        return self.render(self.template_name)
         
         
-view_barcamp = login_required(BarcampView())
-view_proposals = login_required(BarcampProposalsView())
-view_schedule = login_required(BarcampScheduleView())
-vote_proposal = login_required(BarcampVoteProposalView())
-unvote_proposal = login_required(BarcampUnvoteProposalView())
-create_proposal = login_required(BarcampCreateProposalView())
-delete_proposal = login_required(BarcampDeleteProposalView())
-edit_proposal = login_required(BarcampEditProposalView())
-create_talk = login_required(BarcampCreateTalkView())
-edit_talk = login_required(BarcampEditTalkView())
-delete_talk = login_required(BarcampDeleteTalkView())
-detach_talk = login_required(BarcampDetachTalkView())
-move_talk = login_required(BarcampMoveTalkView())
+view_barcamp = BarcampView.create_view()
+view_proposals = BarcampProposalsView.create_view()
+view_schedule = BarcampScheduleView.create_view()
+vote_proposal = login_required(BarcampVoteProposalView.create_view())
+unvote_proposal = login_required(BarcampUnvoteProposalView.create_view())
+create_proposal = login_required(BarcampCreateProposalView.create_view())
+delete_proposal = login_required(BarcampDeleteProposalView.create_view())
+edit_proposal = login_required(BarcampEditProposalView.create_view())
+create_talk = login_required(BarcampCreateTalkView.create_view())
+edit_talk = login_required(BarcampEditTalkView.create_view())
+delete_talk = login_required(BarcampDeleteTalkView.create_view())
+detach_talk = login_required(BarcampDetachTalkView.create_view())
+move_talk = login_required(BarcampMoveTalkView.create_view())
 
 def create_barcamp(request):
     if request.method == 'POST':

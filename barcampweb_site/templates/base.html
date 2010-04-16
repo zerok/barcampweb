@@ -30,11 +30,19 @@
             {% endblock %}</div>
             <ul id="pageactions">
                 {% block pageactions %}
+                {% if user.is_authenticated %}
                 <li><a class="action action-new" href="{% url barcamp:create %}">Neues Barcamp anlegen</a></li>
+                {% endif %}
                 {% endblock %}
             </ul>
         </div>
-        <div id="footer"></div>
+        <div id="footer">
+            {% if user.is_authenticated %}
+            <a href="{% url logout %}">Log out</a>
+            {% else %}
+            <a href="{% url login %}">Log in</a>
+            {% endif %}
+        </div>
     </div>
     <div id="xhrOverlay" class="overlay"></div>
     {% block end %}
