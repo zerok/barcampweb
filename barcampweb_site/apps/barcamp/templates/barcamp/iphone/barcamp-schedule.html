@@ -1,0 +1,27 @@
+{% load i18n %}
+<div id="schedule">
+    <div class="toolbar">
+        <h1 class="title">Sessions</h1>
+        <a href="#" class="back">{% trans "Back" %}</a>
+    </div>
+    <ul class="">
+        {% for day in days %}
+        <li class="arrow"><a href="#schedule-{{ day.year }}-{{ day.month }}-{{ day.day }}">{{ day.date|date }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% for day in talks_per_day %}
+<div id="schedule-{{ day.day.year }}-{{ day.day.month }}-{{ day.day.day }}">
+    <div class="toolbar">
+        <h1 class="title">{{ day.day|date:'DATE_FORMAT' }}</h1>
+        <a href="#" class="back">{% trans "Back" %}</a>
+    </div>
+    {% for room, talks in day.rooms.items %}
+    <ul>
+        {% for talk in talks %}
+        <li><a href="">{{ talk.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+</div>
+{% endfor %}

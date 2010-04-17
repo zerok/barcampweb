@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+         <script src="{{ MEDIA_URL }}assets/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+         <script src="{{ MEDIA_URL }}jqtouch/jqtouch/jqtouch.js" type="text/javascript" charset="utf-8"></script>
+         <script src="{{ MEDIA_URL }}jqtouch/jqtouch/jqtouch.transitions.js" type="text/javascript" charset="utf-8"></script>
+         <link rel="stylesheet" href="{{ MEDIA_URL }}jqtouch/jqtouch/jqtouch.css" type="text/css" media="screen" charset="utf-8">
+         <link rel="stylesheet" href="{{ MEDIA_URL }}jqtouch/themes/apple/theme.css" type="text/css" media="screen" charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <script type="text/javascript" charset="utf-8">
+            var jQT = new $.jQTouch({
+                icon: 'jqtouch.png',
+                addGlossToIcon: false,
+                startupScreen: 'jqt_startup.png',
+                statusBar: 'black',
+                cacheGetRequests: false,
+                preloadImages: [
+                '{{ MEDIA_URL }}jqtouch/themes/jqt/img/back_button.png',
+                '{{ MEDIA_URL }}jqtouch/themes/jqt/img/back_button_clicked.png',
+                '{{ MEDIA_URL }}jqtouch/themes/jqt/img/button_clicked.png',
+                '{{ MEDIA_URL }}jqtouch/themes/jqt/img/grayButton.png',
+                '{{ MEDIA_URL }}jqtouch/themes/jqt/img/whiteButton.png',
+                '{{ MEDIA_URL }}jqtouch/themes/jqt/img/loading.gif'
+                    ]
+            });
+        </script>
+    </head>
+    <body>
+        <div id="jqt">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

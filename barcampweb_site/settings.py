@@ -1,4 +1,7 @@
 from os.path import join, dirname
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -38,6 +41,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'barcampweb_site.middleware.PlatformMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )

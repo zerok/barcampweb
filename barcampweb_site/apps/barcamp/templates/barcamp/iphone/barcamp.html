@@ -1,0 +1,13 @@
+{% extends "barcamp/iphone/base.html" %}
+{% block content %}
+<div id="home" class="current">
+    <div class="toolbar">
+        <h1 class="title">{{ barcamp.name }}</h1>
+    </div>
+    <ul class="edgetoedge">
+        <li class="arrow"><a href="{% url barcamp:now barcamp.slug %}">Gerade jetzt</a></li>
+        <li class="arrow"><a href="{% url barcamp:upcoming barcamp.slug %}">Als nächstes</a></li>
+        <li class="arrow"><a href="{% url barcamp:schedule barcamp.slug %}">Sessions</a></li>
+    </ul>
+</div>
+{% endblock %}
