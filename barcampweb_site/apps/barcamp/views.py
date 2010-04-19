@@ -104,17 +104,17 @@ class BarcampScheduleView(BarcampBaseView):
         
     def view(self, *args, **kwargs):
         rooms = self.rooms
-        self.grid, self.open_slots = utils.create_slot_grid(self.barcamp)
-        utils.mark_talkgrid_permissions(self.grid, self.request.user, self.barcamp)
+        self.dict_grid, self.open_slots = utils.create_slot_grid(self.barcamp)
+        utils.mark_talkgrid_permissions(self.dict_grid, self.request.user, self.barcamp)
         slots_per_day = SortedDict() #collections.defaultdict(list)
-        for slot, content in self.grid.iteritems():
+        for slot, content in self.dict_grid.iteritems():
             if slot.start.date() not in slots_per_day:
                 slots_per_day[slot.start.date()] = list()
             slots_per_day[slot.start.date()].append((slot, content))
         detached_talks = Talk.objects.filter(timeslot=None, barcamp=self.barcamp).all()
         utils.mark_talklist_permissions(detached_talks, self.request.user, self.barcamp)
         self.data['rooms'] = rooms
-        self.data['slots_per_day'] = dict(slots_per_day)
+        self.data['slots_per_day'] = [(k, slots_per_day[k]) for  k in sorted(dict(slots_per_day).keys())]
         self.data['days'] = self.days
         self.data['detached_talks'] = detached_talks
         return self.render()
