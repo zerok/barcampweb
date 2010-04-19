@@ -3,7 +3,7 @@
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block end %}
 <script type="text/javascript" charset="utf-8">
-    $('.slot .action, #detached-talks .action').defaultFormOverlay();
+    $('#create-slot, .slot .action, #detached-talks .action').defaultFormOverlay();
 </script>
 {% endblock %}
 {% block subcontent %}
@@ -21,7 +21,12 @@
         <tbody>
             {% for slot, rooms in slots %}
             <tr>
-                <td>{{ slot.start|time:"H:i" }}</td>
+                <td>
+                    {{ slot.start|time:"H:i" }}-{{ slot.end|time:"H:i" }}
+                    {% if is_organizer %}
+                    <a href="{% url barcamp:delete-slot barcamp.slug,slot.pk %}" class="action action-delete">Slot löschen</a>
+                    {% endif %}
+                </td>
                 {% for room, event in rooms.items %}
                 <td class="slot">
                     {% if event %}
@@ -35,7 +40,7 @@
                         </p>
                         {% endif %}
                     {% else %}
-                        {% if event.can_edit and user.is_authenticated %}
+                        {% if user.is_authenticated %}
                         <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a></p>
                         {% endif %}
                     {% endif %}
@@ -45,6 +50,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% endfor %}
+    
     {% if detached_talks %}
     <div id="detached-talks">
     <h2>Offene Talks</h2>
@@ -63,5 +70,5 @@
     </div>
     {% endif %}
 
-    {% endfor %}
+    <a id="create-slot" href="{% url barcamp:create-slot barcamp.slug %}" class="action action-new">Slot anlegen</a>
 {% endblock %}

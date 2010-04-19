@@ -29,6 +29,12 @@ class Barcamp(models.Model):
 
     def __unicode__(self):
         return self.name
+    
+    def _get_days(self):
+        from .utils import get_days
+        return get_days(self.start, self.end)
+    days = property(_get_days)
+    
 
 class Reservation(models.Model):
     user = models.ForeignKey(User, related_name='reservations')

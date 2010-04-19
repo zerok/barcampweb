@@ -1,9 +1,4 @@
 from django.conf.urls.defaults import *
-from .views import index, view_barcamp, view_proposals, view_schedule, \
-    delete_barcamp, undelete_barcamp, edit_barcamp, create_barcamp, \
-    add_sponsor, remove_sponsor, edit_sponsor, vote_proposal, unvote_proposal, \
-    create_proposal, delete_proposal, edit_proposal, create_talk, edit_talk, \
-    delete_talk, detach_talk, move_talk
 
 urlpatterns = patterns('barcampweb_site.apps.barcamp.views',
     url('^$', 'index', name='index'),
@@ -19,6 +14,8 @@ urlpatterns = patterns('barcampweb_site.apps.barcamp.views',
     url('^(?P<slug>[^_][^/]+)/remove-sponsor/(?P<sponsoring_pk>\d+)/$', 'remove_sponsor', name='remove-sponsor'),
     url('^(?P<slug>[^_][^/]+)/edit-sponsor/(?P<sponsoring_pk>\d+)/$', 'edit_sponsor', name='edit-sponsor'),
     url('^(?P<slug>[^_][^/]+)/create-proposal/$', 'create_proposal', name='create-proposal'),
+    url('^(?P<slug>[^_][^/]+)/create-slot/$', 'create_slot', name='create-slot'),
+    url('^(?P<slug>[^_][^/]+)/delete-slot/(?P<slot_pk>\d+)/$', 'delete_slot', name='delete-slot'),
     url('^(?P<slug>[^_][^/]+)/proposals/(?P<proposal_pk>\d+)/vote/$', 'vote_proposal', name='vote-proposal'),
     url('^(?P<slug>[^_][^/]+)/proposals/(?P<proposal_pk>\d+)/unvote/$', 'unvote_proposal', name='unvote-proposal'),
     url('^(?P<slug>[^_][^/]+)/proposals/(?P<proposal_pk>\d+)/delete/$', 'delete_proposal', name='delete-proposal'),

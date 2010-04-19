@@ -11,8 +11,7 @@ from django.utils.datastructures import SortedDict
 from .models import Barcamp, Sponsor, Talk
 from .decorators import is_organizer
 from .forms import BarcampForm
-from . import forms
-from . import utils
+from . import forms, models, utils
 
 APP_NAME='barcamp'
 
@@ -224,6 +223,39 @@ class BarcampUnvoteProposalView(BarcampBaseView):
         proposal.votes.remove(self.request.user)
         return HttpResponseRedirect(reverse('barcamp:proposals', current_app=APP_NAME, args=[self.barcamp.slug]))
 
+class BarcampCreateSlotView(BarcampBaseView):
+    template_name = 'barcamp/create-slot.html'
+    def view(self, *args, **kwargs):
+        if self.request.method == 'POST':
+            form = forms.CreateSlotForm(self.request.POST, barcamp=self.barcamp)
+            if form.is_valid():
+                obj = models.TimeSlot()
+                obj.barcamp = self.barcamp
+                obj.start = form.get_start()
+                obj.end = form.get_end()
+                obj.save()
+                return HttpResponseRedirect(reverse('barcamp:schedule', current_app=APP_NAME, args=[self.barcamp.slug]))
+        else:
+            form = forms.CreateSlotForm(barcamp=self.barcamp)
+        self.data['form'] = form
+        return self.render()
+        
+class BarcampDeleteSlotView(BarcampBaseView):
+
+    template_name = 'barcamp/confirm-delete-slot.html'
+
+    def view(self, *args, **kwargs):
+        slot_pk = kwargs.get('slot_pk')
+        slot = get_object_or_404(self.barcamp.slots, pk=slot_pk)
+        if not (self.request.user in self.barcamp.organizers.all()):
+            return HttpResponseForbidden()
+        if self.request.method == 'POST':
+            slot.talks.clear()
+            slot.delete()
+            return HttpResponseRedirect(reverse('barcamp:schedule', current_app=APP_NAME, args=[self.barcamp.slug]))
+        self.data['slot'] = slot
+        return self.render()
+
 class BarcampCreateTalkView(BarcampBaseView):
     
     template_name = 'barcamp/create-talk-for-slot.html'
@@ -353,6 +385,8 @@ class BarcampMoveTalkView(BarcampBaseView):
         
 view_barcamp = BarcampView.create_view()
 view_proposals = BarcampProposalsView.create_view()
+create_slot = is_organizer(BarcampCreateSlotView.create_view(), barcamp_slug_kwarg='slug')
+delete_slot = is_organizer(BarcampDeleteSlotView.create_view(), barcamp_slug_kwarg='slug')
 view_schedule = BarcampScheduleView.create_view()
 view_now = BarcampNowView.create_view()
 view_upcoming = BarcampUpcomingView.create_view()
