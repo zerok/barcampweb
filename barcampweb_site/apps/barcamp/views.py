@@ -381,6 +381,14 @@ class BarcampMoveTalkView(BarcampBaseView):
             'talk': talk,
         })
         return self.render(self.template_name)
+    
+class BarcampEventView(BarcampBaseView):
+    template_name = 'barcamp/barcamp-event.html'
+    
+    def view(self, *args, **kwargs):
+        event = get_object_or_404(models.Event.objects.select_related(), pk=kwargs['event_pk'], barcamp=self.barcamp)
+        self.data['event'] = event
+        return self.render()
         
         
 view_barcamp = BarcampView.create_view()
@@ -390,6 +398,7 @@ delete_slot = is_organizer(BarcampDeleteSlotView.create_view(), barcamp_slug_kwa
 view_schedule = BarcampScheduleView.create_view()
 view_now = BarcampNowView.create_view()
 view_upcoming = BarcampUpcomingView.create_view()
+view_event = BarcampEventView.create_view()
 vote_proposal = login_required(BarcampVoteProposalView.create_view())
 unvote_proposal = login_required(BarcampUnvoteProposalView.create_view())
 create_proposal = login_required(BarcampCreateProposalView.create_view())

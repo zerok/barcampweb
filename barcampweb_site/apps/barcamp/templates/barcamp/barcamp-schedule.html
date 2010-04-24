@@ -30,7 +30,7 @@
                 {% for room, event in rooms.items %}
                 <td class="slot">
                     {% if event %}
-                        {{ event.name }}
+                        <a href="{% url barcamp:event barcamp.slug,event.pk %}">{{ event.name }}</a>
                         {% if event.can_edit and user.is_authenticated %}
                         <p class="actions">
                         <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug event.pk %}">Ändern</a>
