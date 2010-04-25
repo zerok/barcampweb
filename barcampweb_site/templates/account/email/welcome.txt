@@ -1,0 +1,8 @@
+Hallo {{ user.username }},
+
+Danke, dass du dich auf barcampweb angemeldet hast. Dein Passwort lautet:
+
+    {{ password }}
+    
+Damit kannst du sowohl deinen Benutzername als auch deine E-Mail-Adresse
+sowie dein Passwort ändern.

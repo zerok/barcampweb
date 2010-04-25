@@ -9,6 +9,8 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.contrib.auth.decorators import login_required
 from django.utils.datastructures import SortedDict
 
+from barcampweb_site.utils import render as _render
+
 from .models import Barcamp, Sponsor, Talk
 from .decorators import is_organizer
 from .forms import BarcampForm
@@ -18,8 +20,7 @@ APP_NAME='barcamp'
 LOG = logging.getLogger(__name__)
 
 def render(request, tmpl, vars_):
-    ctx = RequestContext(request, current_app=APP_NAME)
-    return render_to_response(tmpl, vars_, context_instance=ctx)
+    return _render(request, tmpl, vars_, APP_NAME)
 
 def index(request):
     barcamps = Barcamp.objects.order_by('start')

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^', include('barcampweb_site.apps.barcamp.urls', namespace='barcamp', app_name='barcamp')),
     url(r'^account/login', login, {'template_name': 'account/login.html'}, name="login"),
     url(r'^account/logout', logout, name="logout"),
+    url(r'^account/', include('barcampweb_site.apps.account.urls', namespace='account', app_name='account')),
 )
 
 if settings.DEBUG:

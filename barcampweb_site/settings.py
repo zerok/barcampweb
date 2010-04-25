@@ -43,6 +43,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'barcampweb_site.middleware.PlatformMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'barcampweb_site.apps.account.middleware.SimpleLoginMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
@@ -69,8 +71,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
-    "django.core.context_processors.request"
+    "django.core.context_processors.request",
+    'django.contrib.messages.context_processors.messages',
 )
-
+EMAIL_PORT = 1025
 LOGIN_URL = '/account/login/'
 LOGOUT_URL = '/account/logout/'
