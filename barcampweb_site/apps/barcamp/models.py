@@ -106,7 +106,9 @@ class TimeSlot(models.Model):
 class TalkIdea(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    user = models.ForeignKey(User, related_name='talkideas')
+    user = models.ForeignKey(User, related_name='talkideas', blank=True, null=True)
+    user_name = models.CharField(max_length=255, blank=True, null=True)
+    user_email = models.EmailField(blank=True, null=True)
     barcamp = models.ForeignKey(Barcamp)
     created_at = models.DateTimeField(default=datetime.datetime.now)
     modified_at = models.DateTimeField(blank=True, null=True, auto_now=True)

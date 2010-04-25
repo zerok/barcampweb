@@ -42,10 +42,15 @@ class SponsorForm(ModelForm):
         model = Sponsor
         exclude = ('barcamp')
         
-class ProposalForm(ModelForm):
+class AnonymousProposalForm(ModelForm):
     class Meta:
         model = TalkIdea
         exclude = ('barcamp', 'votes', 'created_at', 'modified_at', 'user')
+        
+class ProposalForm(ModelForm):
+    class Meta:
+        model = TalkIdea
+        exclude = ('barcamp', 'votes', 'created_at', 'modified_at', 'user', 'user_name', 'user_email')
         
 class CreateSlotForm(forms.Form):
     

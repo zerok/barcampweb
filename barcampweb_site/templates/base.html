@@ -38,7 +38,7 @@
         </div>
         <div id="footer">
             {% if user.is_authenticated %}
-            <a href="{% url logout %}">Log out</a>
+            Hallo {{ user.username }}, <a href="{% url logout %}">Log out</a>
             {% else %}
             <a href="{% url login %}">Log in</a>
             {% endif %}

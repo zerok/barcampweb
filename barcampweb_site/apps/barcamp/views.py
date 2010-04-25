@@ -1,5 +1,6 @@
 import datetime
 import collections
+import logging
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -14,6 +15,7 @@ from .forms import BarcampForm
 from . import forms, models, utils
 
 APP_NAME='barcamp'
+LOG = logging.getLogger(__name__)
 
 def render(request, tmpl, vars_):
     ctx = RequestContext(request, current_app=APP_NAME)
@@ -167,16 +169,19 @@ class BarcampCreateProposalView(BarcampBaseView):
     template_name = 'barcamp/proposal-create.html'
     
     def view(self, *args, **kwargs):
+        LOG.debug("Logged in: " + str(self.request.user.is_authenticated()))
+        form_cls = self.request.user.is_authenticated() and forms.ProposalForm or forms.AnonymousProposalForm
         if self.request.method == 'POST':
-            form = forms.ProposalForm(self.request.POST)
+            form = form_cls(self.request.POST)
             if form.is_valid():
                 proposal = form.save(commit=False)
                 proposal.barcamp = self.barcamp
-                proposal.user = self.request.user
+                if self.request.user.is_authenticated():
+                    proposal.user = self.request.user
                 proposal.save()
                 return HttpResponseRedirect(reverse('barcamp:proposals', current_app=APP_NAME, args=[self.barcamp.slug]))
         else:
-            form = forms.ProposalForm()
+            form = form_cls()
         self.data['form'] = form
         return self.render(self.template_name)
             
@@ -401,7 +406,7 @@ view_upcoming = BarcampUpcomingView.create_view()
 view_event = BarcampEventView.create_view()
 vote_proposal = login_required(BarcampVoteProposalView.create_view())
 unvote_proposal = login_required(BarcampUnvoteProposalView.create_view())
-create_proposal = login_required(BarcampCreateProposalView.create_view())
+create_proposal = BarcampCreateProposalView.create_view()
 delete_proposal = login_required(BarcampDeleteProposalView.create_view())
 edit_proposal = login_required(BarcampEditProposalView.create_view())
 create_talk = login_required(BarcampCreateTalkView.create_view())

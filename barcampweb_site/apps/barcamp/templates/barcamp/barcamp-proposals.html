@@ -20,7 +20,7 @@
             {% for x in proposal.vote_count|range %}
                 +
             {% endfor %}
-            <cite>-- {{ proposal.user }} ({{ proposal.created_at|date }})</cite>
+            <cite>-- {% if proposal.user %}<span class="authenticated">{{ proposal.user }}</span>{% else %}{{ proposal.user_name }}{% endif %} ({{ proposal.created_at|date }})</cite>
             {% ifequal proposal.user request.user  %}
             {% else %}
             {% if proposal.already_voted %}
@@ -29,10 +29,14 @@
                 <a href="{% url barcamp:vote-proposal barcamp.slug proposal.pk %}">+</a>
             {% endif %}
             {% endifequal %}
-            {% ifequal request.user proposal.user %}
+            {% if proposal.user and request.user == proposal.user %}
             <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">ändern</a>
             <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">löschen</a>
-            {% endifequal %}
+            {% endif %}
+            {% if not proposal.user or is_organizer %}
+            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">ändern</a>
+            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">löschen</a>
+            {% endif %}
         </li>
     {% endfor %}
     </ul>
