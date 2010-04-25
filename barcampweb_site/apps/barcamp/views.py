@@ -67,7 +67,7 @@ class BarcampBaseView(BaseView):
         self.data['barcamp'] = self.barcamp
         self.data['sponsors'] = self.barcamp.sponsors.order_by('-level')
         self.data['organizers'] = self.barcamp.organizers.all()
-        self.data['is_organizer'] = self.request.user in self.data['organizers']
+        self.data['is_organizer'] = self.request.user in self.data['organizers'] or self.request.user.is_staff
 
 class BarcampView(BarcampBaseView):
     

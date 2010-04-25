@@ -69,6 +69,8 @@
     </ul>
     </div>
     {% endif %}
-
+    
+    {% if is_organizer %}
     <a id="create-slot" href="{% url barcamp:create-slot barcamp.slug %}" class="action action-new">Slot anlegen</a>
+    {% endif %}
 {% endblock %}
