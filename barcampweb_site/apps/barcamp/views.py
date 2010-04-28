@@ -238,6 +238,8 @@ class BarcampCreateSlotView(BarcampBaseView):
                 obj.barcamp = self.barcamp
                 obj.start = form.get_start()
                 obj.end = form.get_end()
+                if form.cleaned_data['room'] != 0:
+                    obj.place = self.barcamp.places.get(pk=form.cleaned_data['room'])
                 obj.save()
                 return HttpResponseRedirect(reverse('barcamp:schedule', current_app=APP_NAME, args=[self.barcamp.slug]))
         else:
