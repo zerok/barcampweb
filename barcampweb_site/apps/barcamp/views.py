@@ -268,7 +268,7 @@ class BarcampCreateTalkView(BarcampBaseView):
     template_name = 'barcamp/create-talk-for-slot.html'
     
     def view(self, *args, **kwargs):
-        slot = get_object_or_404(self.barcamp.slots, pk=kwargs['slot_pk'])
+        slot = get_object_or_404(self.barcamp.slots.select_related(), pk=kwargs['slot_pk'])
         room = get_object_or_404(self.barcamp.places, pk=kwargs['room_pk'])
         
         # Make sure, that the room is still free

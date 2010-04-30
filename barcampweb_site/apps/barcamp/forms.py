@@ -134,6 +134,9 @@ class TalkForSlotForm(ModelForm):
         assert(self.barcamp)
         assert(self.timeslot)
         assert(self.room)
+
+        if self.timeslot.place is not None and self.timeslot.place != self.room:
+            raise forms.ValidationError(_("This timeslot is bound to another place"))
         
         # Make sure, that this slot isn't already taken
         other_talks = Talk.objects.filter(barcamp=self.barcamp, timeslot=self.timeslot, place=self.room)
