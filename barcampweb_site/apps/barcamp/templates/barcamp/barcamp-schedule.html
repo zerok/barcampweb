@@ -7,29 +7,25 @@
 </script>
 {% endblock %}
 {% block subcontent %}
-    {% for day, slots in slots_per_day %}
-    <h2>{{ day }}</h2>
+
+    {% for grid in grid %}
+    <h2>{{ grid.date|date:'DATE_FORMAT' }}</h2>
     <table>
         <thead>
-            <tr>
-                <th>Zeit</th>
-                {% for room in rooms %}
-                <th>{{ room.name }}</th>
-                {% endfor %}
-            </tr>
+            {% for place in grid.places %}
+            <th>{{ place.name }}</th>
+            {% endfor %}
         </thead>
         <tbody>
-            {% for slot, rooms in slots %}
+            {% for row in grid.grid %}
             <tr>
-                <td>
-                    {{ slot.start|time:"H:i" }}-{{ slot.end|time:"H:i" }}
-                    {% if is_organizer %}
-                    <a href="{% url barcamp:delete-slot barcamp.slug,slot.pk %}" class="action action-delete">Slot löschen</a>
-                    {% endif %}
-                </td>
-                {% for room, event in rooms.items %}
-                <td class="slot">
-                    {% if event %}
+                {% for elem in row %}
+                <td {% if elem %}class="slot"{% endif %}>
+                    {% if elem %}  
+                    <span class="time">
+                        {{ elem.slot.start|time:"H:i" }}-{{ elem.slot.end|time:"H:i" }}
+                    </span>
+                    {% for event in elem.events %}
                         <a href="{% url barcamp:event barcamp.slug,event.pk %}">{{ event.name }}</a>
                         {% if event.can_edit and user.is_authenticated %}
                         <p class="actions">
@@ -39,10 +35,14 @@
                         <a class="action action-detach" href="{% url barcamp:detach-talk barcamp.slug event.pk %}">Aushängen</a>
                         </p>
                         {% endif %}
-                    {% else %}
+                    {% empty %}
                         {% if user.is_authenticated %}
-                        <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug slot.pk room.pk %}">Slot füllen</a></p>
+                        <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}">Slot füllen</a></p>
                         {% endif %}
+                    {% endfor %}
+                    {% if is_organizer %}
+                    <a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete">Slot löschen</a>
+                    {% endif %}
                     {% endif %}
                 </td>
                 {% endfor %}

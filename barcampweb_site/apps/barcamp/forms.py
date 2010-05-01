@@ -109,7 +109,7 @@ class CreateSlotForm(forms.Form):
             else:
                 # If a room was specified check if any given slot has either
                 # no room or the same room to violate this constraint
-                for slot in slots:
+                for slot in found_intersection:
                     if slot.place is None:
                         raise forms.ValidationError, _("A generic slot for this range already exists.")
                     if slot.place.pk == _room:
@@ -153,7 +153,10 @@ class MoveTalkForm(forms.Form):
     slot = forms.ChoiceField(label=_('Timeslot'))
     
     def __init__(self, *args, **kwargs):
-        self.open_slots = kwargs['open_slots']
+        slots = kwargs['open_slots']
+        self.open_slots = {}
+        for sge in slots:
+            self.open_slots["%d-%d" % (sge.slot.pk, sge.place.pk)] = sge
         self.instance = kwargs['instance']
         del kwargs['open_slots']
         del kwargs['instance']

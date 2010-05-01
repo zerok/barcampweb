@@ -4,6 +4,8 @@ import logging
 
 from django.utils.datastructures import SortedDict
 
+from . import models
+
 LOG = logging.getLogger(__name__)
 
 class PlaceSlot(object):
@@ -15,6 +17,15 @@ class PlaceSlot(object):
 
 def get_days(start, end):
     return rrule.rrule(rrule.DAILY, dtstart=start, until=end)
+
+class SlotGridElement(object):
+    def __init__(self, slot=None, place=None):
+        self.slot = slot is not None and slot or None
+        self.place = place is not None and place or None
+        self.events = []
+
+    def __unicode__(self):
+        return unicode(self.slot.start) + u" - " + unicode(self.slot.end) + " (" + self.place.name + ")"
 
 class SlotGrid(object):
     """
@@ -29,27 +40,63 @@ class SlotGrid(object):
         self.grid = []
         self.places = []
         self.slots = []
-
+        self.date = None
+    
     @classmethod
-    def create_from_barcamp(cls, barcamp, room_order=None):
-        grid = cls()
+    def create_from_barcamp(cls, barcamp, room_order=None, per_day=False, mark_for_user=None):
         if room_order is not None:
-            grid.places = room_order
+            places = room_order
         else:
-            grid.places = [x for x in barcamp.places.filter(is_sessionroom=True).order_by('pk')]
+            places = [x for x in barcamp.places.filter(is_sessionroom=True).order_by('pk')]
         slots = barcamp.slots.all().order_by('start')
+        sge_index = {}
         start_grid = {}
         for slot in slots:
             if slot.start not in start_grid:
-                start_grid[slot.start]=[None for x in grid.places]
+                start_grid[slot.start]=[None for x in places]
             if slot.place is None:
-                start_grid[slot.start] = [slot for x in grid.places]
+                start_grid[slot.start] = []
+                for p in places:
+                    sge = SlotGridElement(slot=slot, place=p)
+                    start_grid[slot.start].append(sge)
+                    sge_index["%d-%d" % (sge.slot.pk, sge.place.pk)] = sge
             else:
-                start_grid[slot.start][grid.places.index(slot.place)]=slot
-        for k in sorted(start_grid.keys()):
-            grid.grid.append(start_grid[k])
+                sge = SlotGridElement(slot=slot, place=slot.place)
+                start_grid[slot.start][places.index(slot.place)] = sge
+                sge_index["%d-%d" % (sge.slot.pk, sge.place.pk)] = sge
 
-        return grid
+        # Fill the sges with events
+        events =  models.Talk.objects.filter(barcamp=barcamp,timeslot__isnull=False, place__isnull=False)
+        if mark_for_user is not None:
+            mark_talklist_permissions(events, mark_for_user, barcamp)
+        for ev in events:
+            sge_index["%d-%d" % (ev.timeslot.pk, ev.place.pk)].events.append(ev)
+        open_elems = [sge for sge in sge_index.values() if len(sge.events) == 0]
+
+        if per_day:
+            date_grids = []
+            grid = None
+            last_date = None
+            for k in sorted(start_grid.keys()):
+                date = k.date()
+                if date != last_date:
+                    if grid is not None:
+                        date_grids.append(grid)
+                    grid = SlotGrid()
+                    grid.places = places
+                    grid.date = date
+                grid.grid.append(start_grid[k])
+                last_date = date
+            if grid is not None:
+                date_grids.append(grid)
+            return date_grids, open_elems
+        else:
+            grid = SlotGrid()
+            grid.places=places
+            for k in sorted(start_grid.keys()):
+                grid.grid.append(start_grid[k])
+
+        return grid, open_elems
     
 def create_slot_grid(barcamp):
     from .models import Talk
