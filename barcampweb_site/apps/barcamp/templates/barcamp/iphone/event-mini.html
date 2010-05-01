@@ -1,0 +1,3 @@
+<a href="{% url barcamp:event event.barcamp.slug,event.pk %}">{{ event.name }}</a>
+<span class="location">{{ event.place.name }}</span>
+<span class="time">{{ event.start|date:"DATE_FORMAT" }} {{ event.start|time }} - {{ event.end|time }}</a>

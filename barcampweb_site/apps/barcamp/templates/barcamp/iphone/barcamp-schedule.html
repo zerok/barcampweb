@@ -17,11 +17,16 @@
         <a href="#" class="back">{% trans "Back" %}</a>
     </div>
     {% for room, talks in day.rooms.items %}
+    {% if talks %}
+    <h2>{{ room.name }}</h2>
     <ul>
         {% for talk in talks %}
-        <li><a href="">{{ talk.name }}</a></li>
+        <li><a href="{% url barcamp:event barcamp.slug, talk.pk %}">{{ talk.name }}</a>
+            {{ talk.start|time }} - {{ talk.end|time }}
+        </li>
         {% endfor %}
     </ul>
+    {% endif %}
     {% endfor %}
 </div>
 {% endfor %}

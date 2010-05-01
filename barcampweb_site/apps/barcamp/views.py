@@ -393,6 +393,7 @@ class BarcampMoveTalkView(BarcampBaseView):
     
 class BarcampEventView(BarcampBaseView):
     template_name = 'barcamp/barcamp-event.html'
+    template_name_iphone = 'barcamp/iphone/barcamp-event.html'
     
     def view(self, *args, **kwargs):
         event = get_object_or_404(models.Event.objects.select_related(), pk=kwargs['event_pk'], barcamp=self.barcamp)
