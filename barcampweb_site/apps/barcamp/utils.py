@@ -1,6 +1,10 @@
 from dateutil import rrule
+import sys
+import logging
 
 from django.utils.datastructures import SortedDict
+
+LOG = logging.getLogger(__name__)
 
 class PlaceSlot(object):
     def __init__(self, place, slot):
@@ -11,6 +15,41 @@ class PlaceSlot(object):
 
 def get_days(start, end):
     return rrule.rrule(rrule.DAILY, dtstart=start, until=end)
+
+class SlotGrid(object):
+    """
+    A slotgrid represents a matrix of slots associated with
+    a room. Internally it is a 2dim array where columns are
+    associated with place objects.
+
+    If all slots are synchronized then the row dimension
+    as a whole has an additional slot association.
+    """
+    def __init__(self):
+        self.grid = []
+        self.places = []
+        self.slots = []
+
+    @classmethod
+    def create_from_barcamp(cls, barcamp, room_order=None):
+        grid = cls()
+        if room_order is not None:
+            grid.places = room_order
+        else:
+            grid.places = [x for x in barcamp.places.filter(is_sessionroom=True).order_by('pk')]
+        slots = barcamp.slots.all().order_by('start')
+        start_grid = {}
+        for slot in slots:
+            if slot.start not in start_grid:
+                start_grid[slot.start]=[None for x in grid.places]
+            if slot.place is None:
+                start_grid[slot.start] = [slot for x in grid.places]
+            else:
+                start_grid[slot.start][grid.places.index(slot.place)]=slot
+        for k in sorted(start_grid.keys()):
+            grid.grid.append(start_grid[k])
+
+        return grid
     
 def create_slot_grid(barcamp):
     from .models import Talk
