@@ -67,10 +67,17 @@ class BarcampBaseView(BaseView):
         self.data['barcamp'] = self.barcamp
         self.data['sponsors'] = self.barcamp.sponsors.order_by('-level')
         self.data['organizers'] = self.barcamp.organizers.all()
+        self.data['places'] = self.barcamp.places.all()
         self.data['is_organizer'] = self.request.user in self.data['organizers'] or self.request.user.is_staff
 
     def redirect_to_schedule(self):
-        return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
+        return self.redirect_to('barcamp:schedule', args=[self.barcamp.slug])
+
+    def redirect_to(self, view_name, args=[], kwargs={}):
+        if 'next' not in self.request.REQUEST:
+            return HttpResponseRedirect(reverse(view_name, args, kwargs, current_app=APP_NAME))
+        return HttpResponseRedirect(self.request.REQUEST['next'])
+
 
 class BarcampView(BarcampBaseView):
     
