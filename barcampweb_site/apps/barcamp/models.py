@@ -35,11 +35,6 @@ class Barcamp(models.Model):
     days = property(_get_days)
     
 
-class Reservation(models.Model):
-    user = models.ForeignKey(User, related_name='reservations')
-    barcamp = models.ForeignKey(Barcamp, related_name='reservations')
-    status = models.CharField(max_length=10, choices=RESERVATION_STATUS_CHOICES)
-
 class Sponsor(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField(verify_exists=False)
