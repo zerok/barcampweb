@@ -6,3 +6,4 @@ django-extensions==0.4.1
 wsgiref==0.1.2
 python-dateutil==1.5
 Markdown==2.0.3
+flup

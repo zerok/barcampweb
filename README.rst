@@ -1,6 +1,12 @@
 BarcampWeb
 ==========
 
+.. warning::
+    
+    This code is highly experimental. It is only public to facilitate
+    communication and contribution.
+
+
 Overview
 ---------
 
