@@ -461,7 +461,7 @@ def delete_barcamp(request, slug):
         barcamp.removal_requested_by = request.user
         barcamp.save()
         return HttpResponseRedirect(reverse('barcamp:view', current_app=APP_NAME, args=[barcamp.slug]))
-    return render('barcamp/confirm-delete-barcamp.html', {
+    return render(request, 'barcamp/confirm-delete-barcamp.html', {
         'barcamp': barcamp,
     })
 
@@ -473,7 +473,7 @@ def undelete_barcamp(request, slug):
         barcamp.removal_canceled_by = request.user
         barcamp.save()
         return HttpResponseRedirect(reverse('barcamp:view', current_app=APP_NAME, args=[barcamp.slug]))
-    return render('barcamp/confirm-undelete-barcamp.html', {
+    return render(request, 'barcamp/confirm-undelete-barcamp.html', {
         'barcamp': barcamp,
     })
 
