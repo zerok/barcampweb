@@ -120,6 +120,8 @@ class BarcampScheduleView(BarcampBaseView):
         self.data['slots_per_day'] = [(k, slots_per_day[k]) for  k in sorted(dict(slots_per_day).keys())]
         self.data['days'] = self.days
         self.data['detached_talks'] = detached_talks
+        self.data['grid'] = utils.SlotGrid.create_from_barcamp(self.barcamp, list(rooms), per_day=True, mark_for_user=self.request.user)[0]
+        print self.data['grid']
         return self.render()
     
     def view_iphone(self, *args, **kwargs):
@@ -239,6 +241,8 @@ class BarcampCreateSlotView(BarcampBaseView):
                 obj.barcamp = self.barcamp
                 obj.start = form.get_start()
                 obj.end = form.get_end()
+                if form.cleaned_data['room'] != u'0':
+                    obj.place = self.barcamp.places.get(pk=form.cleaned_data['room'])
                 obj.save()
                 return HttpResponseRedirect(reverse('barcamp:schedule', current_app=APP_NAME, args=[self.barcamp.slug]))
         else:
@@ -267,7 +271,7 @@ class BarcampCreateTalkView(BarcampBaseView):
     template_name = 'barcamp/create-talk-for-slot.html'
     
     def view(self, *args, **kwargs):
-        slot = get_object_or_404(self.barcamp.slots, pk=kwargs['slot_pk'])
+        slot = get_object_or_404(self.barcamp.slots.select_related(), pk=kwargs['slot_pk'])
         room = get_object_or_404(self.barcamp.places, pk=kwargs['room_pk'])
         
         # Make sure, that the room is still free
@@ -370,11 +374,11 @@ class BarcampMoveTalkView(BarcampBaseView):
                 or self.request.user in talk.speakers.all()
                 or self.request.user in self.organizers):
             raise Http404
-        self.grid, self.open_slots = utils.create_slot_grid(self.barcamp)
+        self.grid, self.open_slots = utils.SlotGrid.create_from_barcamp(self.barcamp)
         if self.request.method == 'POST':
             form = forms.MoveTalkForm(self.request.POST, instance=talk, open_slots=self.open_slots)
             if form.is_valid():
-                slot = self.open_slots[form.cleaned_data['slot']]
+                slot = form.open_slots[form.cleaned_data['slot']]
                 talk.place = slot.place
                 talk.timeslot = slot.slot
                 talk.save()
@@ -390,6 +394,7 @@ class BarcampMoveTalkView(BarcampBaseView):
     
 class BarcampEventView(BarcampBaseView):
     template_name = 'barcamp/barcamp-event.html'
+    template_name_iphone = 'barcamp/iphone/barcamp-event.html'
     
     def view(self, *args, **kwargs):
         event = get_object_or_404(models.Event.objects.select_related(), pk=kwargs['event_pk'], barcamp=self.barcamp)

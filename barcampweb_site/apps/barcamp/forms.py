@@ -57,6 +57,7 @@ class CreateSlotForm(forms.Form):
     day = DateChoiceField()
     start = forms.TimeField()
     end = forms.TimeField()
+    room = forms.ChoiceField(required=False)
     
     def __init__(self, *args, **kwargs):
         if 'barcamp' in kwargs:
@@ -65,6 +66,8 @@ class CreateSlotForm(forms.Form):
         super(CreateSlotForm, self).__init__(*args, **kwargs)
         self.fields['day'].choices = [(d.date().strftime(DateChoiceField.FORMAT), dateformat.format(d, settings.DATE_FORMAT)) for d in self.barcamp.days]
         print self.fields['day'].choices
+        self.fields['room'].choices = [(p.pk, p.name) for p in self.barcamp.places.all() if p.is_sessionroom]
+        self.fields['room'].choices[0:0] = [(0, '')]
     
     def get_start(self):
         return self.combine_dt(self.cleaned_data['day'], self.cleaned_data['start'])
@@ -79,6 +82,9 @@ class CreateSlotForm(forms.Form):
         _start = self.cleaned_data.get('start')
         _end = self.cleaned_data.get('end')
         _day = self.cleaned_data.get('day')
+        _room = self.cleaned_data.get('room')
+        if _room is not None:
+            _room = int(_room)
         if _start is None or _end is None or _day is None:
             return self.cleaned_data
         if _start >= _end:
@@ -88,17 +94,29 @@ class CreateSlotForm(forms.Form):
             # of the camp
             start = self.combine_dt(_day, _start)
             end = self.combine_dt(_day, _end)
-            slots = self.barcamp.slots.all()
-            found_intersection = None
+            slots = self.barcamp.slots.select_related().all()
+            found_intersection = []
             for slot in slots:
                 if start >= slot.end or slot.start >= end:
                     continue
                 if start >= slot.start and start <= slot.end:
-                    found_intersection = slot; break
+                    found_intersection.append(slot)
                 if end <= slot.end and slot.start <= end:
-                    found_intersection = slot; break
-            if found_intersection is not None:
-                raise forms.ValidationError, _("There already exists a timeslot with this range")
+                    found_intersection.append(slot)
+            if _room == 0:
+                # If no room was specified any intersection is a problem
+                pass
+            else:
+                # If a room was specified check if any given slot has either
+                # no room or the same room to violate this constraint
+                for slot in found_intersection:
+                    if slot.place is None:
+                        raise forms.ValidationError, _("A generic slot for this range already exists.")
+                    if slot.place.pk == _room:
+                        raise forms.ValidationError, _("There already exists a timeslot for this range and this room.")
+                pass
+            #if len(found_intersection):
+            #    raise forms.ValidationError, _("There already exists a timeslot with this range")
         return self.cleaned_data
                     
             
@@ -116,6 +134,9 @@ class TalkForSlotForm(ModelForm):
         assert(self.barcamp)
         assert(self.timeslot)
         assert(self.room)
+
+        if self.timeslot.place is not None and self.timeslot.place != self.room:
+            raise forms.ValidationError(_("This timeslot is bound to another place"))
         
         # Make sure, that this slot isn't already taken
         other_talks = Talk.objects.filter(barcamp=self.barcamp, timeslot=self.timeslot, place=self.room)
@@ -132,7 +153,10 @@ class MoveTalkForm(forms.Form):
     slot = forms.ChoiceField(label=_('Timeslot'))
     
     def __init__(self, *args, **kwargs):
-        self.open_slots = kwargs['open_slots']
+        slots = kwargs['open_slots']
+        self.open_slots = {}
+        for sge in slots:
+            self.open_slots["%d-%d" % (sge.slot.pk, sge.place.pk)] = sge
         self.instance = kwargs['instance']
         del kwargs['open_slots']
         del kwargs['instance']

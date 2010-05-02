@@ -99,6 +99,7 @@ class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     barcamp = models.ForeignKey('Barcamp', related_name='slots')
+    place = models.ForeignKey('Place', related_name='roomslots', blank=True, null=True)
     
     def __unicode__(self):
         return u"%s - %s" % (self.start, self.end)
