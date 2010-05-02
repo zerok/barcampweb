@@ -3,7 +3,7 @@
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block end %}
 <script type="text/javascript" charset="utf-8">
-    $('#create-slot, .slot .action, #detached-talks .action').defaultFormOverlay();
+    $('.action').defaultFormOverlay();
 </script>
 {% endblock %}
 {% block subcontent %}
@@ -13,7 +13,12 @@
     <table>
         <thead>
             {% for place in grid.places %}
-            <th>{{ place.name }}</th>
+            <th>{{ place.name }}
+                {% if is_organizer %}
+                <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}">edit</a>
+                {% endif %}
+            
+            </th>
             {% endfor %}
         </thead>
         <tbody>

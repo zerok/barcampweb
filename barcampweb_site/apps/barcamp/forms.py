@@ -6,6 +6,7 @@ from django.conf import settings
 from django.utils import dateformat
 from django.utils.translation import ugettext_lazy as _
 
+from . import models
 from .models import Barcamp, Sponsor, TalkIdea, Talk, TimeSlot
 
 class DateChoiceField(forms.ChoiceField):
@@ -170,3 +171,28 @@ class MoveTalkForm(forms.Form):
         if 0 != Talk.objects.filter(barcamp=self.instance.barcamp, place=slot.place, timeslot=slot.slot).count():
             raise forms.ValidationError(_("This slot is already taken"))
         return value
+
+class CreatePlaceForm(forms.ModelForm):
+    class Meta:
+        model = models.Place
+        exclude = ('barcamp',)
+
+class EditPlaceForm(forms.ModelForm):
+    class Meta:
+        model = models.Place
+        exclude = ('barcamp',)
+
+    def clean(self):
+        cleaned_data = super(EditPlaceForm, self).clean()
+
+        # If this place is about to lose its sessionroom status,
+        # make sure that there are no exclusive slots or sessions
+        # in generic slots associated with this place.
+        if self.instance is not None:
+            sessionroom = bool(cleaned_data.get('is_sessionroom', False))
+            if not sessionroom:
+                if 0 != models.TimeSlot.objects.filter(barcamp=self.instance.barcamp, place=self.instance).count():
+                    raise forms.ValidationError(_("There are timeslots bound to this place. Please unbind them before proceeding."))
+                if 0 != models.Talk.objects.filter(place=self.instance).count():
+                    raise forms.ValidationError(_("There are still talks associated with this place. Please assign them to another room."))
+        return cleaned_data
