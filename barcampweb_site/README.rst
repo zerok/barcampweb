@@ -38,3 +38,14 @@ barcampweb.env. Once this is complete, just go into the barcampweb_site folder
 and run ``python manage.py syncdb`` and ``python manage.py migrate barcamp``
 to create all the necessary tables in your database and then start the
 development server using ``python manage.py runserver``.
+
+Bundled 3rd party libraries
+---------------------------
+
+* jQuery_ 1.4.2 (MIT license)
+* jqTouch_ (MIT license)
+* Some Tango_ icons (Public Domain)
+
+.. _jqTouch: <http://www.jqtouch.com/>
+.. _jQuery: <http://jquery.com/>
+.. _Tango: <http://tango.freedesktop.org>
