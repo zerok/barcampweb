@@ -29,7 +29,7 @@ Once you have these two installed, following commands should get you up and
 running::
     
     cd barcampweb
-    virtualenv --no-site-packages barcampweb.env
+    virtualenv --distribute --no-site-packages barcampweb.env
     source barcampweb.env/bin/activate
     pip install -r requirements.txt
 
