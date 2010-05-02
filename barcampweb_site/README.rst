@@ -35,6 +35,6 @@ running::
 
 The last command downloads and installs all the requirements into the
 barcampweb.env. Once this is complete, just go into the barcampweb_site folder
-and run ``python manage.py syncdb`` to create all the necessary tables in your
-database and then start the development server using ``python manage.py
-runserver``.
+and run ``python manage.py syncdb`` and ``python manage.py migrate barcamp``
+to create all the necessary tables in your database and then start the
+development server using ``python manage.py runserver``.
