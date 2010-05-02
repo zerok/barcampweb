@@ -24,7 +24,6 @@ class Barcamp(models.Model):
     marked_for_removal_at=models.DateTimeField(blank=True, null=True)
     removal_requested_by=models.ForeignKey(User, blank=True, null=True, related_name='requested_barcamp_removals')
     removal_canceled_by=models.ForeignKey(User, blank=True, null=True, related_name='canceled_barcamp_removals')
-    places = models.ManyToManyField('Place', related_name='places', null=True, blank=True)
     available = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -63,9 +62,14 @@ class Sponsor(models.Model):
         return self.name
 
 class Place(models.Model):
+    """
+    Places are for one barcamp only in order not to allow modifications
+    of one barcamp's location by another organizer.
+    """
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=500, blank=True, null=True)
     address = models.CharField(max_length=500, blank=True, null=True)
+    barcamp = models.ForeignKey(Barcamp, related_name='places')
     is_sessionroom = models.BooleanField(default=True)
     
     def __unicode__(self):
@@ -86,7 +90,7 @@ class Event(models.Model):
 
 class Talk(Event):
     resources = models.ManyToManyField('Resource', related_name='talks', null=True, blank=True)
-    speakers = models.ManyToManyField(User, related_name='talks')
+    speakers = models.CharField(max_length=255)#models.ManyToManyField(User, related_name='talks')
     timeslot = models.ForeignKey('TimeSlot', related_name='talks', blank=True, null=True)
     
     can_edit = False # View helper

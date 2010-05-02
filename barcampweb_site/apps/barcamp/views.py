@@ -69,6 +69,9 @@ class BarcampBaseView(BaseView):
         self.data['organizers'] = self.barcamp.organizers.all()
         self.data['is_organizer'] = self.request.user in self.data['organizers'] or self.request.user.is_staff
 
+    def redirect_to_schedule(self):
+        return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
+
 class BarcampView(BarcampBaseView):
     
     template_name = 'barcamp/barcamp.html'
@@ -399,12 +402,45 @@ class BarcampEventView(BarcampBaseView):
         event = get_object_or_404(models.Event.objects.select_related(), pk=kwargs['event_pk'], barcamp=self.barcamp)
         self.data['event'] = event
         return self.render()
+
+class BarcampCreatePlaceView(BarcampBaseView):
+    template_name = 'barcamp/create-place.html'
+    
+    def view(self, *args, **kwargs):
+        form = forms.CreatePlaceForm()
+        if self.request.method == 'POST':
+            form = forms.CreatePlaceForm(self.request.POST)
+            form.barcamp = self.barcamp
+            if form.is_valid():
+                place = form.save(commit=False)
+                place.barcamp = self.barcamp
+                place.save()
+                return self.redirect_to_schedule()
+        self.data['form'] = form
+        return self.render()
         
-        
+class BarcampEditPlaceView(BarcampBaseView):
+    template_name = 'barcamp/edit-place.html'
+    
+    def view(self, *args, **kwargs):
+        place = get_object_or_404(models.Place.objects.select_related(), pk=kwargs.get('place_pk'))
+        form = forms.EditPlaceForm(instance=place)
+        if self.request.method == 'POST':
+            form = forms.EditPlaceForm(self.request.POST, instance=place)
+            if form.is_valid():
+                place = form.save(commit=False)
+                place.barcamp = self.barcamp
+                place.save()
+                return self.redirect_to_schedule()
+        self.data['form'] = form
+        return self.render()
+
 view_barcamp = BarcampView.create_view()
 view_proposals = BarcampProposalsView.create_view()
 create_slot = is_organizer(BarcampCreateSlotView.create_view(), barcamp_slug_kwarg='slug')
 delete_slot = is_organizer(BarcampDeleteSlotView.create_view(), barcamp_slug_kwarg='slug')
+create_place = is_organizer(BarcampCreatePlaceView.create_view(), barcamp_slug_kwarg='slug')
+edit_place = is_organizer(BarcampEditPlaceView.create_view(), barcamp_slug_kwarg='slug')
 view_schedule = BarcampScheduleView.create_view()
 view_now = BarcampNowView.create_view()
 view_upcoming = BarcampUpcomingView.create_view()
