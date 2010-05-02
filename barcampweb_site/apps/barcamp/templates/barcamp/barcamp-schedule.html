@@ -1,11 +1,6 @@
 {% extends "barcamp/barcamp-base.html" %}
 {% block title %}Zeitplan für {{ barcamp.name }}{% endblock %}
 {% block submenu-barcamp-schedule %}active{% endblock %}
-{% block end %}
-<script type="text/javascript" charset="utf-8">
-    $('.action').defaultFormOverlay();
-</script>
-{% endblock %}
 {% block subcontent %}
 
     {% for grid in grid %}

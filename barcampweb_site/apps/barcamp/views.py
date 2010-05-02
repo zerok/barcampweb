@@ -3,10 +3,12 @@ import collections
 import logging
 
 from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib import messages
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext_lazy as _
 from django.utils.datastructures import SortedDict
 
 from barcampweb_site.utils import render as _render
@@ -72,11 +74,11 @@ class BarcampBaseView(BaseView):
         self.data['is_organizer'] = self.request.user in self.data['organizers'] or self.request.user.is_staff
 
     def redirect_to_schedule(self):
-        return self.redirect_to('barcamp:schedule', args=[self.barcamp.slug])
+        return self.redirect_to(reverse('barcamp:schedule', args=[self.barcamp.slug]))
 
-    def redirect_to(self, view_name, args=[], kwargs={}):
+    def redirect_to(self, url=None):
         if 'next' not in self.request.REQUEST:
-            return HttpResponseRedirect(reverse(view_name, args, kwargs, current_app=APP_NAME))
+            return HttpResponseRedirect(url)
         return HttpResponseRedirect(self.request.REQUEST['next'])
 
 
@@ -443,12 +445,33 @@ class BarcampEditPlaceView(BarcampBaseView):
         self.data['form'] = form
         return self.render()
 
+class BarcampDeletePlaceView(BarcampBaseView):
+
+    template_name = 'barcamp/confirm-delete-place.html'
+
+    def view(self, *args, **kwargs):
+        place = get_object_or_404(models.Place.objects.select_related(), pk=kwargs.get('place_pk'))
+        if self.request.method == 'POST':
+            # Make sure that this place has no associations
+            if models.TimeSlot.objects.filter(place=place).count():
+                messages.error(self.request, _("There are slots associated with this place. Please reassign them first."))
+            elif models.Event.objects.filter(place=place).count():
+                messages.error(self.request, _("There are events associated with this place. Please reassign them first."))
+            else:
+                place.delete()
+            return self.redirect_to_schedule()
+        self.data['place'] = place
+        return self.render()
+
+        
+
 view_barcamp = BarcampView.create_view()
 view_proposals = BarcampProposalsView.create_view()
 create_slot = is_organizer(BarcampCreateSlotView.create_view(), barcamp_slug_kwarg='slug')
 delete_slot = is_organizer(BarcampDeleteSlotView.create_view(), barcamp_slug_kwarg='slug')
 create_place = is_organizer(BarcampCreatePlaceView.create_view(), barcamp_slug_kwarg='slug')
 edit_place = is_organizer(BarcampEditPlaceView.create_view(), barcamp_slug_kwarg='slug')
+delete_place = is_organizer(BarcampDeletePlaceView.create_view(), barcamp_slug_kwarg='slug')
 view_schedule = BarcampScheduleView.create_view()
 view_now = BarcampNowView.create_view()
 view_upcoming = BarcampUpcomingView.create_view()

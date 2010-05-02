@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% block end %}
+<script type="text/javascript" charset="utf-8">
+    $('.action').defaultFormOverlay();
+</script>
+{% endblock %}
 {% block title %}
     {{ barcamp.name }}
 {% endblock %}
