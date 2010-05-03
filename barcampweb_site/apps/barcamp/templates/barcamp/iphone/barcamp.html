@@ -1,4 +1,5 @@
 {% extends "barcamp/iphone/base.html" %}
+{% load i18n %}
 {% block page_title %}{{ barcamp.name }}{% endblock %}
 {% block content %}
 <div id="home" class="current">
@@ -6,9 +7,9 @@
         <h1 class="title">{{ barcamp.name }}</h1>
     </div>
     <ul class="edgetoedge">
-        <li class="arrow"><a href="{% url barcamp:now barcamp.slug %}">Gerade jetzt</a></li>
-        <li class="arrow"><a href="{% url barcamp:upcoming barcamp.slug %}">Als nächstes</a></li>
-        <li class="arrow"><a href="{% url barcamp:schedule barcamp.slug %}">Sessions</a></li>
+        <li class="arrow"><a href="{% url barcamp:now barcamp.slug %}">{% trans "Right now" %}</a></li>
+        <li class="arrow"><a href="{% url barcamp:upcoming barcamp.slug %}">{% trans "Upcoming" %}</a></li>
+        <li class="arrow"><a href="{% url barcamp:schedule barcamp.slug %}">{% trans "Sessions" %}</a></li>
     </ul>
 </div>
 {% endblock %}

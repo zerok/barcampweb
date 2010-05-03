@@ -1,12 +1,17 @@
 {% extends "barcamp/iphone/basepage.html" %}
+{% load i18n %}
 {% block title %}{{ event.name }}{% endblock %}
 {% block content %}
-<h2>Zeit:</h2>
-<ul><li>{{ event.start|date:'DATE_FORMAT' }} von {{ event.start|time:'TIME_FORMAT' }} - {{ event.end|time:'TIME_FORMAT' }}</li></ul>
+<h2>{% trans "Time" %}:</h2>
+<ul><li>
+    {% blocktrans with event.start|date:"DATE_FORMAT" as date and event.start|time:"TIME_FORMAT" as start and event.end|time:"TIME_FORMAT" as end %}
+    {{ date }} from {{ start }} to {{ end }}
+    {% endblocktrans %}
+</li></ul>
 
-<h2>Ort:</h2><ul><li>{{ event.place.name }}</li></ul>
+<h2>{% trans "Place" %}:</h2><ul><li>{{ event.place.name }}</li></ul>
 {% if event.talk %}
-<h2>Vortragende(r):</h2><ul>{% for speaker in event.talk.speakers.all %}<li>{{ speaker.name }}</li>{% endfor %}</ul>
+<h2>{% trans "Speaker(s)" %}:</h2><ul>{% for speaker in event.talk.speakers.all %}<li>{{ speaker.name }}</li>{% endfor %}</ul>
 {% endif %}
 </div>
 <div class="description">{{ event.description|markdown }}</div>
