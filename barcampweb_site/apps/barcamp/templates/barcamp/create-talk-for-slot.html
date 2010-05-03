@@ -1,5 +1,6 @@
+{% load i18n %}
 <form method="post">
     {{ form.as_p }}
-    <button type="submit">Anlegen</button>
-    <a class="cancel" href="">Abbrechen</a>
+    <button type="submit">{% trans "Create talk" %}</button>
+    <a class="cancel" href="">{% trans "Cancel" %}</a>
 </form>

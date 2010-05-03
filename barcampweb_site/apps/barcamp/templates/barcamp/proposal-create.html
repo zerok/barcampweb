@@ -1,16 +1,18 @@
+{% load i18n %}
 {% if request.user.is_authenticated %}
-    <p>Du bist angemeldet. Dieser Session-Vorschlag kann in der Folge nur
-        noch von dir selbst oder einem der Organisatoren verändert oder 
-        gelöscht werden.
-    </p>
+    {% blocktrans %}
+    <p>You are logged in. If you save this talk idea it can only be edited
+    or removed by you or one of the organizers.</p>
+    {% endblocktrans %}
 {% else %}
-    <p>Du bist nicht angemeldet. Session-Vorschläge, die du jetzt erstellst, 
-        können von jeder Person verändert oder auch gelöscht werden. Wenn
-        du das verhindern möchtest, bitte melde dich an
-    </p>
+    {% blocktrans %}
+    <p>You are not logged in. If you save this talk idea it can be changed
+    or removed by anyone. If you want to prevent this, suggest this talk 
+    after logging in.</p>
+    {% endblocktrans %}
 {% endif %}
 
 <form method="post">
     {{ form.as_p }}
-    <button type="submit">Speichern</button>
+    <button type="submit">{% trans "Save" %}</button>
 </form>

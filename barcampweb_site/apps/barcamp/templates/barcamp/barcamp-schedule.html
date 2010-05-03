@@ -1,5 +1,6 @@
 {% extends "barcamp/barcamp-base.html" %}
-{% block title %}Zeitplan für {{ barcamp.name }}{% endblock %}
+{% load i18n %}
+{% block title %}{% blocktrans with barcamp.name as barcamp %}Schedule for {{ barcamp }}{% endblocktrans %}{% endblock %}
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block subcontent %}
 
@@ -10,7 +11,7 @@
             {% for place in grid.places %}
             <th>{{ place.name }}
                 {% if is_organizer %}
-                <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}">edit</a>
+                <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}">{% trans "Edit" %}</a>
                 {% endif %}
             
             </th>
@@ -29,19 +30,19 @@
                         <a href="{% url barcamp:event barcamp.slug,event.pk %}">{{ event.name }}</a>
                         {% if event.can_edit and user.is_authenticated %}
                         <p class="actions">
-                        <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug event.pk %}">Ändern</a>
-                        <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug event.pk %}">Löschen</a>
-                        <a class="action action-move" href="{% url barcamp:move-talk barcamp.slug event.pk %}">Verschieben</a>
-                        <a class="action action-detach" href="{% url barcamp:detach-talk barcamp.slug event.pk %}">Aushängen</a>
+                        <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug event.pk %}">{% trans "Edit" %}</a>
+                        <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug event.pk %}">{% trans "Remove" %}</a>
+                        <a class="action action-move" href="{% url barcamp:move-talk barcamp.slug event.pk %}">{% trans "Move" %}</a>
+                        <a class="action action-detach" href="{% url barcamp:detach-talk barcamp.slug event.pk %}">{% trans "Detach" %}</a>
                         </p>
                         {% endif %}
                     {% empty %}
                         {% if user.is_authenticated %}
-                        <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}">Slot füllen</a></p>
+                        <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}">{% trans "Fill this slot" %}</a></p>
                         {% endif %}
                     {% endfor %}
                     {% if is_organizer %}
-                    <a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete">Slot löschen</a>
+                    <a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete">{% trans "Delete this slot" %}</a>
                     {% endif %}
                     {% endif %}
                 </td>
@@ -54,15 +55,15 @@
     
     {% if detached_talks %}
     <div id="detached-talks">
-    <h2>Offene Talks</h2>
+    <h2>{% trans "Unscheduled talks" %}</h2>
     <ul class="content">
         {% for talk in detached_talks %}
         <li>
             <a href="">{{ talk.name }}</a>
             {% if talk.can_edit %}
-            <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug talk.pk %}">Ändern</a>
-            <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug talk.pk %}">Löschen</a>
-            <a class="action action-move" href="{% url barcamp:move-talk barcamp.slug talk.pk %}">Verschieben</a>
+            <a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug talk.pk %}">{% trans "Edit" %}</a>
+            <a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug talk.pk %}">{% trans "Remove" %}</a>
+            <a class="action action-move" href="{% url barcamp:move-talk barcamp.slug talk.pk %}">{% trans "Move" %}</a>
             {% endif %}
         </li>
         {% endfor %}
@@ -71,6 +72,6 @@
     {% endif %}
     
     {% if is_organizer %}
-    <a id="create-slot" href="{% url barcamp:create-slot barcamp.slug %}" class="action action-new">Slot anlegen</a>
+    <a id="create-slot" href="{% url barcamp:create-slot barcamp.slug %}" class="action action-new">{% trans "Create a new slot" %}</a>
     {% endif %}
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends "barcamp/barcamp-base.html" %}
+{% load i18n %}
 {% block submenu-barcamp-proposals %}active{% endblock %}
-{% block head-title %}Themenvorschläge « {{ block.super }}{% endblock %}
-{% block title %}Themevorschläge für {{ barcamp.name }}{% endblock %}
+{% block head-title %}{% trans "Talk ideas" %} « {{ block.super }}{% endblock %}
+{% block title %}{% blocktrans with barcamp.name as name %}Talk ideas for {{ name }}{% endblocktrans %}{% endblock %}
 {% block head %}
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
@@ -30,15 +31,16 @@
             {% endif %}
             {% endifequal %}
             {% if proposal.user and request.user == proposal.user %}
-            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">ändern</a>
-            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">löschen</a>
-            {% endif %}
-            {% if not proposal.user or is_organizer %}
-            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">ändern</a>
-            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">löschen</a>
+            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">{% trans "Edit" %}</a>
+            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">{% trans "Remove" %}</a>
+            {% else %}
+                {% if not proposal.user or is_organizer %}
+                <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">{% trans "Edit" %}</a>
+                <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">{% trans "Remove" %}</a>
+                {% endif %}
             {% endif %}
         </li>
     {% endfor %}
     </ul>
-    <a href="{% url barcamp:create-proposal barcamp.slug %}" class="newtalkidea action action-new">Neuen Vorschlag anlegen</a>
+    <a href="{% url barcamp:create-proposal barcamp.slug %}" class="newtalkidea action action-new">{% trans "Have an idea for a talk?" %}</a>
 {% endblock %}

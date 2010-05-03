@@ -1,4 +1,5 @@
+{% load i18n %}
 <form method="POST">
     {{ form.as_p }}
-    <button type="submit">Speichern</button>
+    <button type="submit">{% trans "Save changes" %}</button>
 </form>

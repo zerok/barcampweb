@@ -1,5 +1,8 @@
 {% extends "barcamp/confirm-barcamprelated.html" %}
+{% load i18n %}
 {% block message %}
+{% blocktrans %}
 <p>Bist du sicher, dass du diesen Slot freigeben möchtest? Dein Talk bleibt
     weiter bestehen, jedoch ohne einer festgelegten Vortragszeit.</p>
+{% endblocktrans %}
 {% endblock %}

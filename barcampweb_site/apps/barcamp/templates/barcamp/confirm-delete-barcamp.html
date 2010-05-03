@@ -1,6 +1,9 @@
 {% extends "barcamp/confirm-barcamprelated.html" %}
+{% load i18n %}
 {% block message %}
+{% blocktrans %}
 <p>Sind Sie sicher, dass Sie dieses Barcamp als gelöscht markieren wollen?</p>
 <p><strong>Anmerkung:</strong> Sie oder ein anderer Organisator haben nach diesem 
     Vorgang noch 24h Zeit, um diesen Vorgang rückgängig zu machen.</p>
+{% endblocktrans %}
 {% endblock %}

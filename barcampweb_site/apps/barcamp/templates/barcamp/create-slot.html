@@ -1,6 +1,7 @@
+{% load i18n %}
 <form method="post">
     {{ form.as_p }}
     <p class="buttons">
-        <button type="submit">anlegen</button>
+    <button type="submit">{% trans "Create time slot" %}</button>
     </p>
 </form>

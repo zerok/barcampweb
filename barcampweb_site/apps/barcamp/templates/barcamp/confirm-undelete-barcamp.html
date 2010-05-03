@@ -1,7 +1,7 @@
-{% block content %}
+{% extends "barcamp/confirm-barcamprelated" %}
+{% load i18n %}
+{% block message %}
+{% blocktrans %}
 <p>Sind Sie sicher, dass Sie den Löschvorgang abbrechen möchten?</p>
-<form method="post">
-    <button type="submit">Ja</button>
-    <a href="{% url barcamp:view barcamp.slug %}">Abbrechen</a>
-</form>
+{% endblocktrans %}
 {% endblock %}

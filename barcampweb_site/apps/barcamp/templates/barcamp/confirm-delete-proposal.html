@@ -1,5 +1,8 @@
 {% extends "barcamp/confirm-barcamprelated.html" %}
+{% load i18n %}
 {% block message %}
+{% blocktrans %}
 <p>Sind Sie sicher, dass Sie diesen Vorschlag löschen möchten?</p>
+{% endblocktrans %}
 {% endblock %}
 {% block cancel-link %}{% url barcamp:proposals barcamp.slug %}{% endblock %}

@@ -7,8 +7,8 @@
     {% for place in places %}
     <li>{{ place.name }}{% if place.location%}: {{ place.location }}{% endif %}
     {% if is_organizer %}
-    <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}?next={{ request.path }}">edit</a>
-    <a class="action" href="{% url barcamp:delete-place barcamp.slug, place.pk %}?next={{ request.path }}">delete</a>
+    <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}?next={{ request.path }}">{% trans "Edit" %}</a>
+    <a class="action" href="{% url barcamp:delete-place barcamp.slug, place.pk %}?next={{ request.path }}">{% trans "Delete" %}</a>
     {% endif %}
     </li>
     {% endfor %}
