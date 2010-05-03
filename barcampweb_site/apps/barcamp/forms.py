@@ -55,10 +55,10 @@ class ProposalForm(ModelForm):
         
 class CreateSlotForm(forms.Form):
     
-    day = DateChoiceField()
-    start = forms.TimeField()
-    end = forms.TimeField()
-    room = forms.ChoiceField(required=False)
+    day = DateChoiceField(label=_("Day"))
+    start = forms.TimeField(label=_("Start time"))
+    end = forms.TimeField(label=_("End time"))
+    room = forms.ChoiceField(required=False, label=_("Room"))
     
     def __init__(self, *args, **kwargs):
         if 'barcamp' in kwargs:
