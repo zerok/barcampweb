@@ -1,4 +1,5 @@
 import os
+import urllib
 import datetime
 
 from django.db import models
@@ -84,6 +85,11 @@ class Place(models.Model):
     class Meta:
         verbose_name = _('place')
         verbose_name_plural = _('places')
+
+    def onGoogleMaps(self):
+        if not self.address:
+            return None
+        return 'http://maps.google.com/maps?' + urllib.urlencode({'q': self.address.encode('utf-8')})
     
     def __unicode__(self):
         if self.location:

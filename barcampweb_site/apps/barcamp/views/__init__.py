@@ -86,8 +86,23 @@ class BarcampDeletePlaceView(BarcampBaseView):
         self.data['place'] = place
         return self.render()
 
+class BarcampPlaceView(BarcampBaseView):
+    template_name_iphone = 'barcamp/iphone/place.html'
+    def view(self, *args, **kwargs):
+        place = get_object_or_404(models.Place.objects.select_related(), pk=kwargs.get('place_pk'))
+        self.data['place'] = place
+        return self.render()
+
+class BarcampListPlacesView(BarcampBaseView):
+    template_name_iphone = 'barcamp/iphone/places.html'
+
+    def view(self, *args, **kwargs):
+        return self.render()
+
 view_barcamp = BarcampView.create_view()
 view_proposals = BarcampProposalsView.create_view()
+view_place = BarcampPlaceView.create_view()
+list_places = BarcampListPlacesView.create_view()
 create_slot = is_organizer(BarcampCreateSlotView.create_view(), barcamp_slug_kwarg='slug')
 delete_slot = is_organizer(BarcampDeleteSlotView.create_view(), barcamp_slug_kwarg='slug')
 create_place = is_organizer(BarcampCreatePlaceView.create_view(), barcamp_slug_kwarg='slug')

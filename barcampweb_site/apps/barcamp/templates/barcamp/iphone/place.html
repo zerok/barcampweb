@@ -1,0 +1,14 @@
+{% extends "barcamp/iphone/basepage.html" %}
+{% load i18n %}
+{% block title %}{{ place.name }}{% endblock %}
+{% block content %}
+<ul>
+    {% if place.location %}
+    <li>{{ place.location }}</li>
+    {% endif %}
+    {% if place.address %}
+    <li>{{ place.address }}</li>
+    <li><a href="{{ place.onGoogleMaps }}" target="_blank">{% trans "Show on Google Maps" %}</a></li>
+    {% endif %}
+</ul>
+{% endblock %}
