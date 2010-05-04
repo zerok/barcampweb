@@ -1,0 +1,631 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-04 22:21+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: apps/account/forms.py:15
+msgid "This username is already taken"
+msgstr "Dieser Benutzername ist bereits vergeben"
+
+#: apps/account/utils.py:10
+msgid "Welcome to barcampweb"
+msgstr "Willkommen zum BarcampWeb"
+
+#: apps/barcamp/forms.py:58
+msgid "Day"
+msgstr "Tag"
+
+#: apps/barcamp/forms.py:59
+msgid "Start time"
+msgstr "Startzeitpunkt"
+
+#: apps/barcamp/forms.py:60
+msgid "End time"
+msgstr "Endzeitpunkt"
+
+#: apps/barcamp/forms.py:61
+msgid "Room"
+msgstr "Raum"
+
+#: apps/barcamp/forms.py:92
+msgid "Start has to be before the the end"
+msgstr "Der Startzeitpunkt muss vor dem Endzeitpunkt liegen"
+
+#: apps/barcamp/forms.py:115
+msgid "A generic slot for this range already exists."
+msgstr "Es existiert bereits ein allgemeiner Zeitslot für diese Zeitspanne."
+
+#: apps/barcamp/forms.py:117
+msgid "There already exists a timeslot for this range and this room."
+msgstr ""
+"Es existiert bereits ein Zeitslot für diese Zeitspanne und diesen Raum."
+
+#: apps/barcamp/forms.py:140
+msgid "This timeslot is bound to another place"
+msgstr "Dieser Zeitslot ist bereits mit einem anderen Raum verknüpft"
+
+#: apps/barcamp/forms.py:145 apps/barcamp/forms.py:172
+msgid "This slot is already taken"
+msgstr "Dieser Slot ist bereits belegt."
+
+#: apps/barcamp/forms.py:154
+msgid "Timeslot"
+msgstr "Zeitslot"
+
+#: apps/barcamp/forms.py:195
+msgid ""
+"There are timeslots bound to this place. Please unbind them before "
+"proceeding."
+msgstr ""
+"Dieser Zeitslot ist mit Orten verknüpft. Bitte entferne diese Verknüpfungen, "
+"bevor du fortfährst."
+
+#: apps/barcamp/forms.py:197
+msgid ""
+"There are still talks associated with this place. Please assign them to "
+"another room."
+msgstr ""
+"Dieser Zeitslot ist mit Talks verknüpft. Bitte entferne diese Verknüpfungen, "
+"bevor du fortfährst"
+
+#: apps/barcamp/models.py:10
+#: apps/barcamp/templates/barcamp/confirm-barcamprelated.html:12
+msgid "Yes"
+msgstr "Ja"
+
+#: apps/barcamp/models.py:11
+msgid "No"
+msgstr "Nein"
+
+#: apps/barcamp/models.py:12
+msgid "Maybe"
+msgstr "Vielleicht"
+
+#: apps/barcamp/models.py:16 apps/barcamp/models.py:50
+#: apps/barcamp/models.py:79 apps/barcamp/models.py:100
+#: apps/barcamp/models.py:148 apps/barcamp/models.py:180
+#: apps/barcamp/models.py:190
+msgid "name"
+msgstr "Name"
+
+#: apps/barcamp/models.py:17 apps/barcamp/models.py:191
+msgid "slug"
+msgstr "Slug"
+
+#: apps/barcamp/models.py:18 apps/barcamp/models.py:104
+#: apps/barcamp/models.py:133
+msgid "start time"
+msgstr "Startzeitpunkt"
+
+#: apps/barcamp/models.py:19 apps/barcamp/models.py:105
+#: apps/barcamp/models.py:134
+msgid "end time"
+msgstr "Endzeitpunkt"
+
+#: apps/barcamp/models.py:20
+msgid "teaser"
+msgstr "Teaser"
+
+#: apps/barcamp/models.py:21 apps/barcamp/models.py:101
+#: apps/barcamp/models.py:149 apps/barcamp/models.py:182
+msgid "description"
+msgstr "Beschreibung"
+
+#: apps/barcamp/models.py:22 apps/barcamp/models.py:52
+msgid "logo"
+msgstr "Logo"
+
+#: apps/barcamp/models.py:23
+msgid "Twitter tag"
+msgstr "Twitter-Tag"
+
+#: apps/barcamp/models.py:24
+msgid "organizers"
+msgstr "Organisatoren"
+
+#: apps/barcamp/models.py:26
+msgid "marked for removal"
+msgstr "Für Löschung vorgemerkt"
+
+#: apps/barcamp/models.py:29
+msgid "removal requested by"
+msgstr "Löschung beantragt von"
+
+#: apps/barcamp/models.py:32
+msgid "removal canceled by"
+msgstr "Löschung abgebrochen von"
+
+#: apps/barcamp/models.py:34
+msgid "available?"
+msgstr "verfügbar?"
+
+#: apps/barcamp/models.py:37 apps/barcamp/models.py:82
+#: apps/barcamp/models.py:103 apps/barcamp/models.py:135
+#: apps/barcamp/models.py:153
+msgid "barcamp"
+msgstr "Barcamp"
+
+#: apps/barcamp/models.py:38
+msgid "barcamps"
+msgstr "Barcamps"
+
+#: apps/barcamp/models.py:51 apps/barcamp/models.py:183
+msgid "URL"
+msgstr "URL"
+
+#: apps/barcamp/models.py:53
+msgid "level"
+msgstr "Stufe"
+
+#: apps/barcamp/models.py:54
+msgid "Barcamp"
+msgstr "Barcamp"
+
+#: apps/barcamp/models.py:57
+msgid "sponsor"
+msgstr "Sponsor"
+
+#: apps/barcamp/models.py:58
+msgid "sponsors"
+msgstr "Sponsoren"
+
+#: apps/barcamp/models.py:80
+msgid "location"
+msgstr "Ort"
+
+#: apps/barcamp/models.py:81
+msgid "address"
+msgstr "Adresse"
+
+#: apps/barcamp/models.py:83
+msgid "is session room?"
+msgstr "Vortragsraum?"
+
+#: apps/barcamp/models.py:86 apps/barcamp/models.py:102
+#: apps/barcamp/models.py:137
+msgid "place"
+msgstr "Ort"
+
+#: apps/barcamp/models.py:87
+msgid "places"
+msgstr "Orte"
+
+#: apps/barcamp/models.py:108
+msgid "event"
+msgstr "Event"
+
+#: apps/barcamp/models.py:109
+msgid "events"
+msgstr "Events"
+
+#: apps/barcamp/models.py:115 apps/barcamp/models.py:187
+msgid "resources"
+msgstr "Ressourcen"
+
+#: apps/barcamp/models.py:117
+msgid "speakers"
+msgstr "Vortragende"
+
+#: apps/barcamp/models.py:118 apps/barcamp/models.py:141
+msgid "time slot"
+msgstr "Zeitslot"
+
+#: apps/barcamp/models.py:124
+msgid "talk"
+msgstr "Talk"
+
+#: apps/barcamp/models.py:125
+msgid "talks"
+msgstr "Talks"
+
+#: apps/barcamp/models.py:142
+msgid "time slots"
+msgstr "Zeitslot"
+
+#: apps/barcamp/models.py:150
+msgid "user"
+msgstr "Benutzer"
+
+#: apps/barcamp/models.py:151
+msgid "username"
+msgstr "Benutzername"
+
+#: apps/barcamp/models.py:152
+msgid "e-mail address"
+msgstr "E-Mail-Adresse"
+
+#: apps/barcamp/models.py:154
+msgid "created at"
+msgstr "erstellt am"
+
+#: apps/barcamp/models.py:155
+msgid "modified at"
+msgstr "modifiziert am"
+
+#: apps/barcamp/models.py:156
+msgid "votes"
+msgstr "Stimmen"
+
+#: apps/barcamp/models.py:164
+msgid "talk idea"
+msgstr "Session-Vorschlag"
+
+#: apps/barcamp/models.py:165
+msgid "talk ideas"
+msgstr "Session-Vorschläge"
+
+#: apps/barcamp/models.py:181 apps/barcamp/models.py:194
+msgid "resource type"
+msgstr "Ressourcentyp"
+
+#: apps/barcamp/models.py:186
+msgid "resource"
+msgstr "Ressource"
+
+#: apps/barcamp/models.py:195
+msgid "resource types"
+msgstr "Ressourcentypen"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:13
+#: apps/barcamp/templates/barcamp/barcamp-base.html:55
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:34
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:38
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:14
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:33
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:64
+#: apps/barcamp/templates/barcamp/barcamp.html:10
+msgid "Edit"
+msgstr "Editieren"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:15
+msgid "Cancel removal"
+msgstr "Löschvorgang abbrechen"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:17
+#: apps/barcamp/templates/barcamp/barcamp-base.html:56
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:35
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:39
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:34
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:65
+msgid "Remove"
+msgstr "Entfernen"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:25
+msgid "Warning"
+msgstr "Warnung"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:26
+msgid "This barcamp was marked for removal."
+msgstr "Dieses Barcamp wurde zur Löschung vorgemerkt."
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:31
+msgid "When?"
+msgstr "Wann?"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:39
+msgid "Info"
+msgstr "Info"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:40
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:4
+msgid "Talk ideas"
+msgstr "Session-Vorschläge"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:41
+msgid "Schedule"
+msgstr "Zeitplan"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:49
+msgid "Sponsors"
+msgstr "Sponsoren"
+
+#: apps/barcamp/templates/barcamp/barcamp-base.html:62
+msgid "Add a sponsor"
+msgstr "Sponsor hinzufügen"
+
+#: apps/barcamp/templates/barcamp/barcamp-edit.html:4
+#: apps/barcamp/templates/barcamp/proposal-create.html:17
+#: apps/barcamp/templates/barcamp/sponsor-edit.html:2
+msgid "Save"
+msgstr "Speichern"
+
+#: apps/barcamp/templates/barcamp/barcamp-event.html:4
+#, python-format
+msgid ""
+"\n"
+"    %(event)s at %(barcamp)s\n"
+"    "
+msgstr ""
+"\n"
+"%(event)s am %(barcamp)s"
+
+#: apps/barcamp/templates/barcamp/barcamp-event.html:10
+msgid "Time:"
+msgstr "Zeit:"
+
+#: apps/barcamp/templates/barcamp/barcamp-event.html:11
+#, python-format
+msgid ""
+"\n"
+"        %(date)s from %(start)s to %(end)s\n"
+"        "
+msgstr ""
+"\n"
+"%(date)s von %(start)s bis %(end)s"
+
+#: apps/barcamp/templates/barcamp/barcamp-event.html:15
+msgid "Place:"
+msgstr "Ort:"
+
+#: apps/barcamp/templates/barcamp/barcamp-event.html:17
+msgid "Speaker(s):"
+msgstr "Vortragende(r):"
+
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:5
+#, python-format
+msgid "Talk ideas for %(name)s"
+msgstr "Session-Vorschläge für %(name)s"
+
+#: apps/barcamp/templates/barcamp/barcamp-proposals.html:45
+msgid "Have an idea for a talk?"
+msgstr "Hast du eine Idee für eine Session?"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:3
+#, python-format
+msgid "Schedule for %(barcamp)s"
+msgstr "Zeitplan für %(barcamp)s"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:35
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:66
+#: apps/barcamp/templates/barcamp/move-talk.html:5
+msgid "Move"
+msgstr "Verschieben"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:36
+msgid "Detach"
+msgstr "Aushängen"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:41
+msgid "Fill this slot"
+msgstr "Slot befüllen"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:45
+msgid "Delete this slot"
+msgstr "Slot löschen"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:58
+msgid "Unscheduled talks"
+msgstr "Sessions ohne Zeitslot"
+
+#: apps/barcamp/templates/barcamp/barcamp-schedule.html:75
+msgid "Create a new slot"
+msgstr "Neuen Slot anlegen"
+
+#: apps/barcamp/templates/barcamp/barcamp.html:5
+#: apps/barcamp/templates/barcamp/iphone/barcamp.html:13
+#: apps/barcamp/templates/barcamp/iphone/places.html:3
+msgid "Places"
+msgstr "Orte"
+
+#: apps/barcamp/templates/barcamp/barcamp.html:11
+msgid "Delete"
+msgstr "Löschen"
+
+#: apps/barcamp/templates/barcamp/barcamp.html:17
+msgid "Create place"
+msgstr "Ort anlegen"
+
+#: apps/barcamp/templates/barcamp/confirm-barcamprelated.html:13
+#: apps/barcamp/templates/barcamp/create-talk-for-slot.html:5
+#: apps/barcamp/templates/barcamp/move-talk.html:6
+#: apps/barcamp/templates/barcamp/sponsor-add.html:6
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: apps/barcamp/templates/barcamp/confirm-delete-barcamp.html:4
+msgid ""
+"\n"
+"<p>Sind Sie sicher, dass Sie dieses Barcamp als gelöscht markieren wollen?</"
+"p>\n"
+"<p><strong>Anmerkung:</strong> Sie oder ein anderer Organisator haben nach "
+"diesem \n"
+"    Vorgang noch 24h Zeit, um diesen Vorgang rückgängig zu machen.</p>\n"
+msgstr ""
+
+#: apps/barcamp/templates/barcamp/confirm-delete-place.html:4
+msgid "Are you sure you want to delete this place?"
+msgstr "Bist du sicher, dass du diesen Ort löschen möchtest?"
+
+#: apps/barcamp/templates/barcamp/confirm-delete-proposal.html:4
+msgid ""
+"\n"
+"<p>Are you sure that you want to remove this idea?</p>\n"
+msgstr "\n<p>Bist du sicher, dass du diesen Vorschlag löschen möchtest?</p>\n"
+
+#: apps/barcamp/templates/barcamp/confirm-delete-slot.html:3
+msgid ""
+"\n"
+"<p>Are you sure that you want to delete this slot and detach all its talks?</"
+"p>\n"
+msgstr ""
+"\n<p>Bist du sicher, dass du diesen Slot löschen und alle enthaltenen Sessions "
+"aushängen möchtest?</p>\n"
+
+#: apps/barcamp/templates/barcamp/confirm-delete-talk.html:4
+msgid ""
+"\n"
+"<p>Are you sure that you want to delete this talk?</p>\n"
+msgstr "\n<p>Bist du sicher, dass du diese Session löschen möchtest?</p>\n"
+
+#: apps/barcamp/templates/barcamp/confirm-detach-talk.html:4
+msgid ""
+"\n"
+"<p>Are you sure that you want to detach this talk? Your talk won't be "
+"removed but it won't have a fixed start time either.</p>\n"
+msgstr ""
+"\n<p>Bist du sicher, dass du diesen Slot freigeben möchtest? Deine Session "
+"bleibt weiter bestehen, jedoch ohne festgelegten Startzeitpunkt.</p>\n"
+
+#: apps/barcamp/templates/barcamp/confirm-remove-sponsor.html:4
+msgid ""
+"\n"
+"    <p>Are you sure that you want to remove this sponsor?</p>\n"
+msgstr "\n<p>Bist du sicher, dass du diesen Sponsor löschen möchtest?</p>\n"
+
+#: apps/barcamp/templates/barcamp/confirm-undelete-barcamp.html:4
+msgid ""
+"\n"
+"<p>Are you sure that you want to cancel this removal request?</p>\n"
+msgstr "\n<p>Bist du sicher, dass du den Löschvorgang abbrechen möchtest?</p>\n"
+
+#: apps/barcamp/templates/barcamp/create-place.html:4
+msgid "Create room"
+msgstr "Raum anlegen"
+
+#: apps/barcamp/templates/barcamp/create-slot.html:5
+msgid "Create time slot"
+msgstr "Zeitslot anlegen"
+
+#: apps/barcamp/templates/barcamp/create-talk-for-slot.html:4
+msgid "Create talk"
+msgstr "Session anlegen"
+
+#: apps/barcamp/templates/barcamp/edit-place.html:6
+msgid "Edit place"
+msgstr "Platz editieren"
+
+#: apps/barcamp/templates/barcamp/edit-talk-for-slot.html:4
+msgid "Save changes"
+msgstr "Änderungen speichern"
+
+#: apps/barcamp/templates/barcamp/move-talk.html:3
+msgid "<p>Where do you want to move this talk to?</p>"
+msgstr "<p>Wohin möchtest du diese Session verschieben?</p>"
+
+#: apps/barcamp/templates/barcamp/proposal-create.html:3
+msgid ""
+"\n"
+"    <p>You are logged in. If you save this talk idea it can only be edited\n"
+"    or removed by you or one of the organizers.</p>\n"
+"    "
+msgstr ""
+"\n"
+"<p>Du bist angemeldet. Session-Vorschläge, die du so speicherst, können nur "
+"von dir und einem Organisator editiert oder gelöscht werden.</p>"
+
+#: apps/barcamp/templates/barcamp/proposal-create.html:8
+msgid ""
+"\n"
+"    <p>You are not logged in. If you save this talk idea it can be changed\n"
+"    or removed by anyone. If you want to prevent this, suggest this talk \n"
+"    after logging in.</p>\n"
+"    "
+msgstr ""
+"\n"
+"<p>Du bist nicht angemeldet. Session-Vorschläge, die du so speicherst, "
+"können von jedem editiert und gelöscht werden. Melde dich an, damit "
+"lediglich du und Organisatoren das können.</p>"
+
+#: apps/barcamp/templates/barcamp/slot-taken.html:2
+msgid "This slot is already taken."
+msgstr "Dieser Slot ist bereits belegt."
+
+#: apps/barcamp/templates/barcamp/sponsor-add.html:5
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp-event.html:5
+msgid "Time"
+msgstr "Zeit"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp-event.html:7
+#, python-format
+msgid ""
+"\n"
+"    %(date)s from %(start)s to %(end)s\n"
+"    "
+msgstr ""
+"\n"
+"%(date)s von %(start)s bis %(end)s"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp-event.html:12
+msgid "Place"
+msgstr "Ort"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp-event.html:14
+msgid "Speaker(s)"
+msgstr "Vortragende(r)"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp-schedule.html:4
+#: apps/barcamp/templates/barcamp/iphone/barcamp.html:12
+msgid "Sessions"
+msgstr "Sessions"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp-schedule.html:5
+#: apps/barcamp/templates/barcamp/iphone/barcamp-schedule.html:17
+#: apps/barcamp/templates/barcamp/iphone/basepage.html:5
+msgid "Back"
+msgstr "Zurück"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp.html:10
+#: apps/barcamp/templates/barcamp/iphone/now.html:3
+msgid "Right now"
+msgstr "Jetzt"
+
+#: apps/barcamp/templates/barcamp/iphone/barcamp.html:11
+#: apps/barcamp/templates/barcamp/iphone/upcoming.html:4
+msgid "Upcoming"
+msgstr "Als nächstes"
+
+#: apps/barcamp/templates/barcamp/iphone/place.html:11
+msgid "Show on Google Maps"
+msgstr "Auf Google Maps"
+
+#: apps/barcamp/views/__init__.py:80
+msgid "There are slots associated with this place. Please reassign them first."
+msgstr ""
+"Es sind Slots mit diesem Ort verknüpft. Bitte weise sie zuerst anderen Orten "
+"zu."
+
+#: apps/barcamp/views/__init__.py:82
+msgid ""
+"There are events associated with this place. Please reassign them first."
+msgstr ""
+"Es sind Ereignisse mit diesem Ort verknüpft. Bitte weise sie zuerst anderen "
+"Orten zu."
+
+#: templates/base.html:43
+msgid "Create a new barcamp"
+msgstr "Neues Barcamp anlegen"
+
+#: templates/base.html:50 templates/base.html.py:53
+#, python-format
+msgid "Hello %(username)s"
+msgstr "Hallo %(username)s"
+
+#: templates/base.html:50 templates/base.html.py:56
+#: templates/account/login.html:7 templates/account/simple_login.html:4
+msgid "Log in"
+msgstr "Anmelden"
+
+#: templates/base.html:53
+msgid "Log out"
+msgstr "Abmelden"
+
+#: templates/account/registration.html:4
+msgid "Register"
+msgstr "Registrieren"

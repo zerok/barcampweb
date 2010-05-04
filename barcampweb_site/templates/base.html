@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -39,21 +40,20 @@
             <ul id="pageactions">
                 {% block pageactions %}
                 {% if user.is_authenticated %}
-                <li><a class="action action-new" href="{% url barcamp:create %}">Neues Barcamp anlegen</a></li>
+                <li><a class="action action-new" href="{% url barcamp:create %}">{% trans "Create a new barcamp" %}</a></li>
                 {% endif %}
                 {% endblock %}
             </ul>
         </div>
         <div id="footer">
             {% if request.username %}
-            Hallo {{ request.username }} <a href="{% url account:simple_logout %}?next={{ request.path }}">Abmelden</a>
+            {% blocktrans with request.username as username %}Hello {{ username }}{% endblocktrans %} <a href="{% url account:simple_logout %}?next={{ request.path }}">{% trans "Log in" %}</a>
             {% endif %}
             {% if user.is_authenticated %}
-            Hallo {{ user.username }}, <a href="{% url logout %}?next={{ request.path }}">Log out</a>
+            {% blocktrans with user.username as username %}Hello {{ username }}{% endblocktrans %}, <a href="{% url logout %}?next={{ request.path }}">{% trans "Log out" %}</a>
             {% endif %}
             {% if not request.username and not user.is_authenticated %}
-            <a href="{% url login %}?next={{ request.path }}">Log in</a>
-            <a href="{% url account:simple_login %}?next={{ request.path }}">Wer bist du?</a>
+            <a href="{% url login %}?next={{ request.path }}">{% trans "Log in" %}</a>
             {% endif %}
         </div>
     </div>
