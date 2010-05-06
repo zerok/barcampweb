@@ -10,6 +10,7 @@
         <li class="arrow"><a href="{% url barcamp:now barcamp.slug %}">{% trans "Right now" %}</a></li>
         <li class="arrow"><a href="{% url barcamp:upcoming barcamp.slug %}">{% trans "Upcoming" %}</a></li>
         <li class="arrow"><a href="{% url barcamp:schedule barcamp.slug %}">{% trans "Sessions" %}</a></li>
+        <li class="arrow"><a href="{% url barcamp:list-sideevents barcamp.slug %}">{% trans "Side events" %}</a></li>
         <li class="arrow"><a href="{% url barcamp:list-places barcamp.slug %}">{% trans "Places" %}</a></li>
     </ul>
 </div>

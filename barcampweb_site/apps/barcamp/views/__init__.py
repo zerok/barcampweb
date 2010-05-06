@@ -99,10 +99,18 @@ class BarcampListPlacesView(BarcampBaseView):
     def view(self, *args, **kwargs):
         return self.render()
 
+class BarcampListSideEventsView(BarcampBaseView):
+    template_name_iphone = 'barcamp/iphone/side-events.html'
+
+    def view(self, *args, **kwargs):
+        self.data['events'] = models.SideEvent.objects.filter(barcamp=self.barcamp).order_by('start')
+        return self.render()
+
 view_barcamp = BarcampView.create_view()
 view_proposals = BarcampProposalsView.create_view()
 view_place = BarcampPlaceView.create_view()
 list_places = BarcampListPlacesView.create_view()
+list_sideevents = BarcampListSideEventsView.create_view()
 create_slot = is_organizer(BarcampCreateSlotView.create_view(), barcamp_slug_kwarg='slug')
 delete_slot = is_organizer(BarcampDeleteSlotView.create_view(), barcamp_slug_kwarg='slug')
 create_place = is_organizer(BarcampCreatePlaceView.create_view(), barcamp_slug_kwarg='slug')
