@@ -3,9 +3,9 @@
 {% block title %}{% blocktrans with barcamp.name as barcamp %}Schedule for {{ barcamp }}{% endblocktrans %}{% endblock %}
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block subcontent %}
-
+    <h2>{% trans "Talks" %}</h2>
     {% for grid in grid %}
-    <h2>{{ grid.date|date:'DATE_FORMAT' }}</h2>
+    <h3>{{ grid.date|date:'DATE_FORMAT' }}</h3>
     <table>
         <thead>
             {% for place in grid.places %}
@@ -73,5 +73,38 @@
     
     {% if is_organizer %}
     <a id="create-slot" href="{% url barcamp:create-slot barcamp.slug %}" class="action action-new">{% trans "Create a new slot" %}</a>
+    {% endif %}
+
+    {% if sideevents %}
+    <h2>{% trans "Side events" %}</h2>
+    {% for day, events in sideevents %}
+    <h3>{{ day|date:"DATE_FORMAT" }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th> </th>
+                <th>{% trans "Start" %}</th>
+                <th>{% trans "End" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.name }}
+                    {% if is_organizer %} 
+                    <a class="action action-edit" href="{% url barcamp:edit-sideevent barcamp.slug, event.pk %}">{% trans "Edit" %}</a>
+                    <a class="action action-delete" href="{% url barcamp:delete-sideevent barcamp.slug, event.pk %}">{% trans "Delete" %}</a>
+
+                    {% endif %}</td>
+                <td>{{ event.start|time }}</td>
+                <td>{{ event.end|time }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+    {% endif %}
+    {% if is_organizer %}
+    <a href="{% url barcamp:create-sideevent barcamp.slug %}" class="action action-new">{% trans "Create side event" %}</a>
     {% endif %}
 {% endblock %}

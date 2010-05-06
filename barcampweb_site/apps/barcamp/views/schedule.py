@@ -28,6 +28,8 @@ class BarcampScheduleView(BarcampBaseView):
         self.rooms = self.barcamp.places.filter(is_sessionroom=True)
         
     def view(self, *args, **kwargs):
+        from django.conf import settings
+        print settings.DATETIME_INPUT_FORMATS
         rooms = self.rooms
         self.dict_grid, self.open_slots = utils.create_slot_grid(self.barcamp)
         utils.mark_talkgrid_permissions(self.dict_grid, self.request.user, self.barcamp)
@@ -37,13 +39,17 @@ class BarcampScheduleView(BarcampBaseView):
                 slots_per_day[slot.start.date()] = list()
             slots_per_day[slot.start.date()].append((slot, content))
         detached_talks = models.Talk.objects.filter(timeslot=None, barcamp=self.barcamp).all()
+        sideevents = models.SideEvent.objects.filter(barcamp=self.barcamp).order_by('start')
+        se_per_day = collections.defaultdict(list)
+        for ev in sideevents:
+            se_per_day[ev.start.date()].append(ev)
         utils.mark_talklist_permissions(detached_talks, self.request.user, self.barcamp)
         self.data['rooms'] = rooms
         self.data['slots_per_day'] = [(k, slots_per_day[k]) for  k in sorted(dict(slots_per_day).keys())]
         self.data['days'] = self.days
         self.data['detached_talks'] = detached_talks
+        self.data['sideevents'] = [(k, se_per_day[k]) for k in sorted(se_per_day.keys())]
         self.data['grid'] = utils.SlotGrid.create_from_barcamp(self.barcamp, list(rooms), per_day=True, mark_for_user=self.request.user)[0]
-        print self.data['grid']
         return self.render()
     
     def view_iphone(self, *args, **kwargs):
@@ -246,5 +252,49 @@ class BarcampEventView(BarcampBaseView):
     def view(self, *args, **kwargs):
         event = get_object_or_404(models.Event.objects.select_related(), pk=kwargs['event_pk'], barcamp=self.barcamp)
         self.data['event'] = event
+        return self.render()
+
+class BarcampCreateSideEventView(BarcampBaseView):
+
+    template_name = 'barcamp/create-sideevent.html'
+
+    def view(self, *args, **kwargs):
+        form = forms.CreateSideEventForm()
+        if self.request.method == 'POST':
+            form = forms.CreateSideEventForm(self.request.POST)
+            form.barcamp = self.barcamp
+            if form.is_valid():
+                ev = form.save(commit=False)
+                ev.barcamp = self.barcamp
+                ev.save()
+                return self.redirect_to_schedule()
+        self.data['form'] = form
+        return self.render()
+
+class BarcampEditSideEventView(BarcampBaseView):
+
+    template_name = 'barcamp/edit-sideevent.html'
+
+    def view(self, *args, **kwargs):
+        ev = get_object_or_404(models.SideEvent.objects.filter(barcamp=self.barcamp, pk=kwargs['event_pk']))
+        form = forms.CreateSideEventForm(instance=ev)
+        if self.request.method == 'POST':
+            form = forms.CreateSideEventForm(self.request.POST, instance=ev)
+            form.barcamp = self.barcamp
+            if form.is_valid():
+                ev = form.save(commit=False)
+                ev.barcamp = self.barcamp
+                ev.save()
+                return self.redirect_to_schedule()
+        self.data['form'] = form
+        return self.render()
+
+class BarcampDeleteSideEventView(BarcampDeleteTalkView):
+    def view(self, *args, **kwargs):
+        ev = get_object_or_404(models.SideEvent.objects.filter(barcamp=self.barcamp, pk=kwargs['event_pk']))
+        if self.request.method == 'POST':
+            ev.delete()
+            return self.redirect_to_schedule()
+        self.data['event'] = ev
         return self.render()
 

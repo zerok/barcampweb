@@ -3,7 +3,7 @@ import datetime
 from django.forms.models import ModelForm
 from django import forms
 from django.conf import settings
-from django.utils import dateformat
+from django.utils import dateformat, formats
 from django.utils.translation import ugettext_lazy as _
 
 from . import models
@@ -52,7 +52,20 @@ class ProposalForm(ModelForm):
     class Meta:
         model = TalkIdea
         exclude = ('barcamp', 'votes', 'created_at', 'modified_at', 'user', 'user_name', 'user_email')
-        
+
+class CreateSideEventForm(ModelForm):
+    class Meta:
+        model = models.SideEvent
+        exclude = ('barcamp',)
+
+    def __init__(self, *args, **kwargs):
+        super(CreateSideEventForm, self).__init__(*args, **kwargs)
+        help_text = _('Date format: %(dateformat)s') % {
+            'dateformat': formats.get_format('DATETIME_INPUT_FORMATS')[0]
+        }
+        self.fields['start'].help_text = help_text
+        self.fields['end'].help_text = help_text
+
 class CreateSlotForm(forms.Form):
     
     day = DateChoiceField(label=_("Day"))
@@ -66,7 +79,6 @@ class CreateSlotForm(forms.Form):
             del kwargs['barcamp']
         super(CreateSlotForm, self).__init__(*args, **kwargs)
         self.fields['day'].choices = [(d.date().strftime(DateChoiceField.FORMAT), dateformat.format(d, settings.DATE_FORMAT)) for d in self.barcamp.days]
-        print self.fields['day'].choices
         self.fields['room'].choices = [(p.pk, p.name) for p in self.barcamp.places.all() if p.is_sessionroom]
         self.fields['room'].choices[0:0] = [(0, '')]
     
