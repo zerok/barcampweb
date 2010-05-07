@@ -85,6 +85,7 @@
                 <th> </th>
                 <th>{% trans "Start" %}</th>
                 <th>{% trans "End" %}</th>
+                <th>{% trans "Place" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -98,6 +99,7 @@
                     {% endif %}</td>
                 <td>{{ event.start|time }}</td>
                 <td>{{ event.end|time }}</td>
+                <td>{{ event.place.name }}</td>
             </tr>
         {% endfor %}
         </tbody>
