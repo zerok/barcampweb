@@ -112,8 +112,6 @@ class BarcampDeleteSlotView(BarcampBaseView):
     def view(self, *args, **kwargs):
         slot_pk = kwargs.get('slot_pk')
         slot = get_object_or_404(self.barcamp.slots, pk=slot_pk)
-        if not (self.request.user in self.barcamp.organizers.all()):
-            return HttpResponseForbidden()
         if self.request.method == 'POST':
             slot.talks.clear()
             slot.delete()
