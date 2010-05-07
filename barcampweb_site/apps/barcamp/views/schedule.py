@@ -83,7 +83,7 @@ class BarcampUpcomingView(BarcampBaseView):
     
     def view(self, *args, **kwargs):
         now = datetime.datetime.now()
-        self.data['events'] = self.barcamp.events.filter(start__gte=now)[:self.barcamp.places.count()]
+        self.data['events'] = self.barcamp.events.filter(start__gte=now).order_by('start')[:self.barcamp.places.count()]
         return self.render()
 
 class BarcampCreateSlotView(BarcampBaseView):
