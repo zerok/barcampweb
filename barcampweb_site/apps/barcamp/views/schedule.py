@@ -232,6 +232,8 @@ class BarcampMoveTalkView(BarcampBaseView):
                 slot = form.open_slots[form.cleaned_data['slot']]
                 talk.place = slot.place
                 talk.timeslot = slot.slot
+                talk.start = slot.slot.start
+                talk.end = slot.slot.end
                 talk.save()
                 return HttpResponseRedirect(reverse('barcamp:schedule', args=[self.barcamp.slug], current_app=APP_NAME))
                 pass
