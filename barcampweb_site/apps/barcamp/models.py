@@ -127,9 +127,19 @@ class Talk(Event):
     # TODO: Add unique_together constraint
 
 class SideEvent(Event):
+    """
+    A side event is for instance a social event as commonly
+    organized in the evening after sessions.
+    """
     pass
     
 class TimeSlot(models.Model):
+    """
+    The idea behind timeslots is that they should make it easier to
+    reserve sessions. All they have to do is select a timeslot and
+    put their session into it. No reason to look at the schedule
+    again to remember the actual time.
+    """
     start = models.DateTimeField(_("start time"))
     end = models.DateTimeField(_("end time"))
     barcamp = models.ForeignKey('Barcamp', verbose_name=_("barcamp"), 
@@ -187,6 +197,10 @@ class Resource(models.Model):
         verbose_name_plural = _("resources")
 
 class ResourceType(models.Model):
+    """
+    A resource type is for instance "slides", "blogpost",
+    "paper" etc.
+    """
     name = models.CharField(_("name"), max_length=255)
     slug = models.SlugField(_("slug"))
 

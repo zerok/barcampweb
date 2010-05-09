@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'barcampweb_site.apps.barcamp',
     'barcampweb_site.apps.globaltags',
+    'gunicorn',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
