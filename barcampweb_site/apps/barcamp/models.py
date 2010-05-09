@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+
 RESERVATION_STATUS_CHOICES = (
     ('yes', _('Yes')),
     ('no', _('No')),
@@ -13,6 +14,16 @@ RESERVATION_STATUS_CHOICES = (
 )
 
 class Barcamp(models.Model):
+    """
+    The usual barcamp has a name, start and end time, description, twittertag
+    logo and organizers. It also has a custom url field ("slug") as well
+    as a teaser which could be used in more detailed listings.
+
+    When someone requests the removal of a barcamp this is logged in the
+    marked_for_removal_at field in combination with who actuall requested 
+    it. If this request is canceled, the removal_canceled_by field is
+    set.
+    """
     name = models.CharField(_("name"), max_length=255)
     slug = models.SlugField(_("slug"), unique=True)
     start = models.DateTimeField(_("start time"))
@@ -23,12 +34,12 @@ class Barcamp(models.Model):
     twitter_tag = models.CharField(_("Twitter tag"), max_length=50, blank=True, null=True)
     organizers = models.ManyToManyField(User, verbose_name=_("organizers"), 
             related_name='organized_barcamps', blank=True, null=True)
-    marked_for_removal_at=models.DateTimeField(_("marked for removal"), 
+    marked_for_removal_at = models.DateTimeField(_("marked for removal"), 
             blank=True, null=True)
-    removal_requested_by=models.ForeignKey(User, 
+    removal_requested_by = models.ForeignKey(User, 
             verbose_name=_("removal requested by"), blank=True, null=True,
             related_name='requested_barcamp_removals')
-    removal_canceled_by=models.ForeignKey(User, 
+    removal_canceled_by = models.ForeignKey(User, 
             verbose_name=_("removal canceled by"),
             blank=True, null=True, related_name='canceled_barcamp_removals')
     available = models.BooleanField(_("available?"), default=False)

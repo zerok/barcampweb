@@ -1,14 +1,20 @@
+"""
+A collection of utilities which also includes the slot grid builder.
+"""
 from dateutil import rrule
-import sys
 import logging
 
 from django.utils.datastructures import SortedDict
 
 from . import models
 
+
 LOG = logging.getLogger(__name__)
 
 class PlaceSlot(object):
+    """
+    A simple object combining a place with a slot.
+    """
     def __init__(self, place, slot):
         self.place = place
         self.slot = slot
@@ -16,9 +22,15 @@ class PlaceSlot(object):
         return u"%s: %s" % (self.slot, self.place.name)
 
 def get_days(start, end):
+    "Retuns the dates between start and end."
     return rrule.rrule(rrule.DAILY, dtstart=start, until=end)
 
 class SlotGridElement(object):
+    """
+    An element within a slotgrid combining slot, place and
+    events associated with this combination.
+    """
+
     def __init__(self, slot=None, place=None):
         self.slot = slot is not None and slot or None
         self.place = place is not None and place or None
@@ -44,6 +56,17 @@ class SlotGrid(object):
     
     @classmethod
     def create_from_barcamp(cls, barcamp, room_order=None, per_day=False, mark_for_user=None):
+        """
+        Create a slotgrid from the given barcamp. If the rooms should
+        be ordered in a specific fashion, pass them in the right way
+        using the room_order argument. 
+
+        If a grid should be generated for every day that actually includes
+        slots, set per_day to True.
+
+        To, furthermore, set permissions for a given user, pass this user
+        using the mark_for_user kwarg.
+        """
         if room_order is not None:
             places = room_order
         else:
@@ -53,11 +76,11 @@ class SlotGrid(object):
         start_grid = {}
         for slot in slots:
             if slot.start not in start_grid:
-                start_grid[slot.start]=[None for x in places]
+                start_grid[slot.start] = [None for x in places]
             if slot.place is None:
                 start_grid[slot.start] = []
-                for p in places:
-                    sge = SlotGridElement(slot=slot, place=p)
+                for place in places:
+                    sge = SlotGridElement(slot=slot, place=place)
                     start_grid[slot.start].append(sge)
                     sge_index["%d-%d" % (sge.slot.pk, sge.place.pk)] = sge
             else:
@@ -66,11 +89,13 @@ class SlotGrid(object):
                 sge_index["%d-%d" % (sge.slot.pk, sge.place.pk)] = sge
 
         # Fill the sges with events
-        events =  models.Talk.objects.filter(barcamp=barcamp,timeslot__isnull=False, place__isnull=False)
+        events = models.Talk.objects.filter(barcamp=barcamp, 
+                timeslot__isnull=False, place__isnull=False)
         if mark_for_user is not None:
             mark_talklist_permissions(events, mark_for_user, barcamp)
-        for ev in events:
-            sge_index["%d-%d" % (ev.timeslot.pk, ev.place.pk)].events.append(ev)
+        for event in events:
+            sge_index["%d-%d" % (event.timeslot.pk, event.place.pk)]\
+                    .events.append(event)
         open_elems = [sge for sge in sge_index.values() if len(sge.events) == 0]
 
         if per_day:
@@ -92,7 +117,7 @@ class SlotGrid(object):
             return date_grids, open_elems
         else:
             grid = SlotGrid()
-            grid.places=places
+            grid.places = places
             for k in sorted(start_grid.keys()):
                 grid.grid.append(start_grid[k])
 
@@ -123,10 +148,9 @@ def create_slot_grid(barcamp):
     return result, open_slots
     
 def mark_talkgrid_permissions(grid, user, barcamp):
-    organizers = barcamp.organizers.all()
     user_talks = hasattr(user, 'talks') and user.talks.all() or []
-    for slot, rooms in grid.items():
-        for room, talk in rooms.items():
+    for rooms in grid.values():
+        for talk in rooms.values():
             if talk is None:
                 continue
             _mark_talk_permissions(talk, user, barcamp, user_talks)

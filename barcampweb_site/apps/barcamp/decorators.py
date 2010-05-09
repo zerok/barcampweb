@@ -1,3 +1,6 @@
+"""
+Collection of decorators for the barcamp app.
+"""
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 
@@ -15,8 +18,10 @@ def is_organizer(func=None, barcamp_pk_kwarg=None, barcamp_slug_kwarg=None):
                 pk = kwargs.get(barcamp_pk_kwarg)
                 barcamp = get_object_or_404(Barcamp, pk=pk)
             if barcamp_slug_kwarg is not None:
-                barcamp = get_object_or_404(Barcamp, slug=kwargs.get(barcamp_slug_kwarg))
-            if request.user not in barcamp.organizers.all() and not request.user.is_staff:
+                barcamp = get_object_or_404(Barcamp, 
+                        slug=kwargs.get(barcamp_slug_kwarg))
+            if request.user not in barcamp.organizers.all()\
+                    and not request.user.is_staff:
                 return HttpResponseForbidden()
             return func(*args, **kwargs)
         return wrapped

@@ -102,6 +102,7 @@ class BarcampBaseView(BaseView):
     def __init__(self, *args, **kwargs):
         super(BarcampBaseView, self).__init__(*args, **kwargs)
         self.barcamp = None
+        self.organizers = None
 
     def prepare(self, *args, **kwargs):
         """
@@ -117,9 +118,10 @@ class BarcampBaseView(BaseView):
         self.barcamp = get_object_or_404(
                 models.Barcamp.objects.select_related(), 
                 slug=slug)
+        self.organizers = self.barcamp.organizers.all()
         self.data['barcamp'] = self.barcamp
         self.data['sponsors'] = self.barcamp.sponsors.order_by('-level')
-        self.data['organizers'] = self.barcamp.organizers.all()
+        self.data['organizers'] = self.organizers
         self.data['places'] = self.barcamp.places.all()
         is_organizer = self.request.user in self.data['organizers']\
                 or self.request.user.is_staff
