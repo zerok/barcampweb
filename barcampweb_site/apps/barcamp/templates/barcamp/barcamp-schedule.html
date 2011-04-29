@@ -8,14 +8,16 @@
     <h3>{{ grid.date|date:'DATE_FORMAT' }}</h3>
     <table>
         <thead>
-            {% for place in grid.places %}
-            <th>{{ place.name }}
-                {% if is_organizer %}
-                <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}">{% trans "Edit" %}</a>
-                {% endif %}
-            
-            </th>
-            {% endfor %}
+            <tr>
+                {% for place in grid.places %}
+                <th>{{ place.name }}
+                    {% if is_organizer %}
+                    <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}">{% trans "Edit" %}</a>
+                    {% endif %}
+                
+                </th>
+                {% endfor %}
+            </tr>
         </thead>
         <tbody>
             {% for row in grid.grid %}

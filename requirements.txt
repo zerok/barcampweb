@@ -1,9 +1,7 @@
--e svn+http://code.djangoproject.com/svn/django/trunk/#egg=Django
-PIL==1.1.7
-South==0.7
-distribute==0.6.10
-django-extensions==0.4.1
-wsgiref==0.1.2
-python-dateutil==1.5
+Django<1.4
+PIL
+South
+gunicorn
+django-extensions
+python-dateutil<2.0
 Markdown==2.0.3
-flup
