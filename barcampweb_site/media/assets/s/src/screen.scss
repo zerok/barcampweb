@@ -1,3 +1,5 @@
+@import "compass/reset";
+@import "content";
 body {font-family: "HelveticaNeue-Light", "Helvetica Neue", Arial, Verdana, sans-serif;}
 html, body { background: #B3E4E9;height: 100%;}
 #body {width:100%; overflow:hidden;}
@@ -43,10 +45,10 @@ a { color: #1B96D0;}
     background-repeat: no-repeat;
 }
 
-.action-new {background-image: url(icons/document-new.png);}
-.action-delete {background-image: url(icons/user-trash.png);}
-.action-undo {background-image: url(icons/edit-undo.png);}
-.action-edit {background-image: url(icons/edit-find-replace.png);}
+.action-new {background-image: url(images/document-new.png);}
+.action-delete {background-image: url(images/user-trash.png);}
+.action-undo {background-image: url(images/edit-undo.png);}
+.action-edit {background-image: url(images/edit-find-replace.png);}
 .talkidea {
     margin-bottom: 1em;
 }
