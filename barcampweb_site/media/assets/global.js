@@ -1,12 +1,13 @@
 jQuery.fn.defaultFormOverlay = function(){
     this.bind('click', function(ev){
         ev.preventDefault();
-        $('#xhrOverlay').empty();
-        var $this = $(this);
+        var $overlay = $('#xhrOverlay'),
+            $this = $(this),
+            href = $this.attr('href');
         // Load the form overlay
-        $('#xhrOverlay').load($(this).attr('href'), function(data, status, xhr){
-            $('form', this).attr('action', $this.attr('href'));
-            var overlay = $('#xhrOverlay').overlay({
+        $overlay.empty().load(href, function(data, status, xhr){
+            $('form', this).attr('action', href);
+            var overlay = $overlay.overlay({
                api: true,
                expose: {
                    opacity: 0.8,
@@ -15,7 +16,7 @@ jQuery.fn.defaultFormOverlay = function(){
                }
                
             });
-            $('#xhrOverlay .cancel').bind('click', function(ev){
+            $('.cancel', $overlay).bind('click', function(ev){
                 ev.preventDefault();
                 overlay.close();
             });

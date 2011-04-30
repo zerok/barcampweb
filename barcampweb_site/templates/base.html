@@ -14,8 +14,6 @@
 
 <body>
     <div id="page">
-        <header>
-        </header>
         <div id="main">
             {% if messages %}
             <ul class="messages">
@@ -37,7 +35,7 @@
             <ul id="pageactions">
                 {% block pageactions %}
                 {% if user.is_authenticated %}
-                <li class="action action-new"><a href="{% url barcamp:create %}">{% trans "Create a new barcamp" %}</a></li>
+                <li><a class="action action-new" href="{% url barcamp:create %}">{% trans "Create a new barcamp" %}</a></li>
                 {% endif %}
                 {% endblock %}
             </ul>

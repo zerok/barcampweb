@@ -51,6 +51,11 @@ footer {
     border: 10px solid $bccolor;
     @include border-radius(0 20px 0 20px);
 }
+#pageactions {
+    li {
+        display: inline-block;
+    }
+}
 #main {width:98%; overflow:hidden; padding: 1%;}
 #content {padding:1%}
 #sidebar {padding: 1%;}

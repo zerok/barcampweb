@@ -11,11 +11,11 @@
 {% block head_title %}{{ barcamp.name }}{% endblock %}
 {% block pageactions %}
     {% if is_organizer %}
-    <li class="action action-edit"><a href="{% url barcamp:edit barcamp.slug %}">{% trans "Edit" %}</a></li>
+    <li><a class="action action-edit" href="{% url barcamp:edit barcamp.slug %}">{% trans "Edit" %}</a></li>
     {% if barcamp.marked_for_removal_at %}
-    <li class="action action-undo"><a href="{% url barcamp:undelete barcamp.slug %}">{% trans "Cancel removal" %}</a></li>
+    <li><a class="action action-undo" href="{% url barcamp:undelete barcamp.slug %}">{% trans "Cancel removal" %}</a></li>
     {% else %}
-    <li class="action action-delete"><a href="{% url barcamp:delete barcamp.slug %}">{% trans "Remove" %}</a></li>
+    <li><a class="action action-delete" href="{% url barcamp:delete barcamp.slug %}">{% trans "Remove" %}</a></li>
     {% endif %}
     {% endif %}
     {{ block.super }}
