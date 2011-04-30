@@ -1,0 +1,406 @@
+/* line 17, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* line 20, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+body {
+  line-height: 1;
+}
+
+/* line 22, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 24, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 26, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 28, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 101, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 30, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 115, ../../../../../../.gem/ruby/1.8/gems/compass-0.11.0/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* line 5, src/_content.scss */
+p,
+ul,
+ol,
+blockquote,
+pre {
+  margin: 0.5em 0;
+}
+
+/* line 9, src/_content.scss */
+dl {
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid #DDD;
+}
+
+/* line 15, src/_content.scss */
+dt {
+  width: 40%;
+  font-weight: bold;
+  float: left;
+}
+
+/* line 21, src/_content.scss */
+dd {
+  width: 60%;
+  float: right;
+}
+
+/* line 26, src/_content.scss */
+label {
+  display: block;
+  font-weight: bold;
+}
+
+/* line 7, src/screen.scss */
+header, footer, section, nav, aside {
+  display: block;
+}
+
+@font-face {
+  font-family: 'FertigoProRegular';
+  src: url("/media/assets/s/fonts/Fertigo_PRO-webfont.eot");
+  src: url("/media/assets/s/fonts/Fertigo_PRO-webfont.eot?iefix") format("eot"), url("/media/assets/s/fonts/Fertigo_PRO-webfont.woff") format("woff"), url("/media/assets/s/fonts/Fertigo_PRO-webfont.ttf") format("truetype"), url("/media/assets/s/fonts/Fertigo_PRO-webfont.svg#webfontZpnHCU3l") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* line 30, src/screen.scss */
+body {
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  color: #6a6a6a;
+}
+
+/* line 34, src/screen.scss */
+html, body {
+  height: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3cbac7), color-stop(100%, #b3e4e9));
+  background-image: -webkit-linear-gradient(top, #3cbac7, #b3e4e9);
+  background-image: -moz-linear-gradient(top, #3cbac7, #b3e4e9);
+  background-image: -o-linear-gradient(top, #3cbac7, #b3e4e9);
+  background-image: linear-gradient(top, #3cbac7, #b3e4e9);
+}
+
+/* line 38, src/screen.scss */
+footer {
+  padding: 10px;
+  text-align: right;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+}
+/* line 42, src/screen.scss */
+footer:hover {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* line 46, src/screen.scss */
+#body {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* line 47, src/screen.scss */
+#page {
+  width: 920px;
+  background: #FFF;
+  margin: 20px auto;
+  border: 10px solid #b3e4e9;
+  -moz-border-radius: 0 20px 0 20px;
+  -webkit-border-radius: 0 20px 0 20px;
+  -o-border-radius: 0 20px 0 20px;
+  -ms-border-radius: 0 20px 0 20px;
+  -khtml-border-radius: 0 20px 0 20px;
+  border-radius: 0 20px 0 20px;
+}
+
+/* line 55, src/screen.scss */
+#pageactions li {
+  display: inline-block;
+}
+
+/* line 59, src/screen.scss */
+#main {
+  width: 98%;
+  overflow: hidden;
+  padding: 1%;
+}
+
+/* line 60, src/screen.scss */
+#content {
+  padding: 1%;
+}
+
+/* line 61, src/screen.scss */
+#sidebar {
+  padding: 1%;
+}
+
+/* line 62, src/screen.scss */
+h1 {
+  border-bottom: 2px solid #E5E5E5;
+  font-size: 220%;
+  font-family: "FertigoProRegular", Georgia;
+}
+
+/* line 67, src/screen.scss */
+h2, h3, h4, h5, h6, #meta {
+  margin: 1em 0 0 0;
+}
+
+/* line 68, src/screen.scss */
+a {
+  color: #2f97a1;
+}
+
+/* line 69, src/screen.scss */
+#submenu {
+  width: 100%;
+  overflow: hidden;
+  margin: 5px 0;
+}
+
+/* line 74, src/screen.scss */
+#submenu li {
+  float: left;
+  margin: 0 4px 0 0;
+  background: #e5e5e5;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #efefef), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #efefef, #dddddd);
+  background-image: -moz-linear-gradient(top, #efefef, #dddddd);
+  background-image: -o-linear-gradient(top, #efefef, #dddddd);
+  background-image: linear-gradient(top, #efefef, #dddddd);
+  border: 1px solid #CACACA;
+  -moz-border-radius: 0 7px 0 7px;
+  -webkit-border-radius: 0 7px 0 7px;
+  -o-border-radius: 0 7px 0 7px;
+  -ms-border-radius: 0 7px 0 7px;
+  -khtml-border-radius: 0 7px 0 7px;
+  border-radius: 0 7px 0 7px;
+}
+
+/* line 82, src/screen.scss */
+#submenu li.active {
+  background: #3cbac7;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3cbac7), color-stop(100%, #23727a));
+  background-image: -webkit-linear-gradient(top, #3cbac7, #23727a);
+  background-image: -moz-linear-gradient(top, #3cbac7, #23727a);
+  background-image: -o-linear-gradient(top, #3cbac7, #23727a);
+  background-image: linear-gradient(top, #3cbac7, #23727a);
+  border-color: #b3e4e9;
+}
+/* line 85, src/screen.scss */
+#submenu li.active a {
+  color: #FFF;
+}
+
+/* line 90, src/screen.scss */
+#submenu li a {
+  display: block;
+  text-decoration: none;
+  padding: 5px 7px;
+  font-family: "FertigoProRegular", Georgia;
+}
+
+/* line 97, src/screen.scss */
+.action {
+  padding: 5px 5px 5px 5px;
+  border: 1px solid #DDD;
+  display: inline-block;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #efefef));
+  background-image: -webkit-linear-gradient(top, #ffffff, #efefef);
+  background-image: -moz-linear-gradient(top, #ffffff, #efefef);
+  background-image: -o-linear-gradient(top, #ffffff, #efefef);
+  background-image: linear-gradient(top, #ffffff, #efefef);
+  text-decoration: none;
+  color: #2f97a1;
+}
+/* line 99, src/screen.scss */
+.action span {
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  display: block;
+  padding-left: 20px;
+}
+/* line 110, src/screen.scss */
+.action:hover {
+  background: #FFF;
+}
+/* line 115, src/screen.scss */
+.action a {
+  text-decoration: none;
+}
+
+/* line 120, src/screen.scss */
+.action-new span {
+  background-image: url(images/document-new.png);
+}
+
+/* line 121, src/screen.scss */
+.action-delete span {
+  background-image: url(images/user-trash.png);
+}
+
+/* line 122, src/screen.scss */
+.action-undo span {
+  background-image: url(images/edit-undo.png);
+}
+
+/* line 123, src/screen.scss */
+.action-edit span {
+  background-image: url(images/edit-find-replace.png);
+}
+
+/* line 124, src/screen.scss */
+.talkidea {
+  margin-bottom: 1em;
+}
+
+/* line 127, src/screen.scss */
+.talkidea .title {
+  font-size: 125%;
+  font-family: Georgia;
+}
+
+/* line 131, src/screen.scss */
+.talkidea cite {
+  text-align: right;
+  font-style: italic;
+  display: block;
+}
+
+/* line 136, src/screen.scss */
+textarea {
+  width: 100%;
+  padding: 0.5em;
+  font-family: monospace;
+  color: #444;
+}
+
+/* line 142, src/screen.scss */
+h2 {
+  font-size: 150%;
+}
+
+/* line 145, src/screen.scss */
+h3 {
+  font-size: 125%;
+}
+
+/* line 148, src/screen.scss */
+table {
+  width: 100%;
+  margin: 5px 0 10px 0;
+}
+
+/* line 152, src/screen.scss */
+th {
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #DDD;
+  background: #DDD;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #efefef), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #efefef, #dddddd);
+  background-image: -moz-linear-gradient(top, #efefef, #dddddd);
+  background-image: -o-linear-gradient(top, #efefef, #dddddd);
+  background-image: linear-gradient(top, #efefef, #dddddd);
+}
+/* line 158, src/screen.scss */
+th .action {
+  border: none;
+  padding-left: 15px;
+  background: transparent;
+}
+
+/* line 164, src/screen.scss */
+td {
+  border-right: 1px solid #DDD;
+  padding: 5px;
+}
+
+/* line 168, src/screen.scss */
+tbody tr:first-child {
+  border-top: 1px solid #DDD;
+}
+
+/* line 171, src/screen.scss */
+tr {
+  border-bottom: 1px solid #DDD;
+}
+
+/* line 174, src/screen.scss */
+tr td:first-child {
+  border-left: 1px solid #DDD;
+}
+
+/* line 178, src/screen.scss */
+.overlay {
+  display: none;
+  background: #FFF;
+  padding: 1em;
+  border: 2px solid #DDD;
+  width: 700px;
+  max-height: 500px;
+  overflow: auto;
+}
+
+/* line 187, src/screen.scss */
+p.actions {
+  font-size: 16px;
+}

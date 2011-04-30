@@ -95,13 +95,21 @@ a { color: $color2;}
 }
 
 .action {
-    padding: 5px 5px 5px 25px;
-    background-position: 5px 50%;
-    background-repeat: no-repeat;
+    padding: 5px 5px 5px 5px;
+    span {
+        background-position: 0% 50%;
+        background-repeat: no-repeat;
+        display: block;
+        padding-left: 20px;
+    }
     border: 1px solid #DDD;
     display: inline-block;
     font-family: $font1;
     @include border-radius(5px);
+    @include linear-gradient(color-stops(#FFF, #EFEFEF));
+    &:hover {
+        background: #FFF;
+    }
     text-decoration: none;
     color: $color2;
     a {
@@ -109,10 +117,10 @@ a { color: $color2;}
     }
 }
 
-.action-new {background-image: url(images/document-new.png);}
-.action-delete {background-image: url(images/user-trash.png);}
-.action-undo {background-image: url(images/edit-undo.png);}
-.action-edit {background-image: url(images/edit-find-replace.png);}
+.action-new span {background-image: url(images/document-new.png);}
+.action-delete span {background-image: url(images/user-trash.png);}
+.action-undo span {background-image: url(images/edit-undo.png);}
+.action-edit span {background-image: url(images/edit-find-replace.png);}
 .talkidea {
     margin-bottom: 1em;
 }
@@ -150,6 +158,7 @@ th {
     .action {
         border: none;
         padding-left: 15px;
+        background: transparent;
     }
 }
 td {

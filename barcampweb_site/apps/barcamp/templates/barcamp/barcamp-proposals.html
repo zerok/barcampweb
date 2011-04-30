@@ -31,16 +31,16 @@
             {% endif %}
             {% endifequal %}
             {% if proposal.user and request.user == proposal.user %}
-            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">{% trans "Edit" %}</a>
-            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">{% trans "Remove" %}</a>
+            <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit"><span>{% trans "Edit" %}</span></a>
+            <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete"><span>{% trans "Remove" %}</span></a>
             {% else %}
                 {% if not proposal.user or is_organizer %}
-                <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit">{% trans "Edit" %}</a>
-                <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete">{% trans "Remove" %}</a>
+                <a href="{% url barcamp:edit-proposal barcamp.slug proposal.pk %}" class="action action-edit"><span>{% trans "Edit" %}</span></a>
+                <a href="{% url barcamp:delete-proposal barcamp.slug proposal.pk %}" class="action action-delete"><span>{% trans "Remove" %}</span></a>
                 {% endif %}
             {% endif %}
         </li>
     {% endfor %}
     </ul>
-    <a href="{% url barcamp:create-proposal barcamp.slug %}" class="newtalkidea action action-new">{% trans "Have an idea for a talk?" %}</a>
+    <a href="{% url barcamp:create-proposal barcamp.slug %}" class="newtalkidea action action-new"><span>{% trans "Have an idea for a talk?" %}</span></a>
 {% endblock %}

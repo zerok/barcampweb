@@ -7,14 +7,14 @@
     {% for place in places %}
     <li>{{ place.name }}{% if place.location%}: {{ place.location }}{% if place.address %}<br />{{ place.address }}{% endif %}{% endif %}
     {% if is_organizer %}
-    <a class="action action-edit" href="{% url barcamp:edit-place barcamp.slug, place.pk %}?next={{ request.path }}">{% trans "Edit" %}</a>
-    <a class="action action-delete" href="{% url barcamp:delete-place barcamp.slug, place.pk %}?next={{ request.path }}">{% trans "Delete" %}</a>
+    <a class="action action-edit" href="{% url barcamp:edit-place barcamp.slug, place.pk %}?next={{ request.path }}"><span>{% trans "Edit" %}</span></a>
+    <a class="action action-delete" href="{% url barcamp:delete-place barcamp.slug, place.pk %}?next={{ request.path }}"><span>{% trans "Delete" %}</span></a>
     {% endif %}
     </li>
     {% endfor %}
 </ul>
 {% if is_organizer %}
-<a class="action action-new" href="{% url barcamp:create-place barcamp.slug %}?next={{request.path}}">{% trans "Create place" %}</a>
+<a class="action action-new" href="{% url barcamp:create-place barcamp.slug %}?next={{request.path}}"><span>{% trans "Create place" %}</span></a>
 {% endif %}
 {% endblock %}
 
