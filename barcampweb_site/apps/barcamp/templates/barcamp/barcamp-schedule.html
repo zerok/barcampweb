@@ -38,14 +38,15 @@
                         <a class="action action-detach" href="{% url barcamp:detach-talk barcamp.slug event.pk %}">{% trans "Detach" %}</a>
                         </p>
                         {% endif %}
-                    {% empty %}
-                        {% if user.is_authenticated %}
-                        <p class="actions"><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}">{% trans "Fill this slot" %}</a></p>
-                        {% endif %}
                     {% endfor %}
-                    {% if is_organizer %}
-                    <a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete">{% trans "Delete this slot" %}</a>
-                    {% endif %}
+                    <p class="actions">
+                        {% if not elem.events and user.is_authenticated %}
+                        <a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}">{% trans "Fill this slot" %}</a>
+                        {% endif %}
+                        {% if is_organizer %}
+                        <a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete">{% trans "Delete this slot" %}</a>
+                        {% endif %}
+                    </p>
                     {% endif %}
                 </td>
                 {% endfor %}

@@ -14,8 +14,8 @@
 
 <body>
     <div id="page">
-        <div id="header">
-        </div>
+        <header>
+        </header>
         <div id="main">
             {% if messages %}
             <ul class="messages">
@@ -37,12 +37,12 @@
             <ul id="pageactions">
                 {% block pageactions %}
                 {% if user.is_authenticated %}
-                <li><a class="action action-new" href="{% url barcamp:create %}">{% trans "Create a new barcamp" %}</a></li>
+                <li class="action action-new"><a href="{% url barcamp:create %}">{% trans "Create a new barcamp" %}</a></li>
                 {% endif %}
                 {% endblock %}
             </ul>
         </div>
-        <div id="footer">
+        <footer>
             {% if request.username %}
             {% blocktrans with request.username as username %}Hello {{ username }}{% endblocktrans %} <a href="{% url account:simple_logout %}?next={{ request.path }}">{% trans "Log in" %}</a>
             {% endif %}
@@ -52,7 +52,7 @@
             {% if not request.username and not user.is_authenticated %}
             <a href="{% url login %}?next={{ request.path }}">{% trans "Log in" %}</a>
             {% endif %}
-        </div>
+        </footer>
     </div>
     <div id="xhrOverlay" class="overlay"></div>
     {% block end %}

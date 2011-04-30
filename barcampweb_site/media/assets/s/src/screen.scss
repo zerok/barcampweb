@@ -1,12 +1,55 @@
 @import "compass/reset";
+@import "compass/css3/border-radius";
+@import "compass/css3/gradient";
+@import "compass/css3/opacity";
 @import "content";
-body {font-family: "HelveticaNeue-Light", "Helvetica Neue", Arial, Verdana, sans-serif;}
-html, body { background: #B3E4E9;height: 100%;}
+
+header, footer, section, nav, aside {
+    display: block;
+}
+
+@font-face {
+    font-family: 'FertigoProRegular';
+    src: url('/media/assets/s/fonts/Fertigo_PRO-webfont.eot');
+    src: url('/media/assets/s/fonts/Fertigo_PRO-webfont.eot?iefix') format('eot'),
+         url('/media/assets/s/fonts/Fertigo_PRO-webfont.woff') format('woff'),
+         url('/media/assets/s/fonts/Fertigo_PRO-webfont.ttf') format('truetype'),
+         url('/media/assets/s/fonts/Fertigo_PRO-webfont.svg#webfontZpnHCU3l') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+$font1: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$font2: "FertigoProRegular", Georgia;
+$bccolor: #B3E4E9;
+$base-fg: #6A6a6a;
+$color2: darken($bccolor, 40);
+
+
+body {
+    font-family: $font1;
+    color: $base-fg;
+}
+html, body {
+    height: 100%;
+    @include linear-gradient(color-stops(darken($bccolor, 30), $bccolor));
+}
+footer {
+    padding: 10px;
+    text-align: right;
+    @include opacity(0.5);
+    &:hover {
+        @include opacity(1);
+    }
+}
 #body {width:100%; overflow:hidden;}
 #page {
     width:920px; 
     background: #FFF; 
-    margin: 2em 0 0 26px;
+    margin: 20px auto;
+    border: 10px solid $bccolor;
+    @include border-radius(0 20px 0 20px);
 }
 #main {width:98%; overflow:hidden; padding: 1%;}
 #content {padding:1%}
@@ -14,10 +57,10 @@ html, body { background: #B3E4E9;height: 100%;}
 h1 {
     border-bottom: 2px solid #E5E5E5;
     font-size: 220%; 
-    font-family: Georgia;
+    font-family: $font2;
 }
 h2, h3, h4, h5, h6, #meta {margin: 1em 0 0 0;}
-a { color: #1B96D0;}
+a { color: $color2;}
 #submenu {
     width: 100%;
     overflow: hidden;
@@ -27,22 +70,38 @@ a { color: #1B96D0;}
     float: left;
     margin: 0 4px 0 0;
     background: #e5e5e5;
+    @include linear-gradient(color-stops(#EFEFEF, #DDD));
     border: 1px solid #CACACA;
-    -webkit-border-radius: 0 7px 0 7px;
+    @include border-radius(0 7px 0 7px);
 }
 #submenu li.active {
-    background: #EEE;
+    background: darken($bccolor, 30);
+    @include linear-gradient(color-stops(darken($bccolor, 30), darken($bccolor, 50)));
+    a {
+        color: #FFF;
+    }
+    border-color: $bccolor;
 }
 #submenu li a {
     display: block;
     text-decoration: none;
-    padding: 5px;
+    padding: 5px 7px;
+    font-family: $font2;
 }
 
 .action {
-    padding-left: 20px;
-    background-position: 0% 50%;
+    padding: 5px 5px 5px 25px;
+    background-position: 5px 50%;
     background-repeat: no-repeat;
+    border: 1px solid #DDD;
+    display: inline-block;
+    font-family: $font1;
+    @include border-radius(5px);
+    text-decoration: none;
+    color: $color2;
+    a {
+        text-decoration: none;
+    }
 }
 
 .action-new {background-image: url(images/document-new.png);}
@@ -75,12 +134,18 @@ h3 {
 }
 table {
     width: 100%;
+    margin: 5px 0 10px 0;
 }
 th {
     font-weight: bold;
     text-align: center;
     border: 1px solid #DDD;
     background: #DDD;
+    @include linear-gradient(color-stops(#EFEFEF, #DDD));
+    .action {
+        border: none;
+        padding-left: 15px;
+    }
 }
 td {
     border-right: 1px solid #DDD;
