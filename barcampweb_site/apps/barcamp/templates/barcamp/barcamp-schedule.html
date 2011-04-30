@@ -1,6 +1,7 @@
 {% extends "barcamp/barcamp-base.html" %}
 {% load i18n %}
 {% block title %}{% blocktrans with barcamp.name as barcamp %}Schedule for {{ barcamp }}{% endblocktrans %}{% endblock %}
+{% block head_title %}{% trans "Schedule" %} « {{ block.super }}{% endblock %}
 {% block submenu-barcamp-schedule %}active{% endblock %}
 {% block subcontent %}
     <h2>{% trans "Talks" %}</h2>

@@ -8,6 +8,7 @@
 {% block title %}
     {{ barcamp.name }}
 {% endblock %}
+{% block head_title %}{{ barcamp.name }}{% endblock %}
 {% block pageactions %}
     {% if is_organizer %}
     <li class="action action-edit"><a href="{% url barcamp:edit barcamp.slug %}">{% trans "Edit" %}</a></li>

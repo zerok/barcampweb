@@ -1,7 +1,7 @@
 {% extends "barcamp/barcamp-base.html" %}
 {% load i18n %}
 {% block submenu-barcamp-proposals %}active{% endblock %}
-{% block head-title %}{% trans "Talk ideas" %} « {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Talk ideas" %} « {{ block.super }}{% endblock %}
 {% block title %}{% blocktrans with barcamp.name as name %}Talk ideas for {{ name }}{% endblocktrans %}{% endblock %}
 {% block head %}
     <script type="text/javascript" charset="utf-8">
