@@ -1,8 +1,10 @@
+{% extends "barcamp/iphone/base.html" %}
 {% load i18n %}
-<div id="{% block pageid %}{% endblock %}">
-    <div class="toolbar">
-        <h1 class="title">{% block title %}{% endblock %}</h1>
-        <a href="#" class="back">{% trans "Back" %}</a>
+{% block content %}
+<div data-role="page">
+    <div data-role="header">
+        <h1>{% block title %}{% endblock %}</h1>
     </div>
-    {% block content %}{% endblock %}
+    <div data-role="content">{% block page_content %}{% endblock %}</div>
 </div>
+{% endblock %}

@@ -1,8 +1,8 @@
 {% extends "barcamp/iphone/basepage.html" %}
 {% load i18n %}
 {% block title %}{% trans "Side events" %}{% endblock %}
-{% block content %}
-    <ul>
+{% block page_content %}
+    <ul data-role="listview">
         {% for event in events %}
         <li>
         {% include "barcamp/iphone/event-mini.html" %}

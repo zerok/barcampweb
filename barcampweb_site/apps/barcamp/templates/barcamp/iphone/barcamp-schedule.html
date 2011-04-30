@@ -1,25 +1,25 @@
+{% extends "barcamp/iphone/base.html" %}
 {% load i18n %}
-<div id="schedule">
-    <div class="toolbar">
-        <h1 class="title">{% trans "Sessions" %}</h1>
-        <a href="#" class="back">{% trans "Back" %}</a>
+{% block content %}
+<div data-role="page">
+    <div data-role="header"><a href="{% url barcamp:view barcamp.slug %}" rel="external" data-icon="arrow-l">Back</a><h1>{% trans "Sessions" %}</h1></div>
+    <div data-role="content">
+        <ul data-role="listview">
+            {% for day in days %}
+            <li class="arrow"><a href="#schedule-{{ day.year }}-{{ day.month }}-{{ day.day }}">{{ day.date|date }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
-    <ul class="">
-        {% for day in days %}
-        <li class="arrow"><a href="#schedule-{{ day.year }}-{{ day.month }}-{{ day.day }}">{{ day.date|date }}</a></li>
-        {% endfor %}
-    </ul>
 </div>
 {% for day in talks_per_day %}
-<div id="schedule-{{ day.day.year }}-{{ day.day.month }}-{{ day.day.day }}">
-    <div class="toolbar">
+<div data-role="page" id="schedule-{{ day.day.year }}-{{ day.day.month }}-{{ day.day.day }}">
+    <div data-role="header" class="toolbar">
         <h1 class="title">{{ day.day|date:'DATE_FORMAT' }}</h1>
-        <a href="#" class="back">{% trans "Back" %}</a>
     </div>
     {% for room, talks in day.rooms.items %}
     {% if talks %}
     <h2>{{ room.name }}</h2>
-    <ul>
+    <ul data-role="listview">
         {% for talk in talks %}
         <li><a href="{% url barcamp:event barcamp.slug, talk.pk %}">{{ talk.name }}</a>
             {{ talk.start|time }} - {{ talk.end|time }}
@@ -30,3 +30,4 @@
     {% endfor %}
 </div>
 {% endfor %}
+{% endblock %}

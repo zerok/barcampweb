@@ -1,15 +1,12 @@
-{% extends "barcamp/iphone/base.html" %}
+{% extends "barcamp/iphone/basepage.html" %}
 {% load i18n %}
 {% block page_title %}{{ barcamp.name }}{% endblock %}
-{% block content %}
-<div id="home" class="current">
-    <div class="toolbar">
-        <h1 class="title">{{ barcamp.name }}</h1>
-    </div>
-    <ul class="edgetoedge">
+{% block title %}{{ barcamp.name }}{% endblock %}
+{% block page_content %}
+    <ul class="edgetoedge" data-role="listview">
         <li class="arrow"><a href="{% url barcamp:now barcamp.slug %}">{% trans "Right now" %}</a></li>
         <li class="arrow"><a href="{% url barcamp:upcoming barcamp.slug %}">{% trans "Upcoming" %}</a></li>
-        <li class="arrow"><a href="{% url barcamp:schedule barcamp.slug %}">{% trans "Sessions" %}</a></li>
+        <li class="arrow"><a rel="external" href="{% url barcamp:schedule barcamp.slug %}">{% trans "Sessions" %}</a></li>
         <li class="arrow"><a href="{% url barcamp:list-sideevents barcamp.slug %}">{% trans "Side events" %}</a></li>
         <li class="arrow"><a href="{% url barcamp:list-places barcamp.slug %}">{% trans "Places" %}</a></li>
     </ul>

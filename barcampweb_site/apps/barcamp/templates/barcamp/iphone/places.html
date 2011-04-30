@@ -1,8 +1,8 @@
 {% extends "barcamp/iphone/basepage.html" %}
 {% load i18n %}
 {% block title %}{% trans "Places" %}{% endblock %}
-{% block content %}
-<ul>
+{% block page_content %}
+<ul data-role="listview">
     {% for place in places %}
     <li><a href="{% url barcamp:view-place barcamp.slug, place.pk %}">{{ place.name }}</a></li>
     {% endfor %}

@@ -1,0 +1,3 @@
+[submodule "barcampweb_site/media/assets/j/jquery-mobile"]
+	path = barcampweb_site/media/assets/j/jquery-mobile
+	url = git://github.com/jquery/jquery-mobile.git
