@@ -1,5 +1,7 @@
 {% load i18n %}
 <form method="post" accept-charset="utf-8">
     {{ form.as_p }}
-    <p class="buttons"><button type="submit">{% trans 'Create room' %}</button></p>
+    <p class="buttons"><button type="submit">{% trans 'Create room' %}</button>
+        <a class="cancel" href="{% block cancel-link %}{% url barcamp:view barcamp.slug %}{% endblock %}">{% trans "Cancel" %}</a>
+    </p>
 </form>

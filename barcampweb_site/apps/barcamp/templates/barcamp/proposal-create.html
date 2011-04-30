@@ -14,5 +14,8 @@
 
 <form method="post">
     {{ form.as_p }}
-    <button type="submit">{% trans "Save" %}</button>
+    <p>
+        <button type="submit">{% trans "Save" %}</button>
+        <a class="cancel" href="{% block cancel-link %}{% url barcamp:view barcamp.slug %}{% endblock %}">{% trans "Cancel" %}</a>
+    </p>
 </form>

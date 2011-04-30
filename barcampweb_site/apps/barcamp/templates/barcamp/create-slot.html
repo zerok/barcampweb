@@ -2,6 +2,7 @@
 <form method="post">
     {{ form.as_p }}
     <p class="buttons">
-    <button type="submit">{% trans "Create time slot" %}</button>
+        <button type="submit">{% trans "Create time slot" %}</button>
+        <a class="cancel" href="{% url barcamp:view barcamp.slug %}">{% trans "Cancel" %}</a>
     </p>
 </form>
