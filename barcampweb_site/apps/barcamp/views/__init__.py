@@ -21,6 +21,8 @@ from .schedule import *
 
 def index(request):
     barcamps = models.Barcamp.objects.order_by('start')
+    if len(barcamps) == 1:
+        return HttpResponseRedirect(reverse('barcamp:view', args=[barcamps[0].slug]))
     return render(request, 'barcamp/index.html', {
         'barcamps': barcamps,
     })
