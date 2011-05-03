@@ -1,7 +1,7 @@
 {% extends "barcamp/iphone/basepage.html" %}
 {% load i18n %}
 {% block title %}{{ event.name }}{% endblock %}
-{% block content %}
+{% block page_content %}
 <h2>{% trans "Time" %}:</h2>
 <ul><li>
     {% blocktrans with event.start|date:"DATE_FORMAT" as date and event.start|time:"TIME_FORMAT" as start and event.end|time:"TIME_FORMAT" as end %}
