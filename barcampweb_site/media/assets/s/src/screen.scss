@@ -163,7 +163,6 @@ th {
 td {
     border-right: 1px solid #DDD;
     padding: 5px;
-    position: relative;
 }
 tbody tr:first-child {
     border-top: 1px solid #DDD;
@@ -189,7 +188,6 @@ p.actions {
 }
 
 div.actions {
-    position: relative;
     display: inline-block;
     .label {
         display: block;
@@ -201,11 +199,11 @@ div.actions {
             visibility: hidden;
         }
     }
-    ul {
-        background: #EFEFEF;
-        padding: 3px;
-        border: 1px solid #DDD;
-    }
+}
+ul.actionmenu {
+    background: #EFEFEF;
+    padding: 3px;
+    border: 1px solid #DDD;
     .action {
         display: block;
     }

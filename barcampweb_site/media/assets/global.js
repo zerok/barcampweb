@@ -34,14 +34,18 @@ $(function() {
         var outer = $(this),
             inner = $('> ul', outer),
             label = $('> .label', outer);
-        outer.css({'position': 'relative', 'width': '16px'});
-        inner.css({'position': 'absolute', 'bottom': '0', 'right': '0'}).hide();
+        if ($('li', inner).length == 0) outer.hide();
+        outer.css({'width': '16px'});
+        label.css({'cursor':'pointer'});
+        inner.appendTo('body').hide();
         label.click(function(evt) {
+            var labelOffset = label.offset();
             evt.preventDefault();
             evt.stopPropagation();
-            inner.toggle();
+            inner.css({'position': 'absolute', 'left': labelOffset.left+10, 'top': labelOffset.top+4}).toggle();
+            console.log(label.offset());
             var other = $('body').data('activeDialog');
-            if (other) other.hide();
+            if (other && other !== inner) other.hide();
             $('body').data('activeDialog', inner);
         });
     });

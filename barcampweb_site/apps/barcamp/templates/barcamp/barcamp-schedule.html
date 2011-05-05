@@ -28,6 +28,17 @@
                     {% if elem %}  
                     <span class="time">
                         {{ elem.slot.start|time:"H:i" }}-{{ elem.slot.end|time:"H:i" }}
+                        <div class="slotactions actions collapsable">
+                            <span class="label"><span>{% trans "Slot actions" %}</span></span>
+                            <ul class="actionmenu">
+                                {% if not elem.events and user.is_authenticated %}
+                                <li><a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}"><span>{% trans "Fill this slot" %}</span></a></li>
+                                {% endif %}
+                                {% if is_organizer %}
+                                <li><a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete"><span>{% trans "Delete this slot" %}</span></a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </span>
                     {% if elem.events %}
                     <ul>
@@ -37,7 +48,7 @@
                                 {% if event.can_edit and user.is_authenticated %}
                                 <div class="actions collapsable">
                                     <span class="label"><span>{% trans "Session actions" %}</span></span>
-                                    <ul>
+                                    <ul class="actionmenu">
                                         <li><a class="action action-edit" href="{% url barcamp:edit-talk barcamp.slug event.pk %}"><span>{% trans "Edit" %}</span></a></li>
                                         <li><a class="action action-delete" href="{% url barcamp:delete-talk barcamp.slug event.pk %}"><span>{% trans "Remove" %}</span></a></li>
                                         <li><a class="action action-move" href="{% url barcamp:move-talk barcamp.slug event.pk %}"><span>{% trans "Move" %}</span></a></li>
@@ -49,14 +60,6 @@
                         {% endfor %}
                     </ul>
                     {% endif %}
-                    <p class="actions">
-                        {% if not elem.events and user.is_authenticated %}
-                        <a class="action action-new" href="{% url barcamp:create-talk barcamp.slug elem.slot.pk elem.place.pk %}"><span>{% trans "Fill this slot" %}</span></a>
-                        {% endif %}
-                        {% if is_organizer %}
-                        <a href="{% url barcamp:delete-slot barcamp.slug,elem.slot.pk %}" class="action action-delete"><span>{% trans "Delete this slot" %}</span></a>
-                        {% endif %}
-                    </p>
                     {% endif %}
                 </td>
                 {% endfor %}
