@@ -36,6 +36,8 @@ class BarcampView(BarcampBaseView):
         return self.render()
     
     def view_iphone(self, *args, **kwargs):
+        self.data['nobacklink'] = True
+        self.data['nostartlink'] = True
         return self.render()
 
 class BarcampCreatePlaceView(BarcampBaseView):

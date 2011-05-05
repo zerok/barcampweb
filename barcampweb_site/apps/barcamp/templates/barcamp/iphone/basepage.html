@@ -3,9 +3,13 @@
 {% block content %}
 <div data-role="page">
     <div data-role="header" data-theme="c">
+        {% if not nobacklink %}
         <a href="{% block backlink %}{% endblock %}" data-rel="back" data-icon="arrow-l">Back</a>
+        {% endif %}
         <h1>{% block title %}{% endblock %}</h1>
+        {% if not nostartlink %}
         <a href="{% url barcamp:view barcamp.slug %}" data-icon="home" data-theme="b">Start</a>
+        {% endif %}
     </div>
     <div data-role="content">{% block page_content %}{% endblock %}</div>
 </div>
