@@ -3,7 +3,9 @@
 {% block content %}
 <div data-role="page">
     <div data-role="header" data-theme="c">
+        <a href="{% block backlink %}{% endblock %}" data-rel="back" data-icon="arrow-l">Back</a>
         <h1>{% block title %}{% endblock %}</h1>
+        <a href="{% url barcamp:view barcamp.slug %}" data-icon="home" data-theme="b">Start</a>
     </div>
     <div data-role="content">{% block page_content %}{% endblock %}</div>
 </div>
