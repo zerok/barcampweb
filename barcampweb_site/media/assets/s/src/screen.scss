@@ -161,11 +161,20 @@ th {
     text-align: center;
     border: 1px solid #DDD;
     background: #DDD;
+    line-height: 18px;
+    padding: 3px 0;
     @include linear-gradient(color-stops(#EFEFEF, #DDD));
     .action {
         border: none;
-        padding-left: 15px;
-        background: transparent;
+        padding: 0;
+        height: 16px;
+        width: 16px;
+        overflow: hidden;
+        display: inline-block;
+        &.action-edit { background: url(images/edit-find-replace.png) 50% 50% no-repeat}
+        span {
+            visibility: hidden;
+        }
     }
 }
 td {

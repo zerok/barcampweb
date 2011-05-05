@@ -13,7 +13,7 @@
                 {% for place in grid.places %}
                 <th>{{ place.name }}
                     {% if is_organizer %}
-                    <a class="action" href="{% url barcamp:edit-place barcamp.slug, place.pk %}"><span>{% trans "Edit" %}</span></a>
+                    <a class="action action-edit" href="{% url barcamp:edit-place barcamp.slug, place.pk %}"><span>{% trans "Edit" %}</span></a>
                     {% endif %}
                 
                 </th>
