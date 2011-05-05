@@ -21,9 +21,9 @@
     <h2>{{ room.name }}</h2>
     <ul data-role="listview">
         {% for talk in talks %}
-        <li><a href="{% url barcamp:event barcamp.slug, talk.pk %}">{{ talk.name }}</a>
-            {{ talk.start|time }} - {{ talk.end|time }}
-        </li>
+        <li><a href="{% url barcamp:event barcamp.slug, talk.pk %}">{{ talk.name }}
+            <span class="info">{{ talk.start|time:'TIME_FORMAT' }} - {{ talk.end|time:'TIME_FORMAT' }}</span>
+        </a></li>
         {% endfor %}
     </ul>
     {% endif %}

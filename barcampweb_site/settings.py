@@ -67,6 +67,8 @@ INSTALLED_APPS = (
     'gunicorn',
 )
 
+FORMAT_MODULE_PATH = 'barcampweb_site.formats'
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.auth",
     "django.core.context_processors.debug",
