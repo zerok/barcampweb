@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block content %}
 <div data-role="page">
-    <div data-role="header"><a href="{% url barcamp:view barcamp.slug %}" rel="external" data-icon="arrow-l">Back</a><h1>{% trans "Sessions" %}</h1></div>
+    <div data-role="header" data-theme="c"><a href="{% url barcamp:view barcamp.slug %}" rel="external" data-icon="arrow-l">Back</a><h1>{% trans "Sessions" %}</h1></div>
     <div data-role="content">
         <ul data-role="listview">
             {% for day in days %}
@@ -13,7 +13,7 @@
 </div>
 {% for day in talks_per_day %}
 <div data-role="page" id="schedule-{{ day.day.year }}-{{ day.day.month }}-{{ day.day.day }}">
-    <div data-role="header" class="toolbar">
+    <div data-role="header" class="toolbar" data-theme="c">
         <h1 class="title">{{ day.day|date:'DATE_FORMAT' }}</h1>
     </div>
     {% for room, talks in day.rooms.items %}

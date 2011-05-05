@@ -2,6 +2,7 @@
 {% load i18n %}
 {% block title %}{{ event.name }}{% endblock %}
 {% block page_content %}
+<div data-role="main">
 <h2>{% trans "Time" %}:</h2>
 <ul><li>
     {% blocktrans with event.start|date:"DATE_FORMAT" as date and event.start|time:"TIME_FORMAT" as start and event.end|time:"TIME_FORMAT" as end %}
@@ -16,4 +17,5 @@
 </div>
 <div class="description">{{ event.description|markdown }}</div>
 
+</div>
 {% endblock %}

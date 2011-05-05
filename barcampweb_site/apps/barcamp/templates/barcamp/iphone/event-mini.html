@@ -1,4 +1,6 @@
-<a href="{% url barcamp:event event.barcamp.slug,event.pk %}">{{ event.name }}</a>
-<span class="location"><a href="{% url barcamp:view-place barcamp.slug, event.place.pk %}">{{ event.place.name }}</a>
-</span>
-<span class="time">{{ event.start|date:"DATE_FORMAT" }} {{ event.start|time }} - {{ event.end|time }}</a>
+<a href="{% url barcamp:event event.barcamp.slug,event.pk %}">{{ event.name }}
+    <span class="info">
+        <span class="location">{{ event.place.name }}</span>
+        <span class="time">{{ event.start|date:"DATE_FORMAT" }} {{ event.start|time:'TIME_FORMAT' }} - {{ event.end|time:'TIME_FORMAT' }}</span>
+    </span>
+</a>
