@@ -24,3 +24,25 @@ jQuery.fn.defaultFormOverlay = function(){
         });
     });
 };
+
+$(function() {
+    $('body').click(function(evt) {
+        var dialog = $(this).data('activeDialog');
+        if (dialog) dialog.hide();
+    });
+    $('.actions.collapsable').each(function() {
+        var outer = $(this),
+            inner = $('> ul', outer),
+            label = $('> .label', outer);
+        outer.css({'position': 'relative', 'width': '16px'});
+        inner.css({'position': 'absolute', 'bottom': '0', 'right': '0'}).hide();
+        label.click(function(evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            inner.toggle();
+            var other = $('body').data('activeDialog');
+            if (other) other.hide();
+            $('body').data('activeDialog', inner);
+        });
+    });
+});

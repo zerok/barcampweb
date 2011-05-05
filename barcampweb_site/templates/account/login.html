@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block title %}{% trans "Login" %}{% endblock %}
+{% block head_title %}{% trans "Login" %}{% endblock %}
 {% block content %}
 <form method="post">
     {{ form.as_p }}

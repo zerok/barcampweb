@@ -32,7 +32,6 @@ body {
     color: $base-fg;
 }
 html, body {
-    height: 100%;
     @include linear-gradient(color-stops(darken($bccolor, 30), $bccolor));
 }
 footer {
@@ -43,7 +42,7 @@ footer {
         @include opacity(1);
     }
 }
-#body {width:100%; overflow:hidden;}
+#body {width:100%; overflow: hidden; }
 #page {
     width:920px; 
     background: #FFF; 
@@ -56,7 +55,7 @@ footer {
         display: inline-block;
     }
 }
-#main {width:98%; overflow:hidden; padding: 1%;}
+#main {width:98%; padding: 1%;}
 #content {padding:1%}
 #sidebar {padding: 1%;}
 h1 {
@@ -164,6 +163,7 @@ th {
 td {
     border-right: 1px solid #DDD;
     padding: 5px;
+    position: relative;
 }
 tbody tr:first-child {
     border-top: 1px solid #DDD;
@@ -186,4 +186,27 @@ tr td:first-child {
 }
 p.actions {
     font-size: 16px;
+}
+
+div.actions {
+    position: relative;
+    display: inline-block;
+    .label {
+        display: block;
+        background: url('images/settings.png') 50% 50% no-repeat;
+        height: 16px;
+        width: 16px;
+        overflow: hidden;
+        span {
+            visibility: hidden;
+        }
+    }
+    ul {
+        background: #EFEFEF;
+        padding: 3px;
+        border: 1px solid #DDD;
+    }
+    .action {
+        display: block;
+    }
 }
