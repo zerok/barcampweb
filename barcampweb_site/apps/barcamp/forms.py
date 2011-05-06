@@ -59,12 +59,17 @@ class CreateSideEventForm(ModelForm):
         exclude = ('barcamp',)
 
     def __init__(self, *args, **kwargs):
+        if 'barcamp' in kwargs:
+            self.barcamp = kwargs['barcamp']
+            del kwargs['barcamp']
         super(CreateSideEventForm, self).__init__(*args, **kwargs)
         help_text = _('Date format: %(dateformat)s') % {
             'dateformat': formats.get_format('DATETIME_INPUT_FORMATS')[0]
         }
         self.fields['start'].help_text = help_text
         self.fields['end'].help_text = help_text
+        if hasattr(self, 'barcamp') and self.barcamp:
+            self.fields['place'].choices = [(p.pk, p.name) for p in self.barcamp.places.all()]
 
 class CreateSlotForm(forms.Form):
     

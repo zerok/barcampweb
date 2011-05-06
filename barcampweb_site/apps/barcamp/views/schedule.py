@@ -325,10 +325,9 @@ class BarcampCreateSideEventView(BarcampBaseView):
     template_name = 'barcamp/create-sideevent.html'
 
     def view(self, *args, **kwargs):
-        form = forms.CreateSideEventForm()
+        form = forms.CreateSideEventForm(barcamp=self.barcamp)
         if self.request.method == 'POST':
-            form = forms.CreateSideEventForm(self.request.POST)
-            form.barcamp = self.barcamp
+            form = forms.CreateSideEventForm(self.request.POST, barcamp=self.barcamp)
             if form.is_valid():
                 event = form.save(commit=False)
                 event.barcamp = self.barcamp
